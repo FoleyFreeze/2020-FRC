@@ -2,6 +2,9 @@ package frc.robot.motors;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import frc.robot.cals.MotorCal;
+
+
 
 public class MotorSparkMax extends Motor{
     

@@ -3,6 +3,10 @@ package frc.robot.motors;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import frc.robot.cals.MotorCal;
+
+
+
 public class MotorTalonSRX extends Motor{
     
     TalonSRX motor;

@@ -1,6 +1,8 @@
 package frc.robot.motors;
 
 import edu.wpi.first.wpilibj.Talon;
+import frc.robot.cals.MotorCal;
+
 
 public class MotorTalonPWM extends Motor {
 
