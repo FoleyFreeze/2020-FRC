@@ -7,7 +7,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.motors.Motor;
 
 public class ExampleSubsystem extends SubsystemBase {
   /**
