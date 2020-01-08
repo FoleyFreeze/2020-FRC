@@ -5,6 +5,18 @@ public class MotorCal {
         PWM_TALON, SPARK_MAX, TALON_SRX
     }
 
+    public static MotorCal newSpark(int id){
+        return new MotorCal(MotorType.SPARK_MAX, id);
+    }
+
+    public static MotorCal newTalonPWM(int id){
+        return new MotorCal(MotorType.PWM_TALON, id);
+    }
+
+    public static MotorCal newTalonSRX(int id){
+        return new MotorCal(MotorType.TALON_SRX, id);
+    }
+
     MotorCal(MotorType type, int id, double kP, double kI, double kD){
 
     }
