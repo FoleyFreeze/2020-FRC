@@ -23,5 +23,8 @@ public class MotorTalonSRX extends Motor{
         motor.set(ControlMode.Position, position);
     }
 
+    public void setSpeed(double speed){
+        motor.set(ControlMode.Position, speed);
+    }
     
 }

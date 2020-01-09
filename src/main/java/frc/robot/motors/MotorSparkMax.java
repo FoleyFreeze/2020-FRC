@@ -22,4 +22,8 @@ public class MotorSparkMax extends Motor{
         motor.getPIDController().setReference(position, ControlType.kPosition);
     }
 
+    public void setSpeed(double speed){
+        motor.getPIDController().setReference(speed, ControlType.kVelocity);
+    }
+
 }

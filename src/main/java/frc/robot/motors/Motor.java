@@ -22,6 +22,6 @@ public abstract class Motor{
 
     public abstract void setPower(double power);
     public abstract void setPosition(double position);
-    //public abstract void setSpeed(double speed);
+    public abstract void setSpeed(double speed);
 
 }
