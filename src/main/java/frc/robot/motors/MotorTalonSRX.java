@@ -26,4 +26,9 @@ public class MotorTalonSRX extends Motor{
     public double getPosition(){
         return motor.getSelectedSensorPosition();
     }    
+    
+    public void setSpeed(double speed){
+        motor.set(ControlMode.Position, speed);
+    }
+    
 }
