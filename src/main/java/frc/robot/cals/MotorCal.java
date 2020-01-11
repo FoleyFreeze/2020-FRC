@@ -1,19 +1,31 @@
 package frc.robot.cals;
 
 public class MotorCal {
+    public MotorType type;
+    public int id;
+    public double minPower;
+    public double maxPower;
+    public double kP;
+    public double kI;
+    public double kD;
+    public double kDFilt;
+    public double kF;
+    public double rampRate;
+    public boolean brake;
+
     public enum MotorType{
         PWM_TALON, SPARK_MAX, TALON_SRX
     }
 
-    public static MotorCal newSpark(int id){
+    public static MotorCal spark(int id){
         return new MotorCal(MotorType.SPARK_MAX, id);
     }
 
-    public static MotorCal newTalonPWM(int id){
+    public static MotorCal pwm(int id){
         return new MotorCal(MotorType.PWM_TALON, id);
     }
 
-    public static MotorCal newTalonSRX(int id){
+    public static MotorCal srx(int id){
         return new MotorCal(MotorType.TALON_SRX, id);
     }
 
@@ -32,12 +44,37 @@ public class MotorCal {
         this(type, id, 1);  
     }   
 
-    public MotorType type;
-    public int id;
-    double maxPower;
-    double minPower;
-    double kP;
-    double kI;
-    double kD;
-    double kF;
+    public MotorCal pid(double p, double i, double d, double f){
+        kP = p;
+        kI = i;
+        kD = d;
+        kF = f;
+        return this;
+    }
+
+    public MotorCal brake(){
+        brake = true;
+        return this;
+    }
+
+    public MotorCal coast(){
+        brake = false;
+        return this;
+    }
+
+    public MotorCal limit(double min, double max){
+        minPower = min;
+        maxPower = max;
+        return this;
+    }
+
+    public MotorCal dFilt(double filter){
+        kDFilt = filter;
+        return this;
+    }
+
+    public MotorCal ramp(double rate){
+        rampRate = rate;
+        return this;
+    }
 }

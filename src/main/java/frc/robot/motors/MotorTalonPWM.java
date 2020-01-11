@@ -20,4 +20,8 @@ public class MotorTalonPWM extends Motor {
         throw new UnsupportedOperationException();
     }
 
+    public double getPosition(){
+        throw new UnsupportedOperationException();
+    }
+
 }
