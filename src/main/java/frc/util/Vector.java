@@ -16,12 +16,24 @@ public class Vector{
 
     public static Vector fromXY(double x, double y){
         double r = Math.sqrt(x*x + y*y);
-        double theta = Math.atan2(y, x);
+        double theta;
+        if(x == 0 && y == 0) theta = 0;
+        else theta = Math.atan2(y, x);
         return new Vector(r, theta);
     }
 
     public void scaleNorm(){
-        double h = 1/Math.cos(theta);
+        double a = theta % Math.PI;
+        double h;
+        if(a < 0){
+            a = (-a) % (Math.PI/2);
+            if(a < Math.PI/4) h = 1/Math.cos(a);
+            else h = 1/Math.sin(a);
+        } else {
+            a = a % (Math.PI/2);
+            if(a < Math.PI/4) h = 1/Math.cos(a);
+            else h = 1/Math.sin(a);
+        }
         r = r/h;
     }
 
@@ -36,6 +48,13 @@ public class Vector{
     }
 
     public Vector add(Vector v){
+        if(v.r == 0) return this;
+        else if(r == 0){
+            r = v.r;
+            theta = v.theta;
+            return this;
+        }
+
         r = Math.sqrt(r*r + v.r*v.r + 2*r*v.r * Math.cos(v.theta - theta));
         theta = theta + Math.atan2(v.r*Math.sin(v.theta - theta), 
             r + v.r*Math.cos(v.theta - theta));
@@ -46,5 +65,9 @@ public class Vector{
     public static Vector add(Vector v1, Vector v2){
         Vector output = new Vector(v1);
         return output.add(v2);
+    }
+
+    public String toString(){
+        return String.format("%.2f, %.0f", r, Math.toDegrees(theta));
     }
 }

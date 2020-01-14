@@ -4,15 +4,18 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.cals.MotorCal;
 
 
 
 public class MotorSparkMax extends Motor{
     
+    MotorCal cals;
     CANSparkMax motor;
     
     public MotorSparkMax(MotorCal cal){
+        cals = cal;
         motor = new CANSparkMax(cal.id, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
         if(cal.brake){
             motor.setIdleMode(IdleMode.kBrake);
@@ -21,15 +24,24 @@ public class MotorSparkMax extends Motor{
         }
 
         motor.setOpenLoopRampRate(cal.rampRate);
-        motor.getPIDController().setP(cal.kP);
-        motor.getPIDController().setI(cal.kI);
-        motor.getPIDController().setD(cal.kD);
-        motor.getPIDController().setFF(cal.kF);
-        motor.getPIDController().setDFilter(cal.kDFilt);
-        motor.getPIDController().setOutputRange(cal.minPower, cal.maxPower);
+
+        if(cals.pid){
+            motor.setClosedLoopRampRate(cal.rampRate);
+            motor.getPIDController().setP(cal.kP);
+            motor.getPIDController().setI(cal.kI);
+            motor.getPIDController().setD(cal.kD);
+            motor.getPIDController().setFF(cal.kF);
+            motor.getPIDController().setDFilter(cal.kDFilt);
+            motor.getPIDController().setOutputRange(-cal.minPower, cal.maxPower);
+        }
+        
+        motor.setInverted(cal.invert);
     }
 
     public void setPower(double power){
+        if(power > 0) power *= cals.maxPower;
+        else if(power < 0) power *= cals.minPower;
+        //System.out.println(power);
         motor.set(power);
     }
 

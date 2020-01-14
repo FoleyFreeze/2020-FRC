@@ -16,13 +16,23 @@ public class JoystickDrive extends CommandBase{
     }
 
     @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
+
+    @Override
     public void initialize() {
         
     }
 
     @Override
     public void execute(){
-        m_subsystem.drive(m_joy.getRawAxis(0), m_joy.getRawAxis(1), m_joy.getRawAxis(4), 0, 0, 0.5);
+        m_subsystem.drive(deadband(m_joy.getRawAxis(0)), -deadband(m_joy.getRawAxis(1)), deadband(m_joy.getRawAxis(4)), 0, 0, 0.5);
+    }
+
+    public double deadband(double val){
+        if(Math.abs(val) < 0.05) val = 0;
+        return val;
     }
 
     @Override

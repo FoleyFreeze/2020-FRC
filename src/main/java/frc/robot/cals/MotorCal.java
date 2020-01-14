@@ -5,6 +5,7 @@ public class MotorCal {
     public int id;
     public double minPower;
     public double maxPower;
+    public boolean pid = false;
     public double kP;
     public double kI;
     public double kD;
@@ -12,6 +13,7 @@ public class MotorCal {
     public double kF;
     public double rampRate;
     public boolean brake;
+    public boolean invert = false;
 
     public enum MotorType{
         PWM_TALON, SPARK_MAX, TALON_SRX
@@ -45,6 +47,7 @@ public class MotorCal {
     }   
 
     public MotorCal pid(double p, double i, double d, double f){
+        pid = true;
         kP = p;
         kI = i;
         kD = d;
@@ -53,7 +56,12 @@ public class MotorCal {
     }
 
     public MotorCal brake(){
-        brake = true;
+        this.brake = true;
+        return this;
+    }
+
+    public MotorCal invert(){
+        this.invert = true;
         return this;
     }
 

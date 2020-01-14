@@ -16,28 +16,37 @@ public class Drivetrain extends SubsystemBase{
         Vector location;
         Vector rotVec;
         Vector wheelVec;
+        double angleOffset;
         
         //create a wheel object to make assigning motor values easier
         public Wheel(DriverCals cals, int idx){
             driveMotor = Motor.initMotor(cals.driveMotors[idx]);
-            turnMotor = Motor.initMotor(cals.driveMotors[idx]);
+            turnMotor = Motor.initMotor(cals.turnMotors[idx]);
             enc = new AnalogInput(cals.turnEncoderIds[idx]);
             location = Vector.fromXY(cals.xPos[idx], cals.yPos[idx]);
             this.idx = idx;
+            this.angleOffset = cals.angleOffset[idx];
         }
 
         public double calcRotVec(double centX, double centY){
             Vector v = Vector.fromXY(centX, centY);
             v.inverse().add(location);
+            v.theta -= Math.PI/2;
             rotVec = v;
-            SmartDashboard.putString("InitRotate" + idx, String.format("%.2f, %.0f", v.r, Math.toDegrees(v.theta)));
+            SmartDashboard.putString("Location" + idx, location.toString());
+            SmartDashboard.putString("InitRotate" + idx, v.toString());
             return rotVec.r;
         }
 
         public void drive(){
-            double currentAngle = enc.getVoltage() *2*Math.PI/5;
-            double angleDiff = currentAngle - wheelVec.theta;
-            angleDiff = angleDiff % (2*Math.PI) - Math.PI;
+            double encVoltage = enc.getVoltage();
+            SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
+            double currentAngle = ((encVoltage - angleOffset) *2*Math.PI/5);
+            double angleDiff = wheelVec.theta - currentAngle;
+            SmartDashboard.putNumber("AngleRaw" + idx, Math.toDegrees(angleDiff));
+            angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
+            //angleDiff = Math.IEEEremainder(angleDiff, 2*Math.PI) - Math.PI;
+            SmartDashboard.putNumber("AngleDiff" + idx, Math.toDegrees(angleDiff));
             if(Math.abs(angleDiff) > Math.PI/2){
                 wheelVec.r *= -1;
                 if(angleDiff < 0) {
@@ -48,10 +57,17 @@ public class Drivetrain extends SubsystemBase{
                     wheelVec.theta -= Math.PI;
                 }
             }
-            SmartDashboard.putString("WheelCmd" + idx, String.format("%.2f, %.0f", wheelVec.r, Math.toDegrees(wheelVec.theta)));
+            SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
+            SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
+            SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
+
             double deltaTicks = angleDiff / (2*Math.PI) / k.turnGearRatio * 4096;
-            double targetTicks = deltaTicks + turnMotor.getPosition();
+            double targetTicks = turnMotor.getPosition();
+            if(wheelVec.r != 0){ //don't turn unless we actually want to move
+                targetTicks += deltaTicks;
+            } 
+            SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
         }
@@ -61,6 +77,8 @@ public class Drivetrain extends SubsystemBase{
     DriverCals k;
     
     public Drivetrain(DriverCals cals){
+        if(cals.disabled) return;
+        k = cals;
         int size = cals.driveMotors.length;
         wheels = new Wheel[size];
         for(int i=0; i<size; i++){
@@ -70,6 +88,7 @@ public class Drivetrain extends SubsystemBase{
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, arbitration ratio 0-1
     public void drive(double x, double y, double rot, double centX, double centY, double arbRatio){
+        if(k.disabled) return;
         Vector strafe = Vector.fromXY(x, y);//calculate strafe
         SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
         if(k.scaleNormalize){//normalize
@@ -84,15 +103,18 @@ public class Drivetrain extends SubsystemBase{
             double mag = w.calcRotVec(centX, centY);
             maxMag = Math.max(maxMag, Math.abs(mag));
         }
+        SmartDashboard.putNumber("MaxMag",maxMag);
 
         Wheel maxOut = wheels[0];
         for(Wheel w : wheels){//normalize the rotation
-            w.rotVec.r = maxMag/rot;
+            w.rotVec.r /= maxMag;
+            w.rotVec.r *= rot;
             w.wheelVec = Vector.add(w.rotVec, strafe); 
             if(Math.abs(w.wheelVec.r) > Math.abs(maxOut.wheelVec.r)){
                 maxOut = w;
             }
-            SmartDashboard.putString("NormRotate" + w.idx, String.format("%.2f, %.0f", w.rotVec.r, Math.toDegrees(w.rotVec.theta)));
+            SmartDashboard.putString("NormRotate" + w.idx, w.rotVec.toString());
+            SmartDashboard.putString("RawWheelCmd" + w.idx, w.wheelVec.toString());
         }
         
         if(Math.abs(maxOut.wheelVec.r) > 1){
@@ -116,11 +138,11 @@ public class Drivetrain extends SubsystemBase{
             for(Wheel w: wheels){
                 w.rotVec.r *= rotReduc;
                 w.wheelVec= Vector.add(strafe, w.rotVec);
-                SmartDashboard.putString("FinalWheel" + w.idx, String.format("%.2f, %.0f", w.wheelVec.r, Math.toDegrees(w.wheelVec.theta)));
             }
         }
 
         for(Wheel w : wheels){
+            SmartDashboard.putString("FinalWheel" + w.idx, w.wheelVec.toString());
             w.drive();
         }
     }
