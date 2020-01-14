@@ -54,10 +54,10 @@ public class Vector{
             theta = v.theta;
             return this;
         }
-
+        double tempR = r;
         r = Math.sqrt(r*r + v.r*v.r + 2*r*v.r * Math.cos(v.theta - theta));
         theta = theta + Math.atan2(v.r*Math.sin(v.theta - theta), 
-            r + v.r*Math.cos(v.theta - theta));
+            tempR + v.r*Math.cos(v.theta - theta));
 
         return this;
     }
