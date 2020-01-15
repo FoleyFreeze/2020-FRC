@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.cals.DriverCals;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.cals.IntakeCals;
+import frc.robot.commands.JoystickIntake;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -26,14 +29,20 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drivetrain = new Drivetrain(new DriverCals());
   private final JoystickDrive m_JoystickDrive = new JoystickDrive(m_drivetrain, new Joystick(0));
+  private final Intake m_intake = new Intake(new IntakeCals());
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
+    CommandScheduler.getInstance().registerSubsystem(m_intake);
+    
+    m_intake.setDefaultCommand(new JoystickIntake(m_intake, 0));
     m_drivetrain.setDefaultCommand(m_JoystickDrive);
+    
+    // Configure the button bindings    
     configureButtonBindings();
   }
 
