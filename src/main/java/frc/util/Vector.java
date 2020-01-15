@@ -25,6 +25,8 @@ public class Vector{
     public void scaleNorm(){
         double a = theta % Math.PI;
         double h;
+
+        //make unit "square" into unit circle
         if(a < 0){
             a = (-a) % (Math.PI/2);
             if(a < Math.PI/4) h = 1/Math.cos(a);
@@ -38,6 +40,7 @@ public class Vector{
     }
 
     public void threshNorm(){
+        //only scaled down if outside of limits
         if(r > 1) r = 1;
         else if(r < -1) r = -1;
     }
@@ -48,6 +51,7 @@ public class Vector{
     }
 
     public Vector add(Vector v){
+        //if a vector is zero, just copy the other one
         if(v.r == 0) return this;
         else if(r == 0){
             r = v.r;
@@ -55,6 +59,8 @@ public class Vector{
             return this;
         }
         double tempR = r;
+
+        //otherwise, use law of cosines to calculate the new r and theta
         r = Math.sqrt(r*r + v.r*v.r + 2*r*v.r * Math.cos(v.theta - theta));
         theta = theta + Math.atan2(v.r*Math.sin(v.theta - theta), 
             tempR + v.r*Math.cos(v.theta - theta));
