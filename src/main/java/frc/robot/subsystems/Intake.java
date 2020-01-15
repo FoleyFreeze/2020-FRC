@@ -7,12 +7,12 @@ import frc.robot.motors.Motor;
 public class Intake extends SubsystemBase {
 
     public Motor spinmotor;
-    private IntakeCals spinCals;
+    private IntakeCals mCals;
 
-    public Intake(IntakeCals spinCals){
-        this.spinCals = spinCals;
+    public Intake(IntakeCals cals){
+        this.mCals = cals;
 
-        spinmotor = Motor.initMotor(spinCals.spinMotor);
+        spinmotor = Motor.initMotor(mCals.spinMotor);
     }
 
     public void setPower(double power){
