@@ -17,15 +17,13 @@ public class Inputs{
     public double xAxis;
     public double yAxis;
     public double rotXAxis;
-    public double rotYAxis;
 
-    public Inputs(boolean flySky){
-        this.flySky = flySky;
+    public Inputs(){
+        flySky = joy.getName().contains("FlySky");
 
         xAxis = 0;
         yAxis = 1;
         rotXAxis = 4;//Double check me!!!
-        rotYAxis = 5;//Double check me!!!
 
         if(flySky){
             autoGather = new JoystickButton(joy, -1);
