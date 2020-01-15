@@ -58,8 +58,8 @@ public class RobotContainer {
     JoystickButton a = new JoystickButton(driveJoy, 1);
     JoystickButton b = new JoystickButton(driveJoy, 2);
 
-    a.whenPressed(new JoystickIntake(m_intake, 0.25));
-    b.whenPressed(new JoystickIntake(m_intake, -0.25));
+    a.whileActiveOnce(new JoystickIntake(m_intake, 0.5));
+    b.whileActiveOnce(new JoystickIntake(m_intake, -0.5));
   }
 
 
