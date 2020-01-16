@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Inputs{
-    public boolean flySky;
+    public boolean flySky;//there is also an f310
     
     public Joystick joy = new Joystick(0);
     
