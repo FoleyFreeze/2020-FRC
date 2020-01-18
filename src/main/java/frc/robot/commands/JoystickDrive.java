@@ -1,18 +1,18 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Inputs;
 
 public class JoystickDrive extends CommandBase{
     private Drivetrain m_subsystem;
-    private Joystick m_joy;
+    private Inputs m_inputs;
 
-    public JoystickDrive(Drivetrain subsystem, Joystick joy){
+    public JoystickDrive(Drivetrain subsystem, Inputs inputs){
         m_subsystem = subsystem;
         addRequirements(m_subsystem);
 
-        m_joy = joy;
+        m_inputs = inputs;
     }
 
     @Override
@@ -27,12 +27,7 @@ public class JoystickDrive extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.drive(deadband(m_joy.getRawAxis(0)), -deadband(m_joy.getRawAxis(1)), deadband(m_joy.getRawAxis(4)), 0, 0, 0.5);
-    }
-
-    public double deadband(double val){
-        if(Math.abs(val) < 0.05) val = 0;
-        return val;
+        m_subsystem.drive(m_inputs.getXY(), m_inputs.getRot(), 0, 0, 0.5, m_inputs.fieldOrient());
     }
 
     @Override
