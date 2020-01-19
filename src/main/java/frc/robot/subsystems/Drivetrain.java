@@ -96,8 +96,9 @@ public class Drivetrain extends SubsystemBase{
         if(k.disabled) return;
         SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
 
+        SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
-            strafe.theta -= navX.getAngle() - Math.PI/2;
+            strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
         
         double maxMag = 0;

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.util.Vector;
 
@@ -17,6 +18,7 @@ public class Inputs{
     public double rotXAxis;
 
     public Inputs(){
+        SmartDashboard.putString("JoystickName", joy.getName());
         flySky = joy.getName().contains("FlySky");
 
         if(flySky){
@@ -29,22 +31,22 @@ public class Inputs{
     }
 
     public boolean fieldOrient(){
-        return joy.getRawButton(-1);
+        return joy.getRawButton(3);
     }
 
     public double getX(){
-        if(flySky) return expo(threshDeadband(joy.getRawAxis(0), 0.05, 1.0), 1.4);
-        else return expo(scaleDeadband(joy.getRawAxis(0), 0.1, 0.9), 1.4);
+        if(flySky) return expo(threshDeadband(joy.getRawAxis(0), 0.05, 1.0), 1);
+        else return expo(scaleDeadband(joy.getRawAxis(0), 0.1, 0.9), 1);
     }
 
     public double getY(){
-        if(flySky) return -expo(threshDeadband(joy.getRawAxis(1), 0.05, 1.0), 1.4);
-        else return -expo(scaleDeadband(joy.getRawAxis(1), 0.1, 0.9), 1.4);
+        if(flySky) return -expo(threshDeadband(joy.getRawAxis(1), 0.05, 1.0), 1);
+        else return -expo(scaleDeadband(joy.getRawAxis(1), 0.1, 0.9), 1);
     }
 
     public double getRot(){
-        if(flySky) return expo(threshDeadband(joy.getRawAxis(4), 0.05, 1.0), 1.4);
-        else return expo(scaleDeadband(joy.getRawAxis(4), 0.10, 0.9), 1.4);
+        if(flySky) return expo(threshDeadband(joy.getRawAxis(4), 0.05, 1.0), 1);
+        else return expo(scaleDeadband(joy.getRawAxis(4), 0.10, 0.9), 1);
     }
 
     public Vector getXY(){
@@ -66,8 +68,8 @@ public class Inputs{
     }
 
     private double scaleDeadband(double raw, double limitLow, double limitHigh){
-        double temp = 1/(1-(limitLow+limitHigh));
-        if(Math.abs(raw) > limitHigh) return 1.0;
+        double temp = 1/(1-(limitLow+(1-limitHigh)));
+        if(Math.abs(raw) > limitHigh) return 1.0 * Math.signum(raw);
         else if(Math.abs(raw) < limitLow) return 0.0;
         else return temp * (Math.abs(raw)-limitLow) * Math.signum(raw);
     }
