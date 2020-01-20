@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.cals.DriverCals;
 import frc.robot.motors.Motor;
 import frc.util.Vector;
+import com.kauailabs.navx.frc.*;
 
 public class Drivetrain extends SubsystemBase{
     public class Wheel{
@@ -75,6 +77,7 @@ public class Drivetrain extends SubsystemBase{
 
     Wheel[] wheels;
     DriverCals k;
+    AHRS navX;
     
     public Drivetrain(DriverCals cals){
         if(cals.disabled) return;
@@ -84,20 +87,20 @@ public class Drivetrain extends SubsystemBase{
         for(int i=0; i<size; i++){
             wheels[i] = new Wheel(cals, i);
         }
+
+        navX = new AHRS(Port.kMXP);
     }
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, arbitration ratio 0-1
-    public void drive(double x, double y, double rot, double centX, double centY, double arbRatio){
+    public void drive(Vector strafe, double rot, double centX, double centY, double arbRatio, boolean fieldOrient){
         if(k.disabled) return;
-        Vector strafe = Vector.fromXY(x, y);//calculate strafe
         SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
-        if(k.scaleNormalize){//normalize
-            strafe.scaleNorm();
-        } else{
-            strafe.threshNorm();
-        }
-        SmartDashboard.putString("NormStrafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
 
+        SmartDashboard.putNumber("RobotAngle", navX.getAngle());
+        if(fieldOrient){
+            strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
+        }
+        
         double maxMag = 0;
         for(Wheel w : wheels){//calculate rotation
             double mag = w.calcRotVec(centX, centY);
