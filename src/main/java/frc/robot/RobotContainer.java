@@ -9,13 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.cals.ClimberCals;
 import frc.robot.cals.DriverCals;
 import frc.robot.commands.JoystickDrive;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
 import frc.robot.commands.JoystickIntake;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -33,6 +32,9 @@ public class RobotContainer {
   private final Inputs m_input = new Inputs();
   private final JoystickDrive m_JoystickDrive = new JoystickDrive(m_drivetrain, m_input);
 
+  public Cannon m_cannon;
+  public Climber m_climber;
+  public ColorWheel m_colorwheel;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
