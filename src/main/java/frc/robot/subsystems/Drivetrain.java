@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.cals.DriverCals;
 import frc.robot.motors.Motor;
-import frc.util.Vector;
+import frc.robot.util.Vector;
 import com.kauailabs.navx.frc.*;
 
 public class Drivetrain extends SubsystemBase{
