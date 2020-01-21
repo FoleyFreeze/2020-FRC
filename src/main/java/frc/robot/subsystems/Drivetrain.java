@@ -76,7 +76,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     Wheel[] wheels;
-    DriverCals k;
+    public DriverCals k;
     AHRS navX;
     
     public Drivetrain(DriverCals cals){
