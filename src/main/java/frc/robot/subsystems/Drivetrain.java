@@ -121,7 +121,7 @@ public class Drivetrain extends SubsystemBase{
         }
         
         if(Math.abs(maxOut.wheelVec.r) > 1){
-            double R = (1-arbRatio)/arbRatio;
+            /*double R = (1-arbRatio)/arbRatio;
             double r1 = strafe.r;
             double r2 = maxOut.rotVec.r;
             double a = 1 + (R*R * r2*r2 /r1/r1);
@@ -135,6 +135,23 @@ public class Drivetrain extends SubsystemBase{
             double strafeReduc = ans/r1;
             double rotReduc = R*strafeReduc;
             SmartDashboard.putString("ArbitrationFactors", String.format("%.2f, %.2f", strafeReduc, rotReduc));
+            */
+            
+            double R, r1, r2;
+            double strafeReduc;
+            if(arbRatio > 0.5){
+                R = (1-arbRatio)/arbRatio;
+                r1 = maxOut.rotVec.r;
+                r2 = strafe.r;
+            } else {
+                R = arbRatio/(1-arbRatio);
+                r1 = strafe.r;
+                r2 = maxOut.rotVec.r;
+            }
+            double rotReduc = Math.sqrt(1/(R*R * r1*r1 + r2*r2 +2*R*r1*r2*Math.cos(maxOut.rotVec.theta - strafe.theta)));
+            if(R != 0){
+                strafeReduc = rotReduc/R;
+            }else strafeReduc = (0||1);//later
 
             strafe.r *= strafeReduc;
 
