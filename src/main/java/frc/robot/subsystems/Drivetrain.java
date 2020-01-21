@@ -151,7 +151,7 @@ public class Drivetrain extends SubsystemBase{
             double rotReduc = Math.sqrt(1/(R*R * r1*r1 + r2*r2 +2*R*r1*r2*Math.cos(maxOut.rotVec.theta - strafe.theta)));
             if(R != 0){
                 strafeReduc = rotReduc/R;
-            }else strafeReduc = (0||1);//later
+            }else strafeReduc = 0;//if fails, try 1
 
             strafe.r *= strafeReduc;
 
