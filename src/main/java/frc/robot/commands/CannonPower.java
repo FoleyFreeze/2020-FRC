@@ -1,16 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Cannon;
+import frc.robot.RobotContainer;
 
 public class CannonPower extends CommandBase {
 
-    private Cannon m_subsystem;
+    private RobotContainer m_subsystem;
     private double m_power;
 
-    public CannonPower(Cannon subsystem, double power) {
+    public CannonPower(RobotContainer subsystem, double power) {
         m_subsystem = subsystem;
-        addRequirements(subsystem);
+        addRequirements(m_subsystem.m_cannon);
 
         m_power = power;
     }
@@ -21,7 +21,7 @@ public class CannonPower extends CommandBase {
     }
     @Override
     public void execute(){
-        m_subsystem.setpower(m_power);
+        m_subsystem.m_cannon.setpower(m_power);
     }
     @Override
     public void end(boolean interrupted){

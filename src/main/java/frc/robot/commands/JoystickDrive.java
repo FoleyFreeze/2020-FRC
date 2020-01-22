@@ -1,18 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Inputs;
+import frc.robot.RobotContainer;
+import frc.robot.util.Vector;
 
 public class JoystickDrive extends CommandBase{
-    private Drivetrain m_subsystem;
-    private Inputs m_inputs;
+    private RobotContainer m_subsystem;
 
-    public JoystickDrive(Drivetrain subsystem, Inputs inputs){
+    public JoystickDrive(RobotContainer subsystem){
         m_subsystem = subsystem;
-        addRequirements(m_subsystem);
-
-        m_inputs = inputs;
+        addRequirements(m_subsystem.m_drivetrain);
     }
 
     @Override
@@ -27,7 +24,15 @@ public class JoystickDrive extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.drive(m_inputs.getXY(), m_inputs.getRot(), 0, 0, m_inputs.fieldOrient());
+        Vector strafe = m_subsystem.m_input.getXY();
+        double rot = m_subsystem.m_input.getRot();
+        double pausePwr = m_subsystem.m_drivetrain.k.pausePwrPne;
+        m_subsystem.m_pneumatics.pauseReq(strafe.r > pausePwr 
+            || Math.abs(rot) > pausePwr);
+        
+        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), 
+            m_subsystem.m_input.getRot(), 0, 0, 0.5, 
+            m_subsystem.m_input.fieldOrient());
     }
 
     @Override
