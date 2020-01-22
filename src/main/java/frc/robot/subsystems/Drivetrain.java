@@ -91,8 +91,8 @@ public class Drivetrain extends SubsystemBase{
         navX = new AHRS(Port.kMXP);
     }
 
-        //joystick x, joystick y, joystick rot, center of rotation x and y, arbitration ratio 0-1
-    public void drive(Vector strafe, double rot, double centX, double centY, double arbRatio, boolean fieldOrient){
+        //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
+    public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         if(k.disabled) return;
         SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
 
@@ -121,42 +121,12 @@ public class Drivetrain extends SubsystemBase{
         }
         
         if(Math.abs(maxOut.wheelVec.r) > 1){
-            /*double R = (1-arbRatio)/arbRatio;
-            double r1 = strafe.r;
-            double r2 = maxOut.rotVec.r;
-            double a = 1 + (R*R * r2*r2 /r1/r1);
-            double b = 2 * r2 * Math.cos(maxOut.rotVec.theta - strafe.theta);
-            double ans = (-b + Math.sqrt(b*b + 4*a))/2/a;//c is ALWAYS -1
-            double ans2 = (-b - Math.sqrt(b*b + 4*a))/2/a;//c is ALWAYS -1
+            double reducRatio = 1/maxOut.wheelVec.r;
 
-            SmartDashboard.putString("QuadraticZeros", String.format("%.2f, %.2f", ans, ans2));
-            if(ans2 > ans) ans = ans2;
-            
-            double strafeReduc = ans/r1;
-            double rotReduc = R*strafeReduc;
-            SmartDashboard.putString("ArbitrationFactors", String.format("%.2f, %.2f", strafeReduc, rotReduc));
-            */
-            
-            double R, r1, r2;
-            double strafeReduc;
-            if(arbRatio > 0.5){
-                R = (1-arbRatio)/arbRatio;
-                r1 = maxOut.rotVec.r;
-                r2 = strafe.r;
-            } else {
-                R = arbRatio/(1-arbRatio);
-                r1 = strafe.r;
-                r2 = maxOut.rotVec.r;
-            }
-            double rotReduc = Math.sqrt(1/(R*R * r1*r1 + r2*r2 +2*R*r1*r2*Math.cos(maxOut.rotVec.theta - strafe.theta)));
-            if(R != 0){
-                strafeReduc = rotReduc/R;
-            }else strafeReduc = 0;//if fails, try 1
-
-            strafe.r *= strafeReduc;
+            strafe.r *= Math.sqrt(reducRatio);
 
             for(Wheel w: wheels){
-                w.rotVec.r *= rotReduc;
+                w.rotVec.r *= reducRatio;
                 w.wheelVec= Vector.add(strafe, w.rotVec);
             }
         }

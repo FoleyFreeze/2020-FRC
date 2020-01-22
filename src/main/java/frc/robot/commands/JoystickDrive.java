@@ -27,7 +27,7 @@ public class JoystickDrive extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.drive(m_inputs.getXY(), m_inputs.getRot(), 0, 0, 0.5, m_inputs.fieldOrient());
+        m_subsystem.drive(m_inputs.getXY(), m_inputs.getRot(), 0, 0, m_inputs.fieldOrient());
     }
 
     @Override
