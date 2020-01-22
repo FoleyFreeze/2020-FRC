@@ -77,7 +77,7 @@ public class Drivetrain extends SubsystemBase{
 
     Wheel[] wheels;
     public DriverCals k;
-    AHRS navX;
+    public AHRS navX;
     
     public Drivetrain(DriverCals cals){
         if(cals.disabled) return;

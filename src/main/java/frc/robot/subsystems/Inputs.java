@@ -34,6 +34,10 @@ public class Inputs{
         return joy.getRawButton(3);
     }
 
+    public boolean angleReset(){
+        return joy.getRawButton(4);
+    }
+
     public double getX(){
         if(flySky) return expo(threshDeadband(joy.getRawAxis(0), 0.05, 1.0), 1);
         else return expo(scaleDeadband(joy.getRawAxis(0), 0.1, 0.9), 1);
