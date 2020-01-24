@@ -95,6 +95,7 @@ public class Drivetrain extends SubsystemBase{
     public double parkTime = 4;
     public double parkRot = 0;
     public Vector parkStrafe = Vector.fromXY(0, 0);
+    public boolean parkMode = false;
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
@@ -107,13 +108,15 @@ public class Drivetrain extends SubsystemBase{
         }
 
         double currentTime = Timer.getFPGATimestamp();
-        /*if(parkRot == rot && parkStrafe == strafe){
+        if(parkRot == rot && parkStrafe == strafe){
             if(parkTime <= currentTime){
-
+                parkMode = true;
             }
+            else parkMode = false;
         }else{
             parkTime = currentTime + 4;
-        }*/
+            parkMode = false;
+        }
         
         double maxMag = 0;
         for(Wheel w : wheels){//calculate rotation
@@ -141,8 +144,15 @@ public class Drivetrain extends SubsystemBase{
             strafe.r *= Math.sqrt(reducRatio);
 
             for(Wheel w: wheels){
-                w.rotVec.r *= reducRatio;
-                w.wheelVec= Vector.add(strafe, w.rotVec);
+                if(!parkMode){
+                    w.rotVec.r *= reducRatio;
+                    w.wheelVec= Vector.add(strafe, w.rotVec);
+                }else{
+                    if(w.idx % 2 == 0){
+                        w.rotVec.theta = 45;
+                    }else w.rotVec.theta = 135;
+                }
+                
             }
         }
 
