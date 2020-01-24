@@ -21,6 +21,7 @@ import frc.robot.cals.PneumaticsCals;
 import frc.robot.cals.TransporterCals;
 import frc.robot.cals.VisionCals;
 import frc.robot.commands.JoystickIntake;
+import frc.robot.commands.ZeroReset;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -68,6 +69,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     m_input.intakeF.whileActiveOnce(new JoystickIntake(this, 0.5));
     m_input.intakeR.whileActiveOnce(new JoystickIntake(this, -0.5));
+    m_input.angleReset.whileActiveOnce(new ZeroReset(this));
   }
 
 

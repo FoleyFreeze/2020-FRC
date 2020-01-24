@@ -12,6 +12,7 @@ public class Inputs{
     
     public JoystickButton intakeF;
     public JoystickButton intakeR;
+    public JoystickButton angleReset;
     
     public double xAxis;
     public double yAxis;
@@ -24,18 +25,16 @@ public class Inputs{
         if(flySky){
             intakeF = new JoystickButton(joy, 1);
             intakeR = new JoystickButton(joy, 2);
+            angleReset = new JoystickButton(joy, 4);
         }else{
             intakeF = new JoystickButton(joy, 1);
             intakeR = new JoystickButton(joy, 2);
+            angleReset = new JoystickButton(joy, 4);
         }
     }
 
     public boolean fieldOrient(){
         return joy.getRawButton(3);
-    }
-
-    public boolean angleReset(){
-        return joy.getRawButton(4);
     }
 
     public double getX(){

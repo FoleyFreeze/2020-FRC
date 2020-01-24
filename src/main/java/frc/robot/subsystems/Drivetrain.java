@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -78,7 +79,7 @@ public class Drivetrain extends SubsystemBase{
     Wheel[] wheels;
     public DriverCals k;
     public AHRS navX;
-    
+
     public Drivetrain(DriverCals cals){
         if(cals.disabled) return;
         k = cals;
@@ -91,6 +92,10 @@ public class Drivetrain extends SubsystemBase{
         navX = new AHRS(Port.kMXP);
     }
 
+    public double parkTime = 4;
+    public double parkRot = 0;
+    public Vector parkStrafe = Vector.fromXY(0, 0);
+
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         if(k.disabled) return;
@@ -100,6 +105,15 @@ public class Drivetrain extends SubsystemBase{
         if(fieldOrient){
             strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
+
+        double currentTime = Timer.getFPGATimestamp();
+        /*if(parkRot == rot && parkStrafe == strafe){
+            if(parkTime <= currentTime){
+
+            }
+        }else{
+            parkTime = currentTime + 4;
+        }*/
         
         double maxMag = 0;
         for(Wheel w : wheels){//calculate rotation
@@ -107,6 +121,7 @@ public class Drivetrain extends SubsystemBase{
             maxMag = Math.max(maxMag, Math.abs(mag));
         }
         SmartDashboard.putNumber("MaxMag",maxMag);
+
 
         Wheel maxOut = wheels[0];
         for(Wheel w : wheels){//normalize the rotation
