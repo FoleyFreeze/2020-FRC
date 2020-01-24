@@ -8,16 +8,16 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class Pneumatics extends SubsystemBase{
     
-    private Compressor mCompressor = new Compressor();
+    //private Compressor mCompressor = new Compressor();
     private PneumaticsCals mCals;
-    private double pauseTime;
+    /*private double pauseTime;
     private boolean paused;
     public AnalogInput sensor = new AnalogInput(-1);
     public double pressure;
-
+*/
     public Pneumatics(PneumaticsCals cals){
         mCals = cals;
-    }
+    }/*
 
     public void pauseReq(boolean breakThresh){
         if(breakThresh){
@@ -37,5 +37,5 @@ public class Pneumatics extends SubsystemBase{
         if(paused && pressure > mCals.minPressure){
             mCompressor.stop();
         } else mCompressor.start();
-    }
+    }*/
 }
