@@ -41,7 +41,7 @@ public class Drivetrain extends SubsystemBase{
             return rotVec.r;
         }
 
-        public void drive(boolean parkMode){
+        public void drive(boolean parkMode, boolean drivingStraight){
             double encVoltage = enc.getVoltage();
             SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
             double currentAngle = ((encVoltage - angleOffset) *2*Math.PI/5);
@@ -67,7 +67,7 @@ public class Drivetrain extends SubsystemBase{
 
             double deltaTicks = angleDiff / (2*Math.PI) / k.turnGearRatio * 4096;
             double targetTicks = turnMotor.getPosition();
-            if(wheelVec.r != 0 || parkMode){ //don't turn unless we actually want to move
+            if(wheelVec.r != 0 || parkMode || !drivingStraight){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
@@ -157,7 +157,7 @@ public class Drivetrain extends SubsystemBase{
                 w.wheelVec.theta = w.location.theta;
             }
 
-            if(driveStraight && !parkMode){
+            if(driveStraight){
                 w.wheelVec.theta -= outRot(k.pCorrection, goalAng);
             }
 
@@ -176,7 +176,7 @@ public class Drivetrain extends SubsystemBase{
 
         for(Wheel w : wheels){
             SmartDashboard.putString("FinalWheel" + w.idx, w.wheelVec.toString());
-            w.drive(parkMode);
+            w.drive(parkMode, driveStraight);
         }
 
         if(i == 0){
@@ -189,7 +189,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public double outRot(double pCorrection, double targetAng){
-        double error = targetAng - Math.toRadians(navX.getAngle());
+        double error = targetAng - navX.getAngle();
         double kP = pCorrection;
         SmartDashboard.putNumber("Straight Error", Math.toDegrees(error));
         double output = kP * error;
