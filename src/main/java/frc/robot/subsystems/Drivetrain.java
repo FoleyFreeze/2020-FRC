@@ -41,7 +41,7 @@ public class Drivetrain extends SubsystemBase{
             return rotVec.r;
         }
 
-        public void drive(){
+        public void drive(boolean parkMode){
             double encVoltage = enc.getVoltage();
             SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
             double currentAngle = ((encVoltage - angleOffset) *2*Math.PI/5);
@@ -67,7 +67,7 @@ public class Drivetrain extends SubsystemBase{
 
             double deltaTicks = angleDiff / (2*Math.PI) / k.turnGearRatio * 4096;
             double targetTicks = turnMotor.getPosition();
-            if(wheelVec.r != 0){ //don't turn unless we actually want to move
+            if(wheelVec.r != 0 || parkMode){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
@@ -83,23 +83,23 @@ public class Drivetrain extends SubsystemBase{
     public Drivetrain(DriverCals cals){
         if(cals.disabled) return;
         k = cals;
-        int size = cals.driveMotors.length;
+        int size = k.driveMotors.length;
         wheels = new Wheel[size];
         for(int i=0; i<size; i++){
-            wheels[i] = new Wheel(cals, i);
+            wheels[i] = new Wheel(k, i);
         }
 
         navX = new AHRS(Port.kMXP);
     }
 
-    public double parkTime = 4;
-    public double parkRot = 0;
-    public Vector parkStrafe = Vector.fromXY(0, 0);
+    public double parkTime = 0;
     public boolean parkMode = false;
+    double currentTime = 0.0;
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         if(k.disabled) return;
+        currentTime = Timer.getFPGATimestamp();
         SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
 
         SmartDashboard.putNumber("RobotAngle", navX.getAngle());
@@ -107,16 +107,19 @@ public class Drivetrain extends SubsystemBase{
             strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
 
-        double currentTime = Timer.getFPGATimestamp();
-        if(parkRot == rot && parkStrafe == strafe){
+        
+        if(0 == rot && 0 == strafe.r){
             if(parkTime <= currentTime){
                 parkMode = true;
             }
             else parkMode = false;
         }else{
-            parkTime = currentTime + 4;
+            parkTime = currentTime + k.parkOffset;
             parkMode = false;
         }
+
+        SmartDashboard.putNumber("parkTime", parkTime);
+        SmartDashboard.putBoolean("parkMode", parkMode);
         
         double maxMag = 0;
         for(Wheel w : wheels){//calculate rotation
@@ -136,6 +139,10 @@ public class Drivetrain extends SubsystemBase{
             }
             SmartDashboard.putString("NormRotate" + w.idx, w.rotVec.toString());
             SmartDashboard.putString("RawWheelCmd" + w.idx, w.wheelVec.toString());
+
+            if(parkMode){
+                w.wheelVec.theta = w.location.theta;
+            }
         }
         
         if(Math.abs(maxOut.wheelVec.r) > 1){
@@ -144,21 +151,14 @@ public class Drivetrain extends SubsystemBase{
             strafe.r *= Math.sqrt(reducRatio);
 
             for(Wheel w: wheels){
-                if(!parkMode){
-                    w.rotVec.r *= reducRatio;
-                    w.wheelVec= Vector.add(strafe, w.rotVec);
-                }else{
-                    if(w.idx % 2 == 0){
-                        w.rotVec.theta = 45;
-                    }else w.rotVec.theta = 135;
-                }
-                
+                w.rotVec.r *= reducRatio;
+                w.wheelVec= Vector.add(strafe, w.rotVec);
             }
         }
 
         for(Wheel w : wheels){
             SmartDashboard.putString("FinalWheel" + w.idx, w.wheelVec.toString());
-            w.drive();
+            w.drive(parkMode);
         }
     }
 

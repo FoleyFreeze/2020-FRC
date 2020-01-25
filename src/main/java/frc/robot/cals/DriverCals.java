@@ -23,6 +23,7 @@ public class DriverCals extends CalSet {
 
     public double pausePwrPne = 0.9;//driving over this power will pause compressor
 
+    public double parkOffset = 0.5;
 
     public DriverCals(){
 
