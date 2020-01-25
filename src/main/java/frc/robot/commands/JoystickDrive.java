@@ -30,9 +30,8 @@ public class JoystickDrive extends CommandBase{
         //m_subsystem.m_pneumatics.pauseReq(strafe.r > pausePwr 
           //  || Math.abs(rot) > pausePwr);
         
-        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), 
-            m_subsystem.m_input.getRot(), 0, 0, 
-            m_subsystem.m_input.fieldOrient());
+        m_subsystem.m_drivetrain.drive(strafe, 
+            rot, 0, 0, m_subsystem.m_input.fieldOrient());
     }
 
     @Override

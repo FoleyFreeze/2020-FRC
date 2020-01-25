@@ -25,6 +25,8 @@ public class DriverCals extends CalSet {
 
     public double parkOffset = 0.5;
 
+    public double pCorrection = 0.01;
+
     public DriverCals(){
 
         switch(type){

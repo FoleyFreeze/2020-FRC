@@ -118,6 +118,10 @@ public class Drivetrain extends SubsystemBase{
             parkMode = false;
         }
 
+        if(!parkMode && rot ==0){
+            rot = outRot(k.pCorrection, rot);
+        }
+
         SmartDashboard.putNumber("parkTime", parkTime);
         SmartDashboard.putBoolean("parkMode", parkMode);
         
@@ -162,4 +166,10 @@ public class Drivetrain extends SubsystemBase{
         }
     }
 
+    public double outRot(double pCorrection, double targetAng){
+        double error = targetAng - navX.getAngle();
+        double kP = pCorrection;
+        double output = kP * error;
+        return output;
+    }
 }
