@@ -92,21 +92,30 @@ public class Drivetrain extends SubsystemBase{
         navX = new AHRS(Port.kMXP);
     }
 
-    public double parkTime = 0;
+    public double parkTime = 0.0;
     public boolean parkMode = false;
     double currentTime = 0.0;
+    public double prevRot;
+    public boolean driveStraight = false;
+    public double prevAng = 0.0;
+    public double goalAng = 0.0;
+    int i = 0;
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         if(k.disabled) return;
         currentTime = Timer.getFPGATimestamp();
         SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
-
+        SmartDashboard.putNumber("prevAngle", Math.toDegrees(prevAng));
         SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
             strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
 
+        if(rot == 0 && !parkMode) driveStraight = true;
+        else driveStraight = false;
+        
+        SmartDashboard.putBoolean("Driving Straigth", driveStraight);
         
         if(0 == rot && 0 == strafe.r){
             if(parkTime <= currentTime){
@@ -118,10 +127,10 @@ public class Drivetrain extends SubsystemBase{
             parkMode = false;
         }
 
-        if(!parkMode && rot ==0){
-            rot = outRot(k.pCorrection, rot);
-        }
+        if(!driveStraight) goalAng = prevAng;
+        SmartDashboard.putNumber("Goal Angle", Math.toDegrees(goalAng));
 
+        SmartDashboard.putNumber("Rot", rot);
         SmartDashboard.putNumber("parkTime", parkTime);
         SmartDashboard.putBoolean("parkMode", parkMode);
         
@@ -147,6 +156,11 @@ public class Drivetrain extends SubsystemBase{
             if(parkMode){
                 w.wheelVec.theta = w.location.theta;
             }
+
+            if(driveStraight && !parkMode){
+                w.wheelVec.theta -= outRot(k.pCorrection, goalAng);
+            }
+
         }
         
         if(Math.abs(maxOut.wheelVec.r) > 1){
@@ -164,11 +178,20 @@ public class Drivetrain extends SubsystemBase{
             SmartDashboard.putString("FinalWheel" + w.idx, w.wheelVec.toString());
             w.drive(parkMode);
         }
+
+        if(i == 0){
+            if(Math.toDegrees(prevAng) != navX.getAngle()) prevAng = Math.toRadians(navX.getAngle());
+            i =1;
+        }else{
+            i = 0;
+        }
+        
     }
 
     public double outRot(double pCorrection, double targetAng){
-        double error = targetAng - navX.getAngle();
+        double error = targetAng - Math.toRadians(navX.getAngle());
         double kP = pCorrection;
+        SmartDashboard.putNumber("Straight Error", Math.toDegrees(error));
         double output = kP * error;
         return output;
     }
