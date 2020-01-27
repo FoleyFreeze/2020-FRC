@@ -111,9 +111,6 @@ public class Drivetrain extends SubsystemBase{
         if(fieldOrient){
             strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
-
-        if(rot == 0 && !parkMode) driveStraight = true;
-        else driveStraight = false;
         
         SmartDashboard.putBoolean("Driving Straigth", driveStraight);
         
@@ -125,6 +122,13 @@ public class Drivetrain extends SubsystemBase{
         }else{
             parkTime = currentTime + k.parkOffset;
             parkMode = false;
+        }
+
+        if(rot == 0 && !parkMode) driveStraight = true;
+        else driveStraight = false;
+
+        if(driveStraight){
+            rot = outRot(k.pCorrection, goalAng);
         }
 
         if(!driveStraight) goalAng = prevAng;
@@ -155,10 +159,6 @@ public class Drivetrain extends SubsystemBase{
 
             if(parkMode){
                 w.wheelVec.theta = w.location.theta;
-            }
-
-            if(driveStraight){
-                w.wheelVec.theta -= outRot(k.pCorrection, goalAng);
             }
 
         }
