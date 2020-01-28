@@ -25,7 +25,7 @@ public class DriverCals extends CalSet {
 
     public double parkOffset = 0.5;
 
-    public double pCorrection = 0.5;//100% after abt 120deg of error
+    public double driveStraightKp = 0.05;//100% after abt 100deg of error
 
     public DriverCals(){
 
