@@ -4,7 +4,7 @@ import frc.robot.cals.MotorCal.MotorType;
 
 public class IntakeCals extends CalSet {
 
-    public boolean disabled = true;
+    public boolean disabled = false;
     public int solenoid = 1;
     public MotorCal spinMotor = new MotorCal(MotorType.TALON_SRX, 7);
 

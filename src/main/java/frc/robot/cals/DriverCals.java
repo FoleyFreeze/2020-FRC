@@ -2,7 +2,7 @@ package frc.robot.cals;
 
 public class DriverCals extends CalSet {
 
-    public boolean disabled = false;
+    public boolean disabled = true;
 
     public MotorCal[] driveMotors = {   
         MotorCal.spark( 1).ramp(0.3).limit(0.2, 0.2).invert(), 
