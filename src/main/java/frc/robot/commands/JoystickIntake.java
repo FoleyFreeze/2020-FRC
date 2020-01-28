@@ -21,7 +21,12 @@ public class JoystickIntake extends CommandBase {
     }
     @Override
     public void execute(){
-        m_subsystem.m_intake.setPower(m_power);
+        //m_subsystem.m_intake.setPower(m_power);
+        if(m_power > 0){
+            m_subsystem.m_intake.solExtend(true);
+        } else if(m_power < 0){
+            m_subsystem.m_intake.solExtend(false);
+        }
     }
 
     @Override
