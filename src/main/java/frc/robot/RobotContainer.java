@@ -67,8 +67,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_input.intakeF.whileActiveOnce(new JoystickIntake(this, 0.5));
-    m_input.intakeR.whileActiveOnce(new JoystickIntake(this, -0.5));
+    m_input.intakeF.whileActiveOnce(new JoystickIntake(this, IntakeCals.forwardPower));
+    m_input.intakeR.whileActiveOnce(new JoystickIntake(this, IntakeCals.backwardPower));
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
   }
 

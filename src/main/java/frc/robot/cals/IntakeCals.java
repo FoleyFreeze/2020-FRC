@@ -6,6 +6,8 @@ public class IntakeCals extends CalSet {
 
     boolean disabled = true;
     public MotorCal spinMotor = new MotorCal(MotorType.TALON_SRX, 7);
+    public static double forwardPower = 0.5;
+    public static double backwardPower = -0.5;
 
     public IntakeCals(){
 
