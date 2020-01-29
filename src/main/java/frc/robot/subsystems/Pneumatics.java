@@ -12,7 +12,7 @@ public class Pneumatics extends SubsystemBase{
     private PneumaticsCals mCals;
     /*private double pauseTime;
     private boolean paused;
-    public AnalogInput sensor = new AnalogInput(-1);
+    public AnalogInput pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
     public double pressure;
 */
     public Pneumatics(PneumaticsCals cals){
@@ -32,7 +32,7 @@ public class Pneumatics extends SubsystemBase{
             paused = false;
         }
 
-        pressure = sensor.getVoltage() * 50 - 25;
+        pressure = pressureSensor.getVoltage() * 50 - 25;
 
         if(paused && pressure > mCals.minPressure){
             mCompressor.stop();
