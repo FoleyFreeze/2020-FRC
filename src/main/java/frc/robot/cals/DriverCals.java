@@ -30,6 +30,13 @@ public class DriverCals extends CalSet {
     public final double DRV_XROBOTCENT = 0.0;
     public final double DRV_YROBOTCENT = 0.0;
 
+    public enum Orientation{
+        GATHERER, CLIMBER, AUTO
+    }
+
+    public double gathererDist = 6.75;
+    public double climberDist = 8.5;
+
     public DriverCals(){
 
         switch(type){
