@@ -15,7 +15,8 @@ public class MotorSparkMax extends Motor{
     
     public MotorSparkMax(MotorCal cal){
         cals = cal;
-        motor = new CANSparkMax(cal.id, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor = new CANSparkMax(cal.id, 
+            com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
         if(cal.brake){
             motor.setIdleMode(IdleMode.kBrake);
         }else{
@@ -31,7 +32,8 @@ public class MotorSparkMax extends Motor{
             motor.getPIDController().setD(cal.kD);
             motor.getPIDController().setFF(cal.kF);
             motor.getPIDController().setDFilter(cal.kDFilt);
-            motor.getPIDController().setOutputRange(-cal.minPower, cal.maxPower);
+            motor.getPIDController().setOutputRange(-cal.minPower, 
+                cal.maxPower);
         }
         
         motor.setInverted(cal.invert);
@@ -45,7 +47,8 @@ public class MotorSparkMax extends Motor{
     }
 
     public void setPosition(double position){
-        motor.getPIDController().setReference(position, ControlType.kPosition);
+        motor.getPIDController().setReference(position, 
+            ControlType.kPosition);
     }
 
     public double getPosition(){
@@ -53,7 +56,8 @@ public class MotorSparkMax extends Motor{
     }
     
     public void setSpeed(double speed){
-        motor.getPIDController().setReference(speed, ControlType.kVelocity);
+        motor.getPIDController().setReference(speed, 
+            ControlType.kVelocity);
     }
 
 }

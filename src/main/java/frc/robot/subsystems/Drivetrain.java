@@ -36,7 +36,8 @@ public class Drivetrain extends SubsystemBase{
             v.inverse().add(location);
             v.theta -= Math.PI/2;
             rotVec = v;
-            SmartDashboard.putString("Location" + idx, location.toString());
+            SmartDashboard.putString("Location" + idx, 
+                location.toString());
             SmartDashboard.putString("InitRotate" + idx, v.toString());
             return rotVec.r;
         }
@@ -44,12 +45,18 @@ public class Drivetrain extends SubsystemBase{
         public void drive(boolean parkMode){
             double encVoltage = enc.getVoltage();
             SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
-            double currentAngle = ((encVoltage - angleOffset) *2*Math.PI/5);
+            double currentAngle = ((encVoltage - angleOffset) 
+                *2*Math.PI/5);
             double angleDiff = wheelVec.theta - currentAngle;
-            SmartDashboard.putNumber("AngleRaw" + idx, Math.toDegrees(angleDiff));
+            SmartDashboard.putNumber("AngleRaw" + idx, 
+                Math.toDegrees(angleDiff));
+
             angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
             //angleDiff = Math.IEEEremainder(angleDiff, 2*Math.PI) - Math.PI;
-            SmartDashboard.putNumber("AngleDiff" + idx, Math.toDegrees(angleDiff));
+
+            SmartDashboard.putNumber("AngleDiff" + idx, 
+                Math.toDegrees(angleDiff));
+
             if(Math.abs(angleDiff) > Math.PI/2){
                 wheelVec.r *= -1;
                 if(angleDiff < 0) {
@@ -65,7 +72,8 @@ public class Drivetrain extends SubsystemBase{
             SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
-            double deltaTicks = angleDiff / (2*Math.PI) / k.turnGearRatio * 4096;
+            double deltaTicks = angleDiff / (2*Math.PI) / k.turnGearRatio 
+                * 4096;
             double targetTicks = turnMotor.getPosition();
             if(wheelVec.r != 0 || parkMode){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
@@ -105,7 +113,8 @@ public class Drivetrain extends SubsystemBase{
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         if(k.disabled) return;
         currentTime = Timer.getFPGATimestamp();
-        SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", strafe.r, Math.toDegrees(strafe.theta)));
+        SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", 
+            strafe.r, Math.toDegrees(strafe.theta)));
         SmartDashboard.putNumber("prevAngle", prevAng);
         SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
@@ -153,8 +162,10 @@ public class Drivetrain extends SubsystemBase{
             if(Math.abs(w.wheelVec.r) > Math.abs(maxOut.wheelVec.r)){
                 maxOut = w;
             }
-            SmartDashboard.putString("NormRotate" + w.idx, w.rotVec.toString());
-            SmartDashboard.putString("RawWheelCmd" + w.idx, w.wheelVec.toString());
+            SmartDashboard.putString("NormRotate" + w.idx, 
+                w.rotVec.toString());
+            SmartDashboard.putString("RawWheelCmd" + w.idx, 
+                w.wheelVec.toString());
 
             if(parkMode){
                 w.wheelVec.theta = w.location.theta;
@@ -174,7 +185,8 @@ public class Drivetrain extends SubsystemBase{
         }
 
         for(Wheel w : wheels){
-            SmartDashboard.putString("FinalWheel" + w.idx, w.wheelVec.toString());
+            SmartDashboard.putString("FinalWheel" + w.idx, 
+                w.wheelVec.toString());
             w.drive(parkMode);
         }
 
