@@ -27,6 +27,9 @@ public class DriverCals extends CalSet {
 
     public double driveStraightKp = 0.05;//100% after abt 100deg of error
 
+    public final double DRV_XROBOTCENT = 0.0;
+    public final double DRV_YROBOTCENT = 0.0;
+
     public DriverCals(){
 
         switch(type){

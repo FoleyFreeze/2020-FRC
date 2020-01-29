@@ -31,7 +31,9 @@ public class JoystickDrive extends CommandBase{
           //  || Math.abs(rot) > pausePwr);
         
         m_subsystem.m_drivetrain.drive(strafe, 
-            rot, 0, 0, m_subsystem.m_input.fieldOrient());
+            rot, m_subsystem.m_drivetrain.k.DRV_XROBOTCENT, 
+            m_subsystem.m_drivetrain.k.DRV_YROBOTCENT, 
+            m_subsystem.m_input.fieldOrient());
     }
 
     @Override

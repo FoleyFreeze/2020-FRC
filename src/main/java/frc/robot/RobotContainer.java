@@ -14,6 +14,7 @@ import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
 import frc.robot.cals.DisplayCals;
 import frc.robot.cals.DriverCals;
+import frc.robot.cals.InputCals;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
@@ -36,7 +37,7 @@ public class RobotContainer {
   public final Drivetrain m_drivetrain = new Drivetrain(new DriverCals());
   public final Intake m_intake = new Intake(new IntakeCals());
 
-  public final Inputs m_input = new Inputs();
+  public final Inputs m_input = new Inputs(new InputCals());
   public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
 
   public Cannon m_cannon = new Cannon(new CannonCals());
