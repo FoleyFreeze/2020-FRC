@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.cals.DriverCals;
 import frc.robot.motors.Motor;
 import frc.robot.util.Vector;
-import com.kauailabs.navx.frc.*;
+import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase{
     public class Wheel{
@@ -176,7 +176,7 @@ public class Drivetrain extends SubsystemBase{
         if(Math.abs(maxOut.wheelVec.r) > 1){
             double reducRatio = 1/maxOut.wheelVec.r;
 
-            strafe.r *= Math.sqrt(reducRatio);
+            strafe.r *= reducRatio;
 
             for(Wheel w: wheels){
                 w.rotVec.r *= reducRatio;
