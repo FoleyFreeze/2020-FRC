@@ -26,6 +26,9 @@ public class DriverCals extends CalSet {
     public double parkOffset = 0.5;
 
     public double driveStraightKp = 0.05;//100% after abt 100deg of error
+    
+    public double trenchRunAngKp = 0.01;
+    public double trenchRunDistKp = 0.01;
 
     public final double DRV_XROBOTCENT = 0.0;
     public final double DRV_YROBOTCENT = 0.0;
