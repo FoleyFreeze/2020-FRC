@@ -36,9 +36,9 @@ public class Drivetrain extends SubsystemBase{
             v.inverse().add(location);
             v.theta -= Math.PI/2;
             rotVec = v;
-            SmartDashboard.putString("Location" + idx, 
-                location.toString());
-            SmartDashboard.putString("InitRotate" + idx, v.toString());
+            //SmartDashboard.putString("Location" + idx, 
+            //    location.toString());
+            //SmartDashboard.putString("InitRotate" + idx, v.toString());
             return rotVec.r;
         }
 
@@ -48,14 +48,14 @@ public class Drivetrain extends SubsystemBase{
             double currentAngle = ((encVoltage - angleOffset) 
                 *2*Math.PI/5);
             double angleDiff = wheelVec.theta - currentAngle;
-            SmartDashboard.putNumber("AngleRaw" + idx, 
-                Math.toDegrees(angleDiff));
+            //SmartDashboard.putNumber("AngleRaw" + idx, 
+            //    Math.toDegrees(angleDiff));
 
             angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
             //angleDiff = Math.IEEEremainder(angleDiff, 2*Math.PI) - Math.PI;
 
-            SmartDashboard.putNumber("AngleDiff" + idx, 
-                Math.toDegrees(angleDiff));
+            //SmartDashboard.putNumber("AngleDiff" + idx, 
+            //    Math.toDegrees(angleDiff));
 
             if(Math.abs(angleDiff) > Math.PI/2){
                 wheelVec.r *= -1;
@@ -67,8 +67,8 @@ public class Drivetrain extends SubsystemBase{
                     wheelVec.theta -= Math.PI;
                 }
             }
-            SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
-            SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
+            //SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
+            //SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
             SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
@@ -112,10 +112,10 @@ public class Drivetrain extends SubsystemBase{
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         if(k.disabled) return;
         currentTime = Timer.getFPGATimestamp();
-        SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", 
-            strafe.r, Math.toDegrees(strafe.theta)));
-        SmartDashboard.putNumber("prevAngle", prevAng);
-        SmartDashboard.putNumber("RobotAngle", navX.getAngle());
+        //SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", 
+        //    strafe.r, Math.toDegrees(strafe.theta)));
+        //SmartDashboard.putNumber("prevAngle", prevAng);
+        //SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
             strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
@@ -139,10 +139,10 @@ public class Drivetrain extends SubsystemBase{
         }
 
         if(!driveStraight) goalAng = prevAng;
-        SmartDashboard.putNumber("Goal Angle", goalAng);
+        //SmartDashboard.putNumber("Goal Angle", goalAng);
 
-        SmartDashboard.putNumber("Rot", rot);
-        SmartDashboard.putNumber("parkTime", parkTime);
+        //SmartDashboard.putNumber("Rot", rot);
+        //SmartDashboard.putNumber("parkTime", parkTime);
         SmartDashboard.putBoolean("parkMode", parkMode);
         
         double maxMag = 0;
@@ -150,7 +150,7 @@ public class Drivetrain extends SubsystemBase{
             double mag = w.calcRotVec(centX, centY);
             maxMag = Math.max(maxMag, Math.abs(mag));
         }
-        SmartDashboard.putNumber("MaxMag",maxMag);
+        //SmartDashboard.putNumber("MaxMag",maxMag);
 
 
         Wheel maxOut = wheels[0];
@@ -161,10 +161,10 @@ public class Drivetrain extends SubsystemBase{
             if(Math.abs(w.wheelVec.r) > Math.abs(maxOut.wheelVec.r)){
                 maxOut = w;
             }
-            SmartDashboard.putString("NormRotate" + w.idx, 
-                w.rotVec.toString());
-            SmartDashboard.putString("RawWheelCmd" + w.idx, 
-                w.wheelVec.toString());
+            //SmartDashboard.putString("NormRotate" + w.idx, 
+            //    w.rotVec.toString());
+            //SmartDashboard.putString("RawWheelCmd" + w.idx, 
+            //    w.wheelVec.toString());
 
             if(parkMode){
                 w.wheelVec.theta = w.location.theta;
@@ -184,8 +184,8 @@ public class Drivetrain extends SubsystemBase{
         }
 
         for(Wheel w : wheels){
-            SmartDashboard.putString("FinalWheel" + w.idx, 
-                w.wheelVec.toString());
+            //SmartDashboard.putString("FinalWheel" + w.idx, 
+            //    w.wheelVec.toString());
             w.drive(parkMode);
         }
 
@@ -195,7 +195,7 @@ public class Drivetrain extends SubsystemBase{
     public double outRot(double pCorrection, double targetAng){
         double error = targetAng - navX.getAngle();
         double kP = pCorrection;
-        SmartDashboard.putNumber("Straight Error", error);
+        //SmartDashboard.putNumber("Straight Error", error);
         double output = kP * error;
         return output;
     }

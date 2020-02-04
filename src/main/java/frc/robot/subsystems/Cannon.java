@@ -11,15 +11,18 @@ public class Cannon extends SubsystemBase{
 
     public Cannon(CannonCals cals){
         mCals = cals;
+        if(cals.disabled) return;
 
         motor = Motor.initMotor(mCals.cannonMotor);
     }
     
     public void setpower(double power){
+        if(mCals.disabled) return;
         motor.setPower(power);
     }
 
     public void setspeed(double speed){
+        if(mCals.disabled) return;
         motor.setSpeed(speed);
     }
 }
