@@ -204,4 +204,12 @@ public class Drivetrain extends SubsystemBase{
         double output = kP * error;
         return output;
     }
+
+    public double[] getDist(){
+        double[] dists = new double[4];
+        for(int i = 0 ; i < wheels.length ; i++){
+            dists[i] = wheels[i].driveMotor.getPosition() * k.driveGearRatio;
+        }
+        return dists;
+    }
 }

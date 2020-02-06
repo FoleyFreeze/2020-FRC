@@ -23,6 +23,8 @@ public class DriverCals extends CalSet {
     //public double turnGearRatio = 20.0/60.0 * 20.0/60.0 * 40.0/64.0 / 4096.0;
     public double turnGearRatio = 60.0 * 42.0;
 
+    public double driveGearRatio = 18.0/64.0*32.0/18.0*15.0/45.0*4.0*Math.PI/4096.0;
+
     public double pausePwrPne = 0.9;//driving over this power will pause compressor
 
     public double parkOffset = 0.5;
