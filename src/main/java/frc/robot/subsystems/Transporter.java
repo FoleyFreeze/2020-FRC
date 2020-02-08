@@ -59,6 +59,7 @@ public class Transporter extends SubsystemBase{
 
     //stop shooting
     public void stoprot(){
+        enablefire(false);
         double x = rotatemotor.getPosition() / mCals.countsPerIndex;
         x = Math.round(x);
         targetpos = x * mCals.countsPerIndex;

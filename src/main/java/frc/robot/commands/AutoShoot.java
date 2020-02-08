@@ -46,9 +46,15 @@ public class AutoShoot extends CommandBase{
             dist = 12;//TODO make cals
         }
         if(error >= m_cals.tolerance) aligned = true;//make dependent on dist
+        
         m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, m_subsystem.m_input.fieldOrient());
+        
         m_subsystem.m_cannon.prime(dist);
+
         if(m_subsystem.m_cannon.ready() && aligned) m_subsystem.m_transporter.shootAll();
+        else m_subsystem.m_transporter.stoprot();
+
+
     }
 
     @Override
