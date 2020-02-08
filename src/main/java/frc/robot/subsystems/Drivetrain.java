@@ -108,6 +108,7 @@ public class Drivetrain extends SubsystemBase{
     public boolean driveStraight = false;
     public double prevAng = 0.0;
     public double goalAng = 0.0;
+    public double robotAng = navX.getAngle();
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){

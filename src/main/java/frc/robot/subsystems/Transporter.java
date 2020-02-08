@@ -28,7 +28,7 @@ public class Transporter extends SubsystemBase{
         rotatemotor.setPosition(targetpos);
         int x = (int) Math.round(rotatemotor.getPosition() / mCals.countsPerIndex);
         if(ballpositions[(x + 3) % 5]){
-            ballnumber++;
+            ballnumber--;
             ballpositions[x % 5] = false;
         }
     }
@@ -39,12 +39,20 @@ public class Transporter extends SubsystemBase{
     }
 
     //used for gathering
-    public void autoindex(){
+    public void gatherIndex(){
         double error = targetpos - rotatemotor.getPosition();
-        if(ballsensor.get() && error < mCals.countsPerIndex / 2){
+        if(ballsensor.get() && error < mCals.countsPerIndex / 2 && ballnumber < 5){ //only spin if not moving & we have an open spot
             ballnumber++;
             int x = (int) Math.round(targetpos/mCals.countsPerIndex);
             ballpositions[x % 5] = true;
+            index(1);
+        }
+    }
+
+    public void shootAll(){
+        enablefire(ballnumber > 0);
+        double error = targetpos - rotatemotor.getPosition();
+        if(error < mCals.countsPerIndex/2 && ballnumber > 0){
             index(1);
         }
     }

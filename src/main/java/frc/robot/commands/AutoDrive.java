@@ -22,7 +22,6 @@ public class AutoDrive extends CommandBase{
     @Override
     public void initialize(){
         m_start = m_subsystem.m_drivetrain.getDist();
-
     }
 
     @Override

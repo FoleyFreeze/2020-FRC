@@ -6,7 +6,7 @@ import frc.robot.motors.Motor;
 
 public class Cannon extends SubsystemBase{
 
-    private CannonCals mCals;
+    public CannonCals mCals;
     private Motor motor;
 
     public Cannon(CannonCals cals){
@@ -24,5 +24,13 @@ public class Cannon extends SubsystemBase{
     public void setspeed(double speed){
         if(mCals.disabled) return;
         motor.setSpeed(speed);
+    }
+
+    public void prime(double distToTgt){
+        //TODO write this
+    }
+
+    public boolean ready(){
+        return false;
     }
 }

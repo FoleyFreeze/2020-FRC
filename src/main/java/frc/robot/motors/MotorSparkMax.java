@@ -17,7 +17,6 @@ public class MotorSparkMax extends Motor{
         cals = cal;
         motor = new CANSparkMax(cal.id, 
             com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-
         motor.restoreFactoryDefaults();
 
         if(cal.brake){
