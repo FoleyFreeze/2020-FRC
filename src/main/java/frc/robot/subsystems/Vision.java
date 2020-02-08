@@ -19,6 +19,7 @@ public class Vision extends SubsystemBase{
 
     public VisionCals cals;
     public double lastFrameTime;
+    public int lastFrameId;
     public LimitedList<VisionData> targetData;
     public LimitedList<VisionData> ballData;
 
@@ -44,6 +45,7 @@ public class Vision extends SubsystemBase{
     }
 
     private void addNTListener(){
+        NetworkTableInstance.getDefault().setUpdateRate(0.01);
         NetworkTable nt = NetworkTableInstance.getDefault().getTable("Vision");
 
         nt.addEntryListener("Target", (table, key, entry, value, flags) -> {
@@ -59,6 +61,10 @@ public class Vision extends SubsystemBase{
                 double dt = vd.timestamp - lastFrameTime;
                 SmartDashboard.putNumber("Image dt", dt);
                 lastFrameTime = vd.timestamp;
+                int id = Integer.parseInt(parts[0]);
+                int dFrame = id - lastFrameId;
+                SmartDashboard.putNumber("Image dFrame", dFrame);
+                lastFrameId = id;
 
                 targetData.addFirst(vd);
             } catch(Exception e){
@@ -80,6 +86,10 @@ public class Vision extends SubsystemBase{
                 double dt = vd.timestamp - lastFrameTime;
                 SmartDashboard.putNumber("Image dt", dt);
                 lastFrameTime = vd.timestamp;
+                int id = Integer.parseInt(parts[0]);
+                int dFrame = id - lastFrameId;
+                SmartDashboard.putNumber("Image dFrame", dFrame);
+                lastFrameId = id;
 
                 ballData.addFirst(vd);
             } catch(Exception e){
