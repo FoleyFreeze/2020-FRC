@@ -17,6 +17,9 @@ public class MotorSparkMax extends Motor{
         cals = cal;
         motor = new CANSparkMax(cal.id, 
             com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        motor.restoreFactoryDefaults();
+
         if(cal.brake){
             motor.setIdleMode(IdleMode.kBrake);
         }else{
@@ -34,6 +37,8 @@ public class MotorSparkMax extends Motor{
             motor.getPIDController().setDFilter(cal.kDFilt);
             motor.getPIDController().setOutputRange(-cal.minPower, 
                 cal.maxPower);
+            motor.setClosedLoopRampRate(cal.rampRate);
+            
         }
         
         motor.setInverted(cal.invert);

@@ -28,7 +28,7 @@ public class Drivetrain extends SubsystemBase{
             enc = new AnalogInput(cals.turnEncoderIds[idx]);
             location = Vector.fromXY(cals.xPos[idx], cals.yPos[idx]);
             this.idx = idx;
-            this.angleOffset = cals.angleOffset[idx];
+            this.angleOffset = cals.angleOffset[cals.turnEncoderIds[idx]];
         }
 
         public double calcRotVec(double centX, double centY){
@@ -72,13 +72,13 @@ public class Drivetrain extends SubsystemBase{
             SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
-            double deltaTicks = angleDiff / (2*Math.PI) / k.turnGearRatio 
-                * 4096;
+            double deltaTicks = angleDiff / (2*Math.PI) * k.turnGearRatio;
             double targetTicks = turnMotor.getPosition();
             if(wheelVec.r != 0 || parkMode){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
+            SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
         }
@@ -183,10 +183,14 @@ public class Drivetrain extends SubsystemBase{
             }
         }
 
+        
+
         for(Wheel w : wheels){
             //SmartDashboard.putString("FinalWheel" + w.idx, 
             //    w.wheelVec.toString());
             w.drive(parkMode);
+            SmartDashboard.putNumber("DrivePower "+w.idx, strafe.r);
+            SmartDashboard.putNumber("Turn Pwr" + w.idx, w.rotVec.r);
         }
 
         prevAng = navX.getAngle();
