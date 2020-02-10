@@ -74,7 +74,7 @@ public class Drivetrain extends SubsystemBase{
 
             double deltaTicks = angleDiff / (2*Math.PI) * k.turnGearRatio;
             double targetTicks = turnMotor.getPosition();
-            if(wheelVec.r != 0 || parkMode){ //don't turn unless we actually want to move
+            if((wheelVec.r != 0 || parkMode) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
