@@ -38,6 +38,8 @@ public class DriverCals extends CalSet {
     public double gathererDist = 6.75;
     public double climberDist = 8.5;
 
+    public final double DRV_TURNDEADBND = 7;
+
     public DriverCals(){
 
         switch(type){
