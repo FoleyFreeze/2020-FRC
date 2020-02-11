@@ -89,8 +89,9 @@ public class Drivetrain extends SubsystemBase{
     public AHRS navX;
 
     public Drivetrain(DriverCals cals){
-        if(cals.disabled) return;
         k = cals;
+        if(cals.disabled) return;
+        
         int size = k.driveMotors.length;
         wheels = new Wheel[size];
         for(int i=0; i<size; i++){

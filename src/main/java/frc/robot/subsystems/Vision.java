@@ -45,7 +45,7 @@ public class Vision extends SubsystemBase{
     }
 
     private void addNTListener(){
-        NetworkTableInstance.getDefault().setUpdateRate(0.01);
+        //NetworkTableInstance.getDefault().setUpdateRate(0.01);
         NetworkTable nt = NetworkTableInstance.getDefault().getTable("Vision");
 
         nt.addEntryListener("Target", (table, key, entry, value, flags) -> {
