@@ -113,7 +113,7 @@ public class Inputs{
         return false;
     }
 
-    public boolean enableCam(){
+    public boolean enableBallCam(){
         return false;
     }
 
@@ -151,6 +151,10 @@ public class Inputs{
     }
 
     public boolean trench(){
+        return false;
+    }
+
+    public boolean cam(){
         return false;
     }
 

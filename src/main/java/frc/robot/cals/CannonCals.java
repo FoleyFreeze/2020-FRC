@@ -6,6 +6,8 @@ public class CannonCals extends CalSet {
 
     public boolean disabled = true;
     public MotorCal cannonMotor = new MotorCal(MotorType.SPARK_MAX, -1);
+    public double layupDist;
+    public double trenchDist;
     public double power;
     public double kPDrive;
     public double tolerance = 3.0;

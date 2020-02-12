@@ -1,6 +1,7 @@
 package frc.robot.cals;
 
 public class InputCals extends CalSet{
+
     //fly sky buttons and axes
     public final int FS_FINTAKE = 1;
     public final int FS_RINTAKE = 2;

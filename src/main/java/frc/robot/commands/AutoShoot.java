@@ -30,7 +30,7 @@ public class AutoShoot extends CommandBase{
         double error;
         boolean aligned = false;
         double dist;
-        if(m_subsystem.m_vision.hasTargetImage()){
+        if(m_subsystem.m_vision.hasTargetImage() && m_subsystem.m_input.cam()){
             VisionData image = m_subsystem.m_vision.targetData.getFirst();
             double rotCam = image.robotangle + image.angle;
             error = rotCam - m_subsystem.m_drivetrain.robotAng;
@@ -43,7 +43,9 @@ public class AutoShoot extends CommandBase{
         }else {
             rot = m_subsystem.m_input.getRot();
             error = 0;
-            dist = 12;//TODO make cals
+            if(m_subsystem.m_input.layup()){
+                dist = m_cals.layupDist;
+            } else dist = m_cals.trenchDist;
         }
         if(error >= m_cals.tolerance) aligned = true;//make dependent on dist
         
