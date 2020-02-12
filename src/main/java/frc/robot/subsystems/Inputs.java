@@ -10,10 +10,15 @@ public class Inputs{
     public boolean flySky;//there is also an f310
     
     public Joystick joy = new Joystick(0);
+    public Joystick ds = new Joystick(1);
     
     public JoystickButton intakeF;
     public JoystickButton intakeR;
     public JoystickButton angleReset;
+
+    public JoystickButton climbUp;
+    public JoystickButton climbDn;
+    public JoystickButton enableBudClimb;
     
     public double xAxis;
     public double yAxis;
@@ -36,6 +41,10 @@ public class Inputs{
             intakeR = new JoystickButton(joy, cals.XB_RINTAKE);
             angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
         }
+
+        climbUp = new JoystickButton(ds, cals.DS_CLIMBUP);
+        climbDn = new JoystickButton(ds, cals.DS_CLIMBDN);
+        enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
     }
 
     public boolean fieldOrient(){
@@ -131,15 +140,15 @@ public class Inputs{
     }
 
     public boolean enableBudClimb(){
-        return false;
+        return ds.getRawButton(cals.DS_ENABLEBUDCLIMB);
     }
 
     public boolean climbUp(){
-        return false;
+        return ds.getRawButton(cals.DS_CLIMBUP);
     }
 
     public boolean climbDn(){
-        return false;
+        return ds.getRawButton(cals.DS_CLIMBDN);
     }
 
     public boolean dropFoot(){

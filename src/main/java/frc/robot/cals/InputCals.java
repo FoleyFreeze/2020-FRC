@@ -32,6 +32,13 @@ public class InputCals extends CalSet{
     public final double XB_HIGHDEADBND = 0.9;
     public final double XB_EXPONENT = 1.0;
 
+
+
+    //driver station buttons and switches
+    public final int DS_CLIMBUP = -1;
+    public final int DS_CLIMBDN = -1;
+    public final int DS_ENABLEBUDCLIMB = -1;
+
     public InputCals(){
 
     }

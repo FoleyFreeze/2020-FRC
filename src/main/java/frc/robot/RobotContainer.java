@@ -15,6 +15,7 @@ import frc.robot.cals.ClimberCals;
 import frc.robot.cals.DisplayCals;
 import frc.robot.cals.DriverCals;
 import frc.robot.cals.InputCals;
+import frc.robot.commands.Climb;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
@@ -73,6 +74,8 @@ public class RobotContainer {
     m_input.intakeR.whileActiveOnce(new JoystickIntake(this, 
       IntakeCals.backwardPower));
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
+    m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
+    m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));
   }
 
 
