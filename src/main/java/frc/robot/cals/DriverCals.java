@@ -15,8 +15,8 @@ public class DriverCals extends CalSet {
         MotorCal.spark( 5).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001), 
         MotorCal.spark(10).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001)};
     public int[] turnEncoderIds = {2, 1, 3, 0};
-    public double[] xPos = {-12.375, 12.375, -12.375, 12.375};
-    public double[] yPos = {10.625, 10.625, -10.625, -10.625};
+    public double[] xPos = {-10.75, 10.75, -10.75, 10.75};
+    public double[] yPos = {12.5, 12.5, -12.5, -12.5};
     public double[] angleOffset;
 
     //this is for 2019 prac bot
