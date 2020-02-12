@@ -99,4 +99,90 @@ public class Inputs{
     private double expo(double raw, double expo){
         return Math.pow(Math.abs(raw), expo) * Math.signum(raw);
     }
+
+    //driver
+    public boolean autoShoot(){
+        return false;
+    }
+
+    public boolean autoGather(){
+        return false;
+    }
+
+    public boolean autoTrench(){
+        return false;
+    }
+
+    public boolean enableCam(){
+        return false;
+    }
+
+    //operator
+    public boolean twoVThree(){
+        return false;
+    }
+
+    public boolean cwRotVPos(){
+        return false;
+    }
+
+    public boolean cwActivate(){
+        return false;
+    }
+
+    public boolean enableBudClimb(){
+        return false;
+    }
+
+    public boolean climbUp(){
+        return false;
+    }
+
+    public boolean climbDn(){
+        return false;
+    }
+
+    public boolean dropFoot(){
+        return false;
+    }
+
+    public boolean layup(){
+        return false;
+    }
+
+    public boolean trench(){
+        return false;
+    }
+
+    public boolean jogL(){
+        return false;
+    }
+
+    public boolean jogR(){
+        return false;
+    }
+
+    public boolean jogUp(){
+        return false;
+    }
+
+    public boolean jogDn(){
+        return false;
+    }
+
+    public boolean intake(){
+        return false;
+    }
+
+    public boolean revolve(){
+        return false;
+    }
+
+    public boolean shoot(){
+        return false;
+    }
+
+    public boolean shift(){
+        return false;
+    }
 }
