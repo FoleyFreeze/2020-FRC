@@ -42,6 +42,8 @@ public class DriverCals extends CalSet {
 
     public final double DRV_TURNDEADBND = 10;
 
+    public final double DRV_GATHERKP = 0.01;
+
     public DriverCals(){
 
         switch(type){

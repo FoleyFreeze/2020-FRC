@@ -1,11 +1,16 @@
 package frc.robot.cals;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.cals.MotorCal.MotorType;
 
 public class CannonCals extends CalSet {
 
     public boolean disabled = true;
-    public MotorCal cannonMotor = new MotorCal(MotorType.SPARK_MAX, -1);
+    public MotorCal cannonMotor = new MotorCal(MotorType.TALON_SRX, -1);
+    public MotorCal elevatorMotor = new MotorCal(MotorType.TALON_SRX, -1);
+    public Solenoid hoodSol = new Solenoid(-1);
+    public Solenoid stopSol = new Solenoid(-1);
+    public Solenoid shootVsClimb = new Solenoid(-1);
     public double layupDist;
     public double trenchDist;
     public double power;

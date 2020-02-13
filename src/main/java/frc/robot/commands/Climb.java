@@ -10,7 +10,7 @@ public class Climb extends CommandBase{
 
     public Climb(RobotContainer subsystem, double power){
         m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_climber);
+        addRequirements(m_subsystem.m_cannonClimber);
 
         m_power = power;
     }
@@ -22,7 +22,7 @@ public class Climb extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.m_climber.setPower(m_power);
+        m_subsystem.m_cannonClimber.setpower(m_power);
     }
 
     @Override

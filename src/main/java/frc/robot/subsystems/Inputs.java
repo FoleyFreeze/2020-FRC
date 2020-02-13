@@ -19,6 +19,7 @@ public class Inputs{
     public JoystickButton climbUp;
     public JoystickButton climbDn;
     public JoystickButton enableBudClimb;
+    public JoystickButton dropFoot;
     
     public double xAxis;
     public double yAxis;
@@ -45,6 +46,7 @@ public class Inputs{
         climbUp = new JoystickButton(ds, cals.DS_CLIMBUP);
         climbDn = new JoystickButton(ds, cals.DS_CLIMBDN);
         enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
+        dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
     }
 
     public boolean fieldOrient(){
@@ -152,7 +154,7 @@ public class Inputs{
     }
 
     public boolean dropFoot(){
-        return false;
+        return ds.getRawButton(cals.DS_DROPFOOT);
     }
 
     public boolean layup(){

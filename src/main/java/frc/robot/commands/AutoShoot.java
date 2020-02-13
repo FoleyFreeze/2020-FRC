@@ -12,10 +12,10 @@ public class AutoShoot extends CommandBase{
     
     public AutoShoot(RobotContainer subsystem){
         m_subsystem = subsystem;
-        m_cals = m_subsystem.m_cannon.mCals;
+        m_cals = m_subsystem.m_cannonClimber.shootCals;
 
         addRequirements(m_subsystem.m_drivetrain);
-        addRequirements(m_subsystem.m_cannon);
+        addRequirements(m_subsystem.m_cannonClimber);
         addRequirements(m_subsystem.m_transporter);
     }
 
@@ -51,9 +51,9 @@ public class AutoShoot extends CommandBase{
         
         m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, m_subsystem.m_input.fieldOrient());
         
-        m_subsystem.m_cannon.prime(dist);
+        m_subsystem.m_cannonClimber.prime(dist);
 
-        if(m_subsystem.m_cannon.ready() && aligned) m_subsystem.m_transporter.shootAll();
+        if(m_subsystem.m_cannonClimber.ready() && aligned) m_subsystem.m_transporter.shootAll();
         else m_subsystem.m_transporter.stoprot();
 
 
@@ -61,7 +61,7 @@ public class AutoShoot extends CommandBase{
 
     @Override
     public void end(boolean interrupted){
-
+        m_subsystem.m_cannonClimber.setpower(0);
     }
 
     @Override

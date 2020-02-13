@@ -10,7 +10,7 @@ public class DropFoot extends CommandBase{
 
     public DropFoot(RobotContainer subsystem, boolean activated){
         m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_climber);
+        addRequirements(m_subsystem.m_cannonClimber);
 
         m_activated = activated;
     }
@@ -22,7 +22,7 @@ public class DropFoot extends CommandBase{
 
     @Override
     public void execute(){
-        if(m_subsystem.m_input.enableBudClimb())m_subsystem.m_climber.dropFoot(m_activated);
+        if(m_subsystem.m_input.enableBudClimb())m_subsystem.m_cannonClimber.dropFoot(m_activated);
     }
 
     @Override

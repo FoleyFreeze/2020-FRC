@@ -1,11 +1,13 @@
 package frc.robot.cals;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.cals.MotorCal.MotorType;
 
 public class IntakeCals extends CalSet {
 
     public boolean disabled = true;
     public MotorCal spinMotor = new MotorCal(MotorType.TALON_SRX, 7);
+    public Solenoid depSol = new Solenoid(-1);
     public static double forwardPower = 0.5;
     public static double backwardPower = -0.5;
 

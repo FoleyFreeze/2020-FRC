@@ -6,12 +6,14 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.cals.CannonCals;
+import frc.robot.cals.ClimberCals;
 import frc.robot.motors.Motor;
 import frc.robot.util.Util;
 
-public class Cannon extends SubsystemBase{
+public class CannonClimber extends SubsystemBase{
 
-    public CannonCals mCals;
+    public CannonCals shootCals;
+    public ClimberCals climbCals;
     private Motor motor;
     public enum HoodPos{
         LOW, MID1, MID2, HIGH
@@ -19,29 +21,40 @@ public class Cannon extends SubsystemBase{
     private Solenoid hoodSol;
     private Solenoid stopSol;
 
+    private Solenoid shootVsClimb;
+
+    private Solenoid dropFoot;
+
     HoodPos hCurrPos = HoodPos.LOW;
     HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
 
-    public Cannon(CannonCals cals){
-        mCals = cals;
-        if(cals.disabled) return;
+    public CannonClimber(CannonCals sCals, ClimberCals cCals){
+        shootCals = sCals;
+        climbCals = cCals;
 
-        motor = Motor.initMotor(mCals.cannonMotor);
+        if(sCals.disabled) return;
+
+        motor = Motor.initMotor(shootCals.cannonMotor);
+
+        hoodSol = shootCals.hoodSol;
+        stopSol = shootCals.stopSol;
+        shootVsClimb = shootCals.shootVsClimb;
+        dropFoot = climbCals.dropFoot;
     }
     
     public void setpower(double power){
-        if(mCals.disabled) return;
+        if(shootCals.disabled) return;
         motor.setPower(power);
     }
 
     public void setspeed(double speed){
-        if(mCals.disabled) return;
+        if(shootCals.disabled) return;
         motor.setSpeed(speed);
     }
 
     public void prime(double distToTgt){
-        double[] distAxis = mCals.dist[hTgtPos.ordinal()];
+        double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
                 case LOW:
@@ -82,7 +95,7 @@ public class Cannon extends SubsystemBase{
             }
         }
 
-        double speed = Util.interpolate(mCals.rpm[hTgtPos.ordinal()], mCals.dist[hTgtPos.ordinal()], distToTgt);
+        double speed = Util.interpolate(shootCals.rpm[hTgtPos.ordinal()], shootCals.dist[hTgtPos.ordinal()], distToTgt);
         setspeed(speed);
     }
 
@@ -98,7 +111,7 @@ public class Cannon extends SubsystemBase{
                         hoodSol.set(false);
                         stopSol.set(false);
                         hCurrPos = HoodPos.LOW;
-                        solRestTime = Timer.getFPGATimestamp() + mCals.SOL_RESTTIME;
+                        solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
                     }
                     break;
 
@@ -108,12 +121,12 @@ public class Cannon extends SubsystemBase{
                             hoodSol.set(true);
                             stopSol.set(true);
                             hCurrPos = HoodPos.MID1;
-                            solRestTime = Timer.getFPGATimestamp() + mCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
                         }else{
                             hoodSol.set(false);
                             stopSol.set(false);
                             hCurrPos = HoodPos.LOW;
-                            solRestTime = Timer.getFPGATimestamp() + mCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
                         }
                     }
                     break;
@@ -124,12 +137,12 @@ public class Cannon extends SubsystemBase{
                             hoodSol.set(false);
                             stopSol.set(true);
                             hCurrPos = HoodPos.MID2;
-                            solRestTime = Timer.getFPGATimestamp() + mCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
                         }else{
                             hoodSol.set(true);
                             stopSol.set(false);
                             hCurrPos = HoodPos.HIGH;
-                            solRestTime = Timer.getFPGATimestamp() + mCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
                         }
                     }
                     break;
@@ -139,11 +152,17 @@ public class Cannon extends SubsystemBase{
                         hoodSol.set(true);
                         stopSol.set(false);
                         hCurrPos = HoodPos.HIGH;
-                        solRestTime = Timer.getFPGATimestamp() + mCals.SOL_RESTTIME;
+                        solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
                     }
                     break;
             }
         }
         
+    }
+
+    //Climber
+
+    public void dropFoot(boolean on){
+        dropFoot.set(on);
     }
 }

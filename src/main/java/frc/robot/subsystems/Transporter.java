@@ -3,23 +3,28 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.cals.TransporterCals;
 import frc.robot.motors.Motor;
 
 public class Transporter extends SubsystemBase{
 
     public Motor rotatemotor;
+    public Motor loadMotor;
     public TransporterCals mCals;
     public DigitalInput ballsensor;
     public Solenoid launcher;
     private double targetpos = 0;
     private boolean[] ballpositions = {false, false, false, false, false};
     private int ballnumber = 0;
+    private RobotContainer mSubsystem;
 
-    public Transporter(TransporterCals cals){
+    public Transporter(TransporterCals cals, RobotContainer subsystem){
         mCals = cals;
+        mSubsystem = subsystem;
 
         rotatemotor = Motor.initMotor(mCals.rotateMotor);
+        loadMotor = Motor.initMotor(mCals.loadMotor);
         ballsensor = new DigitalInput(mCals.sensorValue);
         launcher = new Solenoid(mCals.launcherValue);
     }
@@ -31,6 +36,11 @@ public class Transporter extends SubsystemBase{
             ballnumber--;
             ballpositions[x % 5] = false;
         }
+        if(mSubsystem.m_input.autoGather() && !ballpositions[x%5]){
+            loadMotor.setPower(mCals.TN_LOADSPEED);
+        }else if(mSubsystem.m_input.autoGather()) {
+            loadMotor.setPower(mCals.TN_STOPSPEED);
+        } else loadMotor.setPower(0.0);
     }
 
     //increment the ball storage

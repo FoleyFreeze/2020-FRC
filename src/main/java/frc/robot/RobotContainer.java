@@ -22,7 +22,7 @@ import frc.robot.cals.IntakeCals;
 import frc.robot.cals.PneumaticsCals;
 import frc.robot.cals.TransporterCals;
 import frc.robot.cals.VisionCals;
-import frc.robot.commands.JoystickIntake;
+import frc.robot.commands.AutoGather;
 import frc.robot.commands.ZeroReset;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -41,12 +41,11 @@ public class RobotContainer {
   public final Inputs m_input = new Inputs(new InputCals());
   public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
 
-  public Cannon m_cannon = new Cannon(new CannonCals());
-  public Climber m_climber = new Climber(new ClimberCals());
+  public CannonClimber m_cannonClimber = new CannonClimber(new CannonCals(), new ClimberCals());
   public ColorWheel m_colorwheel = new ColorWheel(new CWheelCals());
   public Display m_display = new Display(new DisplayCals());
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
-  public Transporter m_transporter = new Transporter(new TransporterCals());
+  public Transporter m_transporter = new Transporter(new TransporterCals(), this);
   public Vision m_vision = new Vision(new VisionCals()); 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -55,7 +54,7 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
     CommandScheduler.getInstance().registerSubsystem(m_intake);
     
-    m_intake.setDefaultCommand(new JoystickIntake(this, 0.0));
+    m_intake.setDefaultCommand(new AutoGather(this, 0.0, m_input.autoGather()));
     m_drivetrain.setDefaultCommand(m_JoystickDrive);
     
     // Configure the button bindings    
@@ -69,10 +68,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_input.intakeF.whileActiveOnce(new JoystickIntake(this, 
-      IntakeCals.forwardPower));
-    m_input.intakeR.whileActiveOnce(new JoystickIntake(this, 
-      IntakeCals.backwardPower));
+    m_input.intakeF.whileActiveOnce(new AutoGather(this, 
+      IntakeCals.forwardPower, m_input.autoGather()));
+    m_input.intakeR.whileActiveOnce(new AutoGather(this, 
+      IntakeCals.backwardPower, m_input.autoGather()));
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
     m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
     m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));

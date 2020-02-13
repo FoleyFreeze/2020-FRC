@@ -38,6 +38,7 @@ public class InputCals extends CalSet{
     public final int DS_CLIMBUP = -1;
     public final int DS_CLIMBDN = -1;
     public final int DS_ENABLEBUDCLIMB = -1;
+    public final int DS_DROPFOOT = -1;
 
     public InputCals(){
 
