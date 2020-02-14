@@ -3,26 +3,26 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class Climb extends CommandBase{
+public class ManualRevolve extends CommandBase{
 
-    public double m_power;
     private RobotContainer m_subsystem;
 
-    public Climb(RobotContainer subsystem, double power){
+    public ManualRevolve(RobotContainer subsystem){
         m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_cannonClimber);
-
-        m_power = power;
     }
 
     @Override
     public void initialize(){
-        m_subsystem.m_cannonClimber.climbMode();
+        if(m_subsystem.m_input.shift()){
+            m_subsystem.m_transporterCW.index(-1);
+        } else{
+            m_subsystem.m_transporterCW.index(1);
+        }
     }
 
     @Override
     public void execute(){
-        m_subsystem.m_cannonClimber.setpower(m_power);
+
     }
 
     @Override

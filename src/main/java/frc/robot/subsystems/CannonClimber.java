@@ -5,6 +5,7 @@ import java.sql.Time;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
 import frc.robot.motors.Motor;
@@ -15,6 +16,7 @@ public class CannonClimber extends SubsystemBase{
     public CannonCals shootCals;
     public ClimberCals climbCals;
     private Motor motor;
+    private Motor motor2;
     public enum HoodPos{
         LOW, MID1, MID2, HIGH
     }
@@ -24,18 +26,22 @@ public class CannonClimber extends SubsystemBase{
     private Solenoid shootVsClimb;
 
     private Solenoid dropFoot;
+    
+    private RobotContainer m_subsystem;
 
     HoodPos hCurrPos = HoodPos.LOW;
     HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
 
-    public CannonClimber(CannonCals sCals, ClimberCals cCals){
+    public CannonClimber(RobotContainer subsystem, CannonCals sCals, ClimberCals cCals){
+        m_subsystem = subsystem;
         shootCals = sCals;
         climbCals = cCals;
 
         if(sCals.disabled) return;
 
-        motor = Motor.initMotor(shootCals.cannonMotor);
+        motor = Motor.initMotor(shootCals.ccMotor);
+        motor2 = Motor.initMotor(shootCals.ccMotor);
 
         hoodSol = shootCals.hoodSol;
         stopSol = shootCals.stopSol;
@@ -46,14 +52,17 @@ public class CannonClimber extends SubsystemBase{
     public void setpower(double power){
         if(shootCals.disabled) return;
         motor.setPower(power);
+        motor2.setPower(power);
     }
 
     public void setspeed(double speed){
         if(shootCals.disabled) return;
         motor.setSpeed(speed);
+        motor2.setSpeed(speed);
     }
 
     public void prime(double distToTgt){
+        shootVsClimb.set(true);
         double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
@@ -161,7 +170,9 @@ public class CannonClimber extends SubsystemBase{
     }
 
     //Climber
-
+    public void climbMode(){
+        shootVsClimb.set(false);
+    }
     public void dropFoot(boolean on){
         dropFoot.set(on);
     }

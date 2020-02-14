@@ -17,12 +17,16 @@ import frc.robot.cals.DriverCals;
 import frc.robot.cals.InputCals;
 import frc.robot.commands.Climb;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.ManualIntake;
+import frc.robot.commands.ManualShoot;
+import frc.robot.commands.ManualRevolve;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
 import frc.robot.cals.PneumaticsCals;
 import frc.robot.cals.TransporterCals;
 import frc.robot.cals.VisionCals;
 import frc.robot.commands.AutoGather;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ZeroReset;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -41,11 +45,10 @@ public class RobotContainer {
   public final Inputs m_input = new Inputs(new InputCals());
   public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
 
-  public CannonClimber m_cannonClimber = new CannonClimber(new CannonCals(), new ClimberCals());
-  public ColorWheel m_colorwheel = new ColorWheel(new CWheelCals());
+  public CannonClimber m_cannonClimber = new CannonClimber(this, new CannonCals(), new ClimberCals());
   public Display m_display = new Display(new DisplayCals());
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
-  public Transporter m_transporter = new Transporter(new TransporterCals(), this);
+  public TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
   public Vision m_vision = new Vision(new VisionCals()); 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -68,13 +71,13 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_input.intakeF.whileActiveOnce(new AutoGather(this, 
-      IntakeCals.forwardPower, m_input.autoGather()));
-    m_input.intakeR.whileActiveOnce(new AutoGather(this, 
-      IntakeCals.backwardPower, m_input.autoGather()));
+    m_input.shoot.whileActiveOnce(new AutoShoot(this));
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
     m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
     m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));
+    m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
+    m_input.manualShoot.whileActiveOnce(new ManualShoot(this));
+    m_input.revolve.whileActiveOnce(new ManualRevolve(this));
   }
 
 

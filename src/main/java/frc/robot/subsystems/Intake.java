@@ -9,7 +9,7 @@ public class Intake extends SubsystemBase {
 
     public Motor spinmotor;
     public Solenoid depSol;
-    private IntakeCals mCals;
+    public IntakeCals mCals;
 
     public Intake(IntakeCals cals){
         this.mCals = cals;

@@ -16,7 +16,7 @@ public class AutoShoot extends CommandBase{
 
         addRequirements(m_subsystem.m_drivetrain);
         addRequirements(m_subsystem.m_cannonClimber);
-        addRequirements(m_subsystem.m_transporter);
+        addRequirements(m_subsystem.m_transporterCW);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class AutoShoot extends CommandBase{
         
         m_subsystem.m_cannonClimber.prime(dist);
 
-        if(m_subsystem.m_cannonClimber.ready() && aligned) m_subsystem.m_transporter.shootAll();
-        else m_subsystem.m_transporter.stoprot();
+        if(m_subsystem.m_cannonClimber.ready() && aligned) m_subsystem.m_transporterCW.shootAll();
+        else m_subsystem.m_transporterCW.stoprot();
 
 
     }

@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.cals.InputCals;
 import frc.robot.util.Vector;
 
@@ -12,14 +15,20 @@ public class Inputs{
     public Joystick joy = new Joystick(0);
     public Joystick ds = new Joystick(1);
     
-    public JoystickButton intakeF;
-    public JoystickButton intakeR;
+    public Trigger gather;
+    public Trigger shoot;
     public JoystickButton angleReset;
 
     public JoystickButton climbUp;
     public JoystickButton climbDn;
     public JoystickButton enableBudClimb;
     public JoystickButton dropFoot;
+    public JoystickButton manualIntake;
+    public JoystickButton revolve;
+    public JoystickButton manualShoot;
+    public JoystickButton shift;
+    public JoystickButton camMode;
+    public JoystickButton trenchMode;
     
     public double xAxis;
     public double yAxis;
@@ -33,13 +42,24 @@ public class Inputs{
 
         cals = cal;
 
+        gather = new Trigger(new BooleanSupplier(){
+            @Override
+            public boolean getAsBoolean() {
+                return autoGather();
+            }
+        });
+
+        shoot = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return autoShoot();
+            }
+        });
+
         if(flySky){
-            intakeF = new JoystickButton(joy, cals.FS_FINTAKE);
-            intakeR = new JoystickButton(joy, cals.FS_RINTAKE);
             angleReset = new JoystickButton(joy, cals.FS_ANGRESET);
         }else{
-            intakeF = new JoystickButton(joy, cals.XB_FINTAKE);
-            intakeR = new JoystickButton(joy, cals.XB_RINTAKE);
             angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
         }
 
@@ -47,6 +67,12 @@ public class Inputs{
         climbDn = new JoystickButton(ds, cals.DS_CLIMBDN);
         enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
         dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
+        manualIntake = new JoystickButton(ds, cals.DS_MINTAKE);
+        revolve = new JoystickButton(ds, cals.DS_REVOLVE);
+        manualShoot = new JoystickButton(ds, cals.DS_MSHOOT);
+        shift = new JoystickButton(ds, cals.DS_SHIFT);
+        camMode = new JoystickButton(ds, cals.DS_CAMMODE);
+        trenchMode = new JoystickButton(ds, cals.DS_TRENCHMODE);
     }
 
     public boolean fieldOrient(){
@@ -117,7 +143,7 @@ public class Inputs{
     }
 
     public boolean autoGather(){
-        return false;
+        return gather.get();
     }
 
     public boolean autoTrench(){
@@ -133,7 +159,7 @@ public class Inputs{
         return false;
     }
 
-    public boolean cwRotVPos(){
+    public boolean cwRotNotPos(){
         return false;
     }
 
@@ -158,15 +184,15 @@ public class Inputs{
     }
 
     public boolean layup(){
-        return false;
+        return (!cam() && !trench());
     }
 
     public boolean trench(){
-        return false;
+        return ds.getRawButton(cals.DS_TRENCHMODE);
     }
 
     public boolean cam(){
-        return false;
+        return ds.getRawButton(cals.DS_CAMMODE);
     }
 
     public boolean jogL(){
@@ -186,11 +212,11 @@ public class Inputs{
     }
 
     public boolean intake(){
-        return false;
+        return ds.getRawButton(cals.DS_MINTAKE);
     }
 
     public boolean revolve(){
-        return false;
+        return ds.getRawButton(cals.DS_REVOLVE);
     }
 
     public boolean shoot(){

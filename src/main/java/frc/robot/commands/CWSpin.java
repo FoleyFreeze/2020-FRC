@@ -3,31 +3,28 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class Transport extends CommandBase{
+public class CWSpin extends CommandBase{
 
     private RobotContainer m_subsystem;
 
-    public Transport(RobotContainer subsystem){
+    public CWSpin(RobotContainer subsystem){
         m_subsystem = subsystem;
+        addRequirements(m_subsystem.m_transporterCW);
     }
 
     @Override
     public void initialize(){
-        if(m_subsystem.m_input.shift()){
-            m_subsystem.m_transporter.index(-1);
-        } else{
-            m_subsystem.m_transporter.index(1);
-        }
+
     }
 
     @Override
     public void execute(){
-
+        m_subsystem.m_transporterCW.deploy(true);
     }
 
     @Override
     public void end(boolean interrupted){
-
+        m_subsystem.m_transporterCW.deploy(false);
     }
 
     @Override
