@@ -46,7 +46,7 @@ public class RobotContainer {
   public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
 
   public CannonClimber m_cannonClimber = new CannonClimber(this, new CannonCals(), new ClimberCals());
-  public Display m_display = new Display(new DisplayCals());
+  public Display m_display = new Display(new DisplayCals(), this);
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
   public TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
   public Vision m_vision = new Vision(new VisionCals()); 
