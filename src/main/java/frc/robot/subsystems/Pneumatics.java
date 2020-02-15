@@ -12,11 +12,14 @@ public class Pneumatics extends SubsystemBase{
     private PneumaticsCals mCals;
     private double pauseTime;
     private boolean paused;
-    public AnalogInput pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
+    public AnalogInput pressureSensor;
     public double pressure;
 
     public Pneumatics(PneumaticsCals cals){
         mCals = cals;
+        if(mCals.disabled) return;
+
+        pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
     }
 
     public void pauseReq(boolean breakThresh){
@@ -28,6 +31,7 @@ public class Pneumatics extends SubsystemBase{
 
     @Override
     public void periodic(){
+        if(mCals.disabled) return;
         if(Timer.getFPGATimestamp() > pauseTime){
             paused = false;
         }

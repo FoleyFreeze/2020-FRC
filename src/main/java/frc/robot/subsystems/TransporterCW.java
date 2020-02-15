@@ -25,6 +25,7 @@ public class TransporterCW extends SubsystemBase{
     public TransporterCW(TransporterCals tCals, CWheelCals cCals, RobotContainer subsystem){
         this.tCals = tCals;
         this.cCals = cCals;
+        if(tCals.disabled && cCals.disabled) return;
         mSubsystem = subsystem;
 
         rotatemotor = Motor.initMotor(tCals.rotateMotor);
@@ -35,6 +36,7 @@ public class TransporterCW extends SubsystemBase{
     }
 
     public void periodic(){
+        if(tCals.disabled && cCals.disabled) return;
         if(!mSubsystem.m_input.cwActivate()){
             CWNotTransport.set(false);
         }

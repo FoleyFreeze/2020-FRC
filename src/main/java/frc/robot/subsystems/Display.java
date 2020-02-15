@@ -8,19 +8,12 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
-import frc.robot.cals.DisplayCals;
 
 public class Display extends SubsystemBase{
 
-    private DisplayCals mCals;
-    private RobotContainer mSubsystem;
-
     public static HashMap<String, NetworkTableEntry> map = new HashMap<>();
 
-    public Display(DisplayCals cals, RobotContainer subsystem){
-        mCals = cals;
-        mSubsystem = subsystem;
+    public Display(){
     }
 
     public static void init(){
@@ -99,19 +92,19 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
             nte = tab.add("Foot Dropped", false).withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Current 0", 0.0).withPosition(2, 0).getEntry();
+            nte = tab.add("CC Motor Current 0", 0.0).withPosition(2, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Current 1", 0.0).withPosition(2, 1).getEntry();
+            nte = tab.add("CC Motor Current 1", 0.0).withPosition(2, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Temp 0", 0.0).withPosition(3, 0).getEntry();
+            nte = tab.add("CC Motor Temp 0", 0.0).withPosition(3, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Temp 1", 0.0).withPosition(3, 1).getEntry();
+            nte = tab.add("CC Motor Temp 1", 0.0).withPosition(3, 1).getEntry();
             map.put(nte.getName(), nte);
 
         tab = Shuffleboard.getTab("Intake");
-            nte = tab.add("Motor Current 0", 0.0).withPosition(0, 0).getEntry();
+            nte = tab.add("In Motor Current 0", 0.0).withPosition(0, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Current 1", 0.0).withPosition(0, 1).getEntry();
+            nte = tab.add("In Motor Current 1", 0.0).withPosition(0, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Extended", false).withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
@@ -137,9 +130,9 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
 
         tab = Shuffleboard.getTab("Transporter");
-            nte = tab.add("Motor Current", 0.0).withPosition(0, 0).getEntry();
+            nte = tab.add("TC Motor Current 0", 0.0).withPosition(0, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Temp", 0.0).withPosition(1, 0).getEntry();
+            nte = tab.add("TC Motor Temp 0", 0.0).withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Ball Number", 0).withPosition(2, 0).getEntry();
             map.put(nte.getName(), nte);
@@ -156,7 +149,7 @@ public class Display extends SubsystemBase{
             nte = tab.add("Current Pos", 0).withPosition(4, 0).getEntry();
 
         tab = Shuffleboard.getTab("Color Wheel");
-            nte = tab.add("Motor Current", 0.0).withPosition(0, 0).getEntry();
+            nte = tab.add("TC Motor Current", 0.0).withPosition(0, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Color Info", "RGB, Ir, p").withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
@@ -169,7 +162,7 @@ public class Display extends SubsystemBase{
         if(map.containsKey(name)){
             map.get(name).setDouble(data);
         } else {
-            map.get("Last Error").setString(name);
+            //map.get("Last Error").setString(name);
         }
     }
 
@@ -177,7 +170,7 @@ public class Display extends SubsystemBase{
         if(map.containsKey(name)){
             map.get(name).setBoolean(data);
         } else {
-            map.get("Last Error").setString(name);
+            //map.get("Last Error").setString(name);
         }
     }
 
@@ -185,7 +178,8 @@ public class Display extends SubsystemBase{
         if(map.containsKey(name)){
             map.get(name).setString(data);
         } else {
-            map.get("Last Error").setString(name);
+            //map.get("Last Error").setString(name);
+            
         }
     }
 }

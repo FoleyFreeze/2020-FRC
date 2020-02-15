@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.util.Vector;
+import frc.robot.util.DistanceSensors.DistData;
 
 public class TrenchRun extends CommandBase{
 
@@ -48,7 +49,24 @@ public class TrenchRun extends CommandBase{
 
     @Override
     public void execute(){
-        double distDiff = (/*current distance from sensors*/ - wallDist);
+        DistData dist;
+
+        switch(orient){
+            case GATHERER:
+                dist = m_subsystem.m_drivetrain.getRearDist();
+                break;
+            case CLIMBER:
+                dist = m_subsystem.m_drivetrain.getRightDist();
+                break;
+            case AUTO:
+                if(targetAngle == 90) dist = m_subsystem.m_drivetrain.getRightDist();
+                else dist = m_subsystem.m_drivetrain.getRearDist();
+                break;
+            default: //shouldnt happen
+                dist = m_subsystem.m_drivetrain.getRearDist();
+        }
+
+        double distDiff = (dist.dist - wallDist);
         double distPower = m_subsystem.m_drivetrain.k.trenchRunDistKp * distDiff;
         double angDiff = targetAngle - m_subsystem.m_drivetrain.navX.getAngle();
         if(Math.abs(angDiff) > 180){

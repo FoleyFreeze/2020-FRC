@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.sql.Time;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,15 +36,15 @@ public class CannonClimber extends SubsystemBase{
         shootCals = sCals;
         climbCals = cCals;
 
-        if(sCals.disabled) return;
+        if(sCals.disabled && cCals.disabled) return;
 
         motor = Motor.initMotor(shootCals.ccMotor);
         motor2 = Motor.initMotor(shootCals.ccMotor);
 
-        hoodSol = shootCals.hoodSol;
-        stopSol = shootCals.stopSol;
-        shootVsClimb = shootCals.shootVsClimb;
-        dropFoot = climbCals.dropFoot;
+        hoodSol = new Solenoid(sCals.hoodSolValue);
+        stopSol = new Solenoid(sCals.stopSolValue);
+        shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
+        dropFoot = new Solenoid(cCals.dropFootValue);
     }
     
     public void setpower(double power){
@@ -113,6 +111,7 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public void periodic(){
+        if(climbCals.disabled && shootCals.disabled) return;
         if(Timer.getFPGATimestamp()>solRestTime){
             switch(hTgtPos){
                 case LOW:
@@ -167,10 +166,10 @@ public class CannonClimber extends SubsystemBase{
             }
         }
         Display.put("Foot Dropped", dropFoot.get());
-        Display.put("Motor Current 0", motor.getCurrent());
-        Display.put("Motor Current 1", motor2.getCurrent());
-        Display.put("Motor Temp 0", motor.getTemp());
-        Display.put("Motor Temp 1", motor.getTemp());
+        Display.put("CC Motor Current 0", motor.getCurrent());
+        Display.put("CC Motor Current 1", motor2.getCurrent());
+        Display.put("CC Motor Temp 0", motor.getTemp());
+        Display.put("CC Motor Temp 1", motor.getTemp());
     }
 
     //Climber

@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +16,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.cals.CalSet;
 import frc.robot.subsystems.Display;
+import frc.robot.util.I2CDistSense;
+import frc.robot.util.I2CDistSense.Port;
+import frc.robot.util.I2CDistSense.RangeProfile;
+import frc.robot.util.I2CDistSense.Unit;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,9 +39,19 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     CalSet.identifyBot();
+    Display.init();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    I2C mux = new I2C(edu.wpi.first.wpilibj.I2C.Port.kOnboard, 0x70);
+    byte[] cs2 = {0x02};
+    byte[] cs4 = {0x04};
+    System.out.println("Mux write returned: " + mux.writeBulk(cs2));
+    mux.close();
+
+    ds = new I2CDistSense(Port.kOnboard, Unit.kInches, RangeProfile.kDefault);
+    ds.setEnabled(true);
+    ds.setAutomaticMode(true);
   }
 
   /**
@@ -57,7 +73,12 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("dt",dt);
     Display.put("DT", dt);
     lastTime = time;
+
+    SmartDashboard.putData("ds", ds);
   }
+  
+  I2CDistSense ds;
+
   double lastTime = 0;
 
   /**

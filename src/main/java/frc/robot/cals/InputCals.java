@@ -45,6 +45,7 @@ public class InputCals extends CalSet{
     public final int DS_SHIFT = -1;
     public final int DS_CAMMODE = -1;
     public final int DS_TRENCHMODE = -1;
+    public final int DS_PITMODE = -1;
 
     public InputCals(){
 

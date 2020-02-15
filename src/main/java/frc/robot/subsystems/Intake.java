@@ -16,9 +16,12 @@ public class Intake extends SubsystemBase {
         if(mCals.disabled) return;
 
         spinmotor = Motor.initMotor(mCals.spinMotor);
-        depSol = mCals.depSol;
+        depSol = new Solenoid(mCals.depSolValue);
     }
 
+    public void periodic(){
+        
+    }
     public void setPower(double power){
         if(mCals.disabled) return;
         spinmotor.setPower(power);
@@ -29,6 +32,7 @@ public class Intake extends SubsystemBase {
     }
     
     public void dropIntake(boolean activate){
+        if(mCals.disabled) return;
         depSol.set(activate);
     }
 }

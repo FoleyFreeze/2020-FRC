@@ -5,9 +5,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
 import frc.robot.motors.Motor;
+import frc.robot.util.DistanceSensors;
 import frc.robot.util.Vector;
+import frc.robot.util.DistanceSensors.DistData;
+
 import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase{
@@ -87,10 +91,12 @@ public class Drivetrain extends SubsystemBase{
     Wheel[] wheels;
     public DriverCals k;
     public AHRS navX;
+    private RobotContainer mSubsystem;
 
-    public Drivetrain(DriverCals cals){
+    public Drivetrain(DriverCals cals, RobotContainer subsystem){
         k = cals;
         if(cals.disabled) return;
+        mSubsystem = subsystem;
         
         int size = k.driveMotors.length;
         wheels = new Wheel[size];
@@ -108,7 +114,8 @@ public class Drivetrain extends SubsystemBase{
     public boolean driveStraight = false;
     public double prevAng = 0.0;
     public double goalAng = 0.0;
-    public double robotAng = navX.getAngle();
+    public double robotAng = 0;
+    public DistanceSensors distSens = new DistanceSensors();
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
@@ -174,8 +181,12 @@ public class Drivetrain extends SubsystemBase{
 
         }
         
-        if(Math.abs(maxOut.wheelVec.r) > 1){
-            double reducRatio = 1/maxOut.wheelVec.r;
+        double maxPower = 1;
+        if(mSubsystem.m_input.pitMode()){
+            maxPower = 0.2;
+        }
+        if(Math.abs(maxOut.wheelVec.r) > maxPower){
+            double reducRatio = maxPower/maxOut.wheelVec.r;
 
             strafe.r *= reducRatio;
 
@@ -214,13 +225,25 @@ public class Drivetrain extends SubsystemBase{
         return dists;
     }
 
+    public DistData getRearDist(){
+        return distSens.getRear();
+    }
+
+    public DistData getRightDist(){
+        return distSens.getRight();
+    }
+
     public void periodic(){
+        if(k.disabled) return;
         Display.put("NavX Ang", navX.getAngle());
         for(Wheel w: wheels){
             Display.put("Drive Motor Current " + w.idx, wheels[w.idx].driveMotor.getCurrent());
             Display.put("Turn Motor Current " + w.idx, wheels[w.idx].turnMotor.getCurrent());
-            Display.put("Drive Motor Current " + w.idx, wheels[w.idx].driveMotor.getTemp());
-            Display.put("Turn Motor Current " + w.idx, wheels[w.idx].turnMotor.getTemp());
+            Display.put("Drive Motor Temp " + w.idx, wheels[w.idx].driveMotor.getTemp());
+            Display.put("Turn Motor Temp " + w.idx, wheels[w.idx].turnMotor.getTemp());
         }
+
+        //distSens.getRear().toString();
+        //distSens.getRight();
     }
 }

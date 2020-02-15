@@ -29,6 +29,7 @@ public class Inputs{
     public JoystickButton shift;
     public JoystickButton camMode;
     public JoystickButton trenchMode;
+    public JoystickButton pitMode;
     
     public double xAxis;
     public double yAxis;
@@ -73,6 +74,7 @@ public class Inputs{
         shift = new JoystickButton(ds, cals.DS_SHIFT);
         camMode = new JoystickButton(ds, cals.DS_CAMMODE);
         trenchMode = new JoystickButton(ds, cals.DS_TRENCHMODE);
+        pitMode = new JoystickButton(ds, cals.DS_PITMODE);
     }
 
     public boolean fieldOrient(){
@@ -143,7 +145,7 @@ public class Inputs{
     }
 
     public boolean autoGather(){
-        return gather.get();
+        return false;
     }
 
     public boolean autoTrench(){
@@ -225,5 +227,9 @@ public class Inputs{
 
     public boolean shift(){
         return false;
+    }
+
+    public boolean pitMode(){
+        return ds.getRawButton(cals.DS_PITMODE);
     }
 }

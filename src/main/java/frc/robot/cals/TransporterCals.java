@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class TransporterCals extends CalSet {
 
-    boolean disabled = true;
+    public boolean disabled = true;
     public MotorCal rotateMotor = MotorCal.srx(-1);
     public MotorCal loadMotor = MotorCal.srx(-1);
     public int CWNotTransport = -1;

@@ -63,4 +63,11 @@ public class MotorSparkMax extends Motor{
             ControlType.kVelocity);
     }
 
+    public double getCurrent(){
+        return motor.getOutputCurrent();
+    }
+
+    public double getTemp(){
+        return motor.getMotorTemperature();
+    }
 }

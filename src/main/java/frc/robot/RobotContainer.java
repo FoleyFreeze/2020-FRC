@@ -15,21 +15,21 @@ import frc.robot.cals.ClimberCals;
 import frc.robot.cals.DisplayCals;
 import frc.robot.cals.DriverCals;
 import frc.robot.cals.InputCals;
-import frc.robot.commands.Climb;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.ManualIntake;
-import frc.robot.commands.ManualShoot;
 import frc.robot.commands.ManualRevolve;
+import frc.robot.commands.ManualShoot;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
 import frc.robot.cals.PneumaticsCals;
 import frc.robot.cals.TransporterCals;
 import frc.robot.cals.VisionCals;
-import frc.robot.commands.AutoGather;
-import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ZeroReset;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoGather;
+import frc.robot.commands.AutoShoot;
+import frc.robot.commands.Climb;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -39,14 +39,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final Drivetrain m_drivetrain = new Drivetrain(new DriverCals());
+  public final Drivetrain m_drivetrain = new Drivetrain(new DriverCals(), this);
   public final Intake m_intake = new Intake(new IntakeCals());
 
   public final Inputs m_input = new Inputs(new InputCals());
   public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
 
   public CannonClimber m_cannonClimber = new CannonClimber(this, new CannonCals(), new ClimberCals());
-  public Display m_display = new Display(new DisplayCals(), this);
+  public Display m_display = new Display();
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
   public TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
   public Vision m_vision = new Vision(new VisionCals()); 
