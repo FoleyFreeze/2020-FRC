@@ -36,8 +36,6 @@ public class CannonClimber extends SubsystemBase{
         shootCals = sCals;
         climbCals = cCals;
 
-        if(sCals.disabled && cCals.disabled) return;
-
         motor = Motor.initMotor(shootCals.ccMotor);
         motor2 = Motor.initMotor(shootCals.ccMotor);
 
@@ -45,6 +43,8 @@ public class CannonClimber extends SubsystemBase{
         stopSol = new Solenoid(sCals.stopSolValue);
         shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
         dropFoot = new Solenoid(cCals.dropFootValue);
+        
+        if(sCals.disabled && cCals.disabled) return;
     }
     
     public void setpower(double power){
@@ -60,6 +60,7 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public void prime(double distToTgt){
+        if(climbCals.disabled && shootCals.disabled) return;
         shootVsClimb.set(true);
         double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
@@ -166,17 +167,19 @@ public class CannonClimber extends SubsystemBase{
             }
         }
         Display.put("Foot Dropped", dropFoot.get());
-        Display.put("CC Motor Current 0", motor.getCurrent());
-        Display.put("CC Motor Current 1", motor2.getCurrent());
+        Display.put("CCMotorCurrent 0", motor.getCurrent());
+        Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
         Display.put("CC Motor Temp 1", motor.getTemp());
     }
 
     //Climber
     public void climbMode(){
+        if(climbCals.disabled && shootCals.disabled) return;
         shootVsClimb.set(false);
     }
     public void dropFoot(boolean on){
+        if(climbCals.disabled && shootCals.disabled) return;
         dropFoot.set(on);
     }
 }

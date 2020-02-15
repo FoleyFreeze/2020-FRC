@@ -13,14 +13,14 @@ public class Intake extends SubsystemBase {
 
     public Intake(IntakeCals cals){
         this.mCals = cals;
-        if(mCals.disabled) return;
-
         spinmotor = Motor.initMotor(mCals.spinMotor);
         depSol = new Solenoid(mCals.depSolValue);
+        if(mCals.disabled) return;
     }
 
     public void periodic(){
-        
+        if(mCals.disabled) return;
+        Display.put("InMotorCurr", spinmotor.getCurrent());
     }
     public void setPower(double power){
         if(mCals.disabled) return;

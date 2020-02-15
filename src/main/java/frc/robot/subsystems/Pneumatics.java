@@ -17,9 +17,8 @@ public class Pneumatics extends SubsystemBase{
 
     public Pneumatics(PneumaticsCals cals){
         mCals = cals;
-        if(mCals.disabled) return;
-
         pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
+        if(mCals.disabled) return;
     }
 
     public void pauseReq(boolean breakThresh){
@@ -47,6 +46,6 @@ public class Pneumatics extends SubsystemBase{
         }
 
         Display.put("Pressure", pressure);
-        Display.put("Compressor Running", mCompressor.getCompressorCurrent() > 0);
+        Display.put("CompressorRun", mCompressor.getCompressorCurrent() > 0);
     }
 }

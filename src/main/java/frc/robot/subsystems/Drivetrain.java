@@ -237,13 +237,13 @@ public class Drivetrain extends SubsystemBase{
         if(k.disabled) return;
         Display.put("NavX Ang", navX.getAngle());
         for(Wheel w: wheels){
-            Display.put("Drive Motor Current " + w.idx, wheels[w.idx].driveMotor.getCurrent());
-            Display.put("Turn Motor Current " + w.idx, wheels[w.idx].turnMotor.getCurrent());
-            Display.put("Drive Motor Temp " + w.idx, wheels[w.idx].driveMotor.getTemp());
-            Display.put("Turn Motor Temp " + w.idx, wheels[w.idx].turnMotor.getTemp());
+            Display.put("DMotorCurrent " + w.idx, wheels[w.idx].driveMotor.getCurrent());
+            Display.put("TMotorCurrent " + w.idx, wheels[w.idx].turnMotor.getCurrent());
+            Display.put("DMotorTemp " + w.idx, wheels[w.idx].driveMotor.getTemp());
+            Display.put("TMotorTemp " + w.idx, wheels[w.idx].turnMotor.getTemp());
         }
 
-        //distSens.getRear().toString();
-        //distSens.getRight();
+        Display.put("DistSenseInfo Re", distSens.getRear().toString());
+        Display.put("DistSenseInfo Ri", distSens.getRight().toString());
     }
 }

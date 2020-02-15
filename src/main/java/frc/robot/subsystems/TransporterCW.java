@@ -25,7 +25,6 @@ public class TransporterCW extends SubsystemBase{
     public TransporterCW(TransporterCals tCals, CWheelCals cCals, RobotContainer subsystem){
         this.tCals = tCals;
         this.cCals = cCals;
-        if(tCals.disabled && cCals.disabled) return;
         mSubsystem = subsystem;
 
         rotatemotor = Motor.initMotor(tCals.rotateMotor);
@@ -33,6 +32,8 @@ public class TransporterCW extends SubsystemBase{
         ballsensor = new DigitalInput(tCals.sensorValue);
         launcher = new Solenoid(tCals.launcherValue);
         CWNotTransport = new Solenoid(tCals.CWNotTransport);
+
+        if(tCals.disabled && cCals.disabled) return;
     }
 
     public void periodic(){
@@ -59,6 +60,10 @@ public class TransporterCW extends SubsystemBase{
         } else loadMotor.setPower(0.0);
 
         Display.put("Ball Number", ballnumber);
+        Display.put("TCMotorCurrent0", rotatemotor.getCurrent());
+        Display.put("TCMotorCurrent1", loadMotor.getCurrent());
+        Display.put("TC Motor Temp 0", rotatemotor.getTemp());
+        Display.put("TC Motor Temp 1", loadMotor.getTemp());
     }
 
     //increment the ball storage

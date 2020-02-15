@@ -38,9 +38,9 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
             nte = tab.add("Ball Number", 1).withPosition(2, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Requested Field Color", "nope").withPosition(3, 1).getEntry();
+            nte = tab.add("FieldColor", "nope").withPosition(3, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Compressor Running", false).withPosition(4, 1).getEntry();
+            nte = tab.add("CompressorRun", false).withPosition(4, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Pressure", 0.0).withPosition(5, 1).getEntry();
             map.put(nte.getName(), nte);
@@ -50,41 +50,45 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
         
         tab = Shuffleboard.getTab("DriveTrain");
-            nte = tab.add("Drive Motor Current 0", 0.0).withPosition(0, 0).getEntry();
+            nte = tab.add("DMotorCurrent 0", 0.0).withPosition(0, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Current 1", 0.0).withPosition(0, 1).getEntry();
+            nte = tab.add("DMotorCurrent 1", 0.0).withPosition(0, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Current 2", 0.0).withPosition(0, 2).getEntry();
+            nte = tab.add("DMotorCurrent 2", 0.0).withPosition(0, 2).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Current 3", 0.0).withPosition(0, 3).getEntry();
+            nte = tab.add("DMotorCurrent 3", 0.0).withPosition(0, 3).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Temp 0", 0.0).withPosition(1, 0).getEntry();
+            nte = tab.add("DMotorTemp 0", 0.0).withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Temp 1", 0.0).withPosition(1, 1).getEntry();
+            nte = tab.add("DMotorTemp 1", 0.0).withPosition(1, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Temp 2", 0.0).withPosition(1, 2).getEntry();
+            nte = tab.add("DMotorTemp 2", 0.0).withPosition(1, 2).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Drive Motor Temp 3", 0.0).withPosition(1, 3).getEntry();
+            nte = tab.add("DMotorTemp 3", 0.0).withPosition(1, 3).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Temp 0", 0.0).withPosition(1, 4).getEntry();
+            nte = tab.add("TMotorTemp 0", 0.0).withPosition(6, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Temp 1", 0.0).withPosition(1, 5).getEntry();
+            nte = tab.add("TMotorTemp 1", 0.0).withPosition(6, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Temp 2", 0.0).withPosition(1, 6).getEntry();
+            nte = tab.add("TMotorTemp 2", 0.0).withPosition(6, 2).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Temp 3", 0.0).withPosition(1, 7).getEntry();
+            nte = tab.add("TMotorTemp 3", 0.0).withPosition(6, 3).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Field Relative Pos", "x, y").withPosition(2, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("NavX Ang", 0.0).withPosition(3, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Current 0", 0.0).withPosition(4, 0).getEntry();
+            nte = tab.add("TMotorCurrent 0", 0.0).withPosition(4, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Current 1", 0.0).withPosition(4, 1).getEntry();
+            nte = tab.add("TMotorCurrent 1", 0.0).withPosition(4, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Current 2", 0.0).withPosition(4, 2).getEntry();
+            nte = tab.add("TMotorCurrent 2", 0.0).withPosition(4, 2).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Turn Motor Current 3", 0.0).withPosition(4, 3).getEntry();
+            nte = tab.add("TMotorCurrent 3", 0.0).withPosition(4, 3).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("DistSenseInfo Ri", "default").withPosition(7, 0).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("DistSenseInfo Re", "default").withPosition(7, 1).getEntry();
             map.put(nte.getName(), nte);
 
         tab = Shuffleboard.getTab("Climber");
@@ -92,9 +96,9 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
             nte = tab.add("Foot Dropped", false).withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("CC Motor Current 0", 0.0).withPosition(2, 0).getEntry();
+            nte = tab.add("CCMotorCurrent 0", 0.0).withPosition(2, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("CC Motor Current 1", 0.0).withPosition(2, 1).getEntry();
+            nte = tab.add("CCMotorCurrent 1", 0.0).withPosition(2, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("CC Motor Temp 0", 0.0).withPosition(3, 0).getEntry();
             map.put(nte.getName(), nte);
@@ -102,9 +106,7 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
 
         tab = Shuffleboard.getTab("Intake");
-            nte = tab.add("In Motor Current 0", 0.0).withPosition(0, 0).getEntry();
-            map.put(nte.getName(), nte);
-            nte = tab.add("In Motor Current 1", 0.0).withPosition(0, 1).getEntry();
+            nte = tab.add("InMotorCurr", 0.0).withPosition(0, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Extended", false).withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
@@ -124,15 +126,25 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
             nte = tab.add("Has Target", false).withPosition(3, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Current", 0.0).withPosition(4, 0).getEntry();
+            nte = tab.add("CCMotorCurrent 0", 0.0).withPosition(4, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Motor Temp", 0.0).withPosition(5, 0).getEntry();
+            nte = tab.add("CCMotorCurrent 1", 0.0).withPosition(4, 1).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("CC Motor Temp 0", 0.0).withPosition(5, 0).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("CC Motor Temp 1", 0.0).withPosition(5, 1).getEntry();
             map.put(nte.getName(), nte);
 
+
         tab = Shuffleboard.getTab("Transporter");
-            nte = tab.add("TC Motor Current 0", 0.0).withPosition(0, 0).getEntry();
+            
+            nte = tab.add("TCMotorCurrent0", 0.0).withPosition(0, 0).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("TCMotorCurrent1", 0.0).withPosition(0, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("TC Motor Temp 0", 0.0).withPosition(1, 0).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("TC Motor Temp 1", 0.0).withPosition(1, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Ball Number", 0).withPosition(2, 0).getEntry();
             map.put(nte.getName(), nte);
@@ -147,15 +159,23 @@ public class Display extends SubsystemBase{
             nte = tab.add("Ball Position 4", false).withPosition(3, 4).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Current Pos", 0).withPosition(4, 0).getEntry();
+            map.put(nte.getName(), nte);
 
         tab = Shuffleboard.getTab("Color Wheel");
-            nte = tab.add("TC Motor Current", 0.0).withPosition(0, 0).getEntry();
+            nte = tab.add("TCMotorCurrent0", 0.0).withPosition(0,0).getEntry();
+            map.put(nte.getName(), nte);  
+            nte = tab.add("TCMotorCurrent1", 0.0).withPosition(0, 1).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("TC Motor Temp 0", 0.0).withPosition(0, 2).getEntry();
+            map.put(nte.getName(), nte);
+            nte = tab.add("TC Motor Temp 1", 0.0).withPosition(0, 3).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Color Info", "RGB, Ir, p").withPosition(1, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Field Given Color", "null").withPosition(2, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Detected Color", "null").withPosition(3, 0).getEntry();
+            map.put(nte.getName(), nte);
     }
 
     public static void put(String name, double data){
@@ -179,7 +199,7 @@ public class Display extends SubsystemBase{
             map.get(name).setString(data);
         } else {
             //map.get("Last Error").setString(name);
-            
+
         }
     }
 }
