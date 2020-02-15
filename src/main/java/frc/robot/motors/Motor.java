@@ -24,5 +24,6 @@ public abstract class Motor{
     public abstract void setPosition(double position);
     public abstract double getPosition();
     public abstract void setSpeed(double speed);
-
+    public abstract double getCurrent();
+    public abstract double getTemp();
 }

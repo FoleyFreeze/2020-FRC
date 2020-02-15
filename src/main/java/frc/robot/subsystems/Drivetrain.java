@@ -213,4 +213,14 @@ public class Drivetrain extends SubsystemBase{
         }
         return dists;
     }
+
+    public void periodic(){
+        Display.put("NavX Ang", navX.getAngle());
+        for(Wheel w: wheels){
+            Display.put("Drive Motor Current " + w.idx, wheels[w.idx].driveMotor.getCurrent());
+            Display.put("Turn Motor Current " + w.idx, wheels[w.idx].turnMotor.getCurrent());
+            Display.put("Drive Motor Current " + w.idx, wheels[w.idx].driveMotor.getTemp());
+            Display.put("Turn Motor Current " + w.idx, wheels[w.idx].turnMotor.getTemp());
+        }
+    }
 }

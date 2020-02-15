@@ -31,4 +31,11 @@ public class MotorTalonSRX extends Motor{
         motor.set(ControlMode.Position, speed);
     }
     
+    public double getCurrent(){
+        return motor.getStatorCurrent();
+    }
+
+    public double getTemp(){
+        return 0;
+    }
 }

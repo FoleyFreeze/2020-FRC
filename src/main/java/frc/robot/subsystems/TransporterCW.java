@@ -55,6 +55,8 @@ public class TransporterCW extends SubsystemBase{
                 loadMotor.setPower(cCals.colSpeed);
             }
         } else loadMotor.setPower(0.0);
+
+        Display.put("Ball Number", ballnumber);
     }
 
     //increment the ball storage

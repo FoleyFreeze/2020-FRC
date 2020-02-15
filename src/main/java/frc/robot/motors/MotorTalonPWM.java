@@ -28,4 +28,11 @@ public class MotorTalonPWM extends Motor {
         throw new UnsupportedOperationException();
     }
 
+    public double getCurrent(){
+        return 0;
+    }
+
+    public double getTemp(){
+        return 0;
+    }
 }

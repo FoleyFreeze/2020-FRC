@@ -166,7 +166,11 @@ public class CannonClimber extends SubsystemBase{
                     break;
             }
         }
-        
+        Display.put("Foot Dropped", dropFoot.get());
+        Display.put("Motor Current 0", motor.getCurrent());
+        Display.put("Motor Current 1", motor2.getCurrent());
+        Display.put("Motor Temp 0", motor.getTemp());
+        Display.put("Motor Temp 1", motor.getTemp());
     }
 
     //Climber

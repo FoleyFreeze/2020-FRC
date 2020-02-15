@@ -15,6 +15,10 @@ public class Vision extends SubsystemBase{
         public double angle;
         public double timestamp;
         public double robotangle;
+
+        public String toString(){
+            return String.format("T:%.1f, d:%.1f, \u03B8:%.0f", timestamp, dist, angle);
+        }
     }
 
     public VisionCals cals;
@@ -59,7 +63,8 @@ public class Vision extends SubsystemBase{
 
                 vd.timestamp = Timer.getFPGATimestamp();
                 double dt = vd.timestamp - lastFrameTime;
-                SmartDashboard.putNumber("Image dt", dt);
+                //SmartDashboard.putNumber("Image dt", dt);
+                Display.put("Image DT", dt);
                 lastFrameTime = vd.timestamp;
                 int id = Integer.parseInt(parts[0]);
                 int dFrame = id - lastFrameId;
@@ -67,6 +72,8 @@ public class Vision extends SubsystemBase{
                 lastFrameId = id;
 
                 targetData.addFirst(vd);
+
+                Display.put("Last Target", vd.toString());
             } catch(Exception e){
                 e.printStackTrace();
             }
@@ -84,7 +91,8 @@ public class Vision extends SubsystemBase{
 
                 vd.timestamp = Timer.getFPGATimestamp();
                 double dt = vd.timestamp - lastFrameTime;
-                SmartDashboard.putNumber("Image dt", dt);
+                //SmartDashboard.putNumber("Image dt", dt);
+                Display.put("Image DT", dt);
                 lastFrameTime = vd.timestamp;
                 int id = Integer.parseInt(parts[0]);
                 int dFrame = id - lastFrameId;
@@ -92,6 +100,8 @@ public class Vision extends SubsystemBase{
                 lastFrameId = id;
 
                 ballData.addFirst(vd);
+
+                Display.put("Last Ball", vd.toString());
             } catch(Exception e){
                 e.printStackTrace();
             }

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.cals.CalSet;
+import frc.robot.subsystems.Display;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -53,7 +54,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     double time = Timer.getFPGATimestamp();
     double dt = time - lastTime;
-    SmartDashboard.putNumber("dt",dt);
+    //SmartDashboard.putNumber("dt",dt);
+    Display.put("DT", dt);
     lastTime = time;
   }
   double lastTime = 0;
