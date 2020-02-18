@@ -26,14 +26,13 @@ public class TransporterCW extends SubsystemBase{
         this.tCals = tCals;
         this.cCals = cCals;
         mSubsystem = subsystem;
+        if(tCals.disabled && cCals.disabled) return;
 
         rotatemotor = Motor.initMotor(tCals.rotateMotor);
         loadMotor = Motor.initMotor(tCals.loadMotor);
         ballsensor = new DigitalInput(tCals.sensorValue);
         launcher = new Solenoid(tCals.launcherValue);
         CWNotTransport = new Solenoid(tCals.CWNotTransport);
-
-        if(tCals.disabled && cCals.disabled) return;
     }
 
     public void periodic(){

@@ -105,6 +105,7 @@ public class Drivetrain extends SubsystemBase{
         }
 
         navX = new AHRS(Port.kMXP);
+        distSens = new DistanceSensors();
     }
 
     public double parkTime = 0.0;
@@ -115,7 +116,7 @@ public class Drivetrain extends SubsystemBase{
     public double prevAng = 0.0;
     public double goalAng = 0.0;
     public double robotAng = 0;
-    public DistanceSensors distSens = new DistanceSensors();
+    public DistanceSensors distSens;
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){

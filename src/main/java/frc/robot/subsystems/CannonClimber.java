@@ -34,7 +34,7 @@ public class CannonClimber extends SubsystemBase{
         climbCals = cCals;
         if(!sCals.disabled) {
             motor = Motor.initMotor(shootCals.ccMotor);
-            motor2 = Motor.initMotor(shootCals.ccMotor);
+            motor2 = Motor.initMotor(shootCals.ccMotor2);
             hoodSol = new Solenoid(sCals.hoodSolValue);
             stopSol = new Solenoid(sCals.stopSolValue);
             camLightsSol = new Solenoid(sCals.camLightsSol);
