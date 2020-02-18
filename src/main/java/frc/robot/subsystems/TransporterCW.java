@@ -40,8 +40,6 @@ public class TransporterCW extends SubsystemBase{
         mSubsystem = subsystem;
         if(tCals.disabled && cCals.disabled) return;
 
-        if(tCals.disabled && cCals.disabled) return;
-
         rotateMotor = Motor.initMotor(tCals.rotateMotor);
         loadMotor = Motor.initMotor(tCals.loadMotor);
         ballSensor = new DigitalInput(tCals.sensorValue);
