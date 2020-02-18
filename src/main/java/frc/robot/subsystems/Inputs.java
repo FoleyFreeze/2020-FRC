@@ -71,6 +71,7 @@ public class Inputs{
             angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
             autoTrench = new JoystickButton(joy, cals.XB_AUTOTRENCH);
         }
+        //
 /*
         climbUp = new JoystickButton(ds, cals.DS_CLIMBUP);
         climbDn = new JoystickButton(ds, cals.DS_CLIMBDN);
