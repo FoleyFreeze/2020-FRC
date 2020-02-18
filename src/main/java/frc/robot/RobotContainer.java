@@ -12,24 +12,26 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.cals.CWheelCals;
 import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
-import frc.robot.cals.DisplayCals;
 import frc.robot.cals.DriverCals;
-import frc.robot.cals.InputCals;
+import frc.robot.cals.ElectroKendro;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualRevolve;
 import frc.robot.commands.ManualShoot;
+import frc.robot.commands.TrenchRun;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
 import frc.robot.cals.PneumaticsCals;
 import frc.robot.cals.TransporterCals;
 import frc.robot.cals.VisionCals;
 import frc.robot.commands.ZeroReset;
+import frc.robot.commands.TrenchRun.Orientation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoGather;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Climb;
+import frc.robot.commands.Jog;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -42,10 +44,10 @@ public class RobotContainer {
   public final Drivetrain m_drivetrain = new Drivetrain(new DriverCals(), this);
   public final Intake m_intake = new Intake(new IntakeCals());
 
-  public final Inputs m_input = new Inputs(new InputCals());
+  public final Inputs m_input = new Inputs(new ElectroKendro());
   public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
 
-  public CannonClimber m_cannonClimber = new CannonClimber(this, new CannonCals(), new ClimberCals());
+  public CannonClimber m_cannonClimber = new CannonClimber(new CannonCals(), new ClimberCals());
   public Display m_display = new Display();
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
   public TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
@@ -78,6 +80,11 @@ public class RobotContainer {
     m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
     m_input.manualShoot.whileActiveOnce(new ManualShoot(this));
     m_input.revolve.whileActiveOnce(new ManualRevolve(this));
+    m_input.jogUp.whileActiveOnce(new Jog(this, true, true));
+    m_input.jogDn.whileActiveOnce(new Jog(this, true, false));
+    m_input.jogL.whileActiveOnce(new Jog(this, false, true));
+    m_input.jogR.whileActiveOnce(new Jog(this, false, false));
+    m_input.autoTrench.whileActiveOnce(new TrenchRun(this, Orientation.AUTO));
   }
 
 

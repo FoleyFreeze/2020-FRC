@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.cals.InputCals;
+import frc.robot.cals.ElectroKendro;
 import frc.robot.util.Vector;
 
 public class Inputs{
@@ -18,6 +18,7 @@ public class Inputs{
     public Trigger gather;
     public Trigger shoot;
     public JoystickButton angleReset;
+    public JoystickButton autoTrench;
 
     public JoystickButton climbUp;
     public JoystickButton climbDn;
@@ -30,14 +31,18 @@ public class Inputs{
     public JoystickButton camMode;
     public JoystickButton trenchMode;
     public JoystickButton pitMode;
+    public JoystickButton jogUp;
+    public JoystickButton jogDn;
+    public JoystickButton jogL;
+    public JoystickButton jogR;
     
     public double xAxis;
     public double yAxis;
     public double rotXAxis;
 
-    public InputCals cals;
+    public ElectroKendro cals;
 
-    public Inputs(InputCals cal){
+    public Inputs(ElectroKendro cal){
         SmartDashboard.putString("JoystickName", joy.getName());
         flySky = joy.getName().contains("FlySky");
 
@@ -60,8 +65,10 @@ public class Inputs{
 
         if(flySky){
             angleReset = new JoystickButton(joy, cals.FS_ANGRESET);
+            autoTrench = new JoystickButton(joy, cals.FS_AUTOTRENCH);
         }else{
             angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
+            autoTrench = new JoystickButton(joy, cals.XB_AUTOTRENCH);
         }
 
         climbUp = new JoystickButton(ds, cals.DS_CLIMBUP);
@@ -75,6 +82,10 @@ public class Inputs{
         camMode = new JoystickButton(ds, cals.DS_CAMMODE);
         trenchMode = new JoystickButton(ds, cals.DS_TRENCHMODE);
         pitMode = new JoystickButton(ds, cals.DS_PITMODE);
+        jogUp = new JoystickButton(ds, cals.DS_JOGUP);
+        jogDn = new JoystickButton(ds, cals.DS_JOGDN);
+        jogR = new JoystickButton(ds, cals.DS_JOGR);
+        jogL = new JoystickButton(ds, cals.DS_JOGL);
     }
 
     public boolean fieldOrient(){
@@ -195,22 +206,6 @@ public class Inputs{
 
     public boolean cam(){
         return ds.getRawButton(cals.DS_CAMMODE);
-    }
-
-    public boolean jogL(){
-        return false;
-    }
-
-    public boolean jogR(){
-        return false;
-    }
-
-    public boolean jogUp(){
-        return false;
-    }
-
-    public boolean jogDn(){
-        return false;
     }
 
     public boolean intake(){

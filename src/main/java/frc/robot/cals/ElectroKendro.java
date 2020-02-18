@@ -1,12 +1,13 @@
 package frc.robot.cals;
 
-public class InputCals extends CalSet{
+public class ElectroKendro extends CalSet{
 
     //fly sky buttons and axes
     public final int FS_FINTAKE = 1;
     public final int FS_RINTAKE = 2;
     public final int FS_FIELDORIENT = 3;
     public final int FS_ANGRESET = 4;
+    public final int FS_AUTOTRENCH = -1;
 
     public final int FS_XAXIS = 0;
     public final int FS_YAXIS = 1;
@@ -23,6 +24,7 @@ public class InputCals extends CalSet{
     public final int XB_RINTAKE = 2;
     public final int XB_FIELDORIENT = 3;
     public final int XB_ANGRESET = 4;
+    public final int XB_AUTOTRENCH = -1;
 
     public final int XB_XAXIS = 0;
     public final int XB_YAXIS = 1;
@@ -46,8 +48,12 @@ public class InputCals extends CalSet{
     public final int DS_CAMMODE = -1;
     public final int DS_TRENCHMODE = -1;
     public final int DS_PITMODE = -1;
+    public final int DS_JOGUP = -1;
+    public final int DS_JOGDN = -1;
+    public final int DS_JOGR = -1;
+    public final int DS_JOGL = -1;
 
-    public InputCals(){
+    public ElectroKendro(){
 
     }
 }

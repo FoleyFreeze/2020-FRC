@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
 import frc.robot.motors.Motor;
@@ -20,19 +19,17 @@ public class CannonClimber extends SubsystemBase{
     }
     private Solenoid hoodSol;
     private Solenoid stopSol;
+    private Solenoid camLightsSol;
 
     private Solenoid shootVsClimb;
 
     private Solenoid dropFoot;
-    
-    private RobotContainer m_subsystem;
 
     HoodPos hCurrPos = HoodPos.LOW;
     HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
 
-    public CannonClimber(RobotContainer subsystem, CannonCals sCals, ClimberCals cCals){
-        m_subsystem = subsystem;
+    public CannonClimber(CannonCals sCals, ClimberCals cCals){
         shootCals = sCals;
         climbCals = cCals;
 
@@ -41,6 +38,7 @@ public class CannonClimber extends SubsystemBase{
 
         hoodSol = new Solenoid(sCals.hoodSolValue);
         stopSol = new Solenoid(sCals.stopSolValue);
+        camLightsSol = new Solenoid(sCals.camLightsSol);
         shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
         dropFoot = new Solenoid(cCals.dropFootValue);
         
@@ -60,8 +58,9 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public void prime(double distToTgt){
+        distToTgt += shootCals.initJogDist;
         if(climbCals.disabled && shootCals.disabled) return;
-        shootVsClimb.set(true);
+        shootVsClimb.set(false);
         double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
@@ -173,13 +172,32 @@ public class CannonClimber extends SubsystemBase{
         Display.put("CC Motor Temp 1", motor.getTemp());
     }
 
+    public void jogUpDn(boolean up){
+        if(up){
+            shootCals.initJogDist += shootCals.distJog;
+        }else{
+            shootCals.initJogDist -= shootCals.distJog;
+        }
+    }
+
+    public void jogLR(boolean left){
+        if(left){
+            shootCals.initJogAng -= shootCals.angJog;
+        }else{
+            shootCals.initJogAng += shootCals.angJog;
+        }
+    }
+
     //Climber
     public void climbMode(){
         if(climbCals.disabled && shootCals.disabled) return;
-        shootVsClimb.set(false);
+        shootVsClimb.set(true);
     }
     public void dropFoot(boolean on){
         if(climbCals.disabled && shootCals.disabled) return;
         dropFoot.set(on);
+    }
+    public void setCamLights(boolean on){
+        camLightsSol.set(on);
     }
 }

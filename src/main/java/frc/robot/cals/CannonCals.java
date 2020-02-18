@@ -9,12 +9,17 @@ public class CannonCals extends CalSet {
     public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, -1);
     public int hoodSolValue = -1;
     public int stopSolValue = -1;
+    public int camLightsSol = -1;
     public int ShootVClimbValue = -1;
     public double layupDist;
     public double trenchDist;
     public double power;
     public double kPDrive;
     public double tolerance = 3.0;
+    public double initJogDist = 0.0;
+    public double initJogAng = 0.0;
+    public double distJog = 3.0;
+    public double angJog = 1.0;
     public double[][] rpm = {{1000.0, 2000.0, 5400.0},
                              {1000.0, 2000.0, 5400.0},
                              {1000.0, 2000.0, 5400.0}, 
