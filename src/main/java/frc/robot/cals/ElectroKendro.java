@@ -6,8 +6,8 @@ public class ElectroKendro extends CalSet{
     public final int FS_FINTAKE = 1;
     public final int FS_RINTAKE = 2;
     public final int FS_FIELDORIENT = 3;
-    public final int FS_ANGRESET = 4;
-    public final int FS_AUTOTRENCH = -1;
+    public final int FS_ANGRESET = 5;
+    public final int FS_AUTOTRENCH = 4;
 
     public final int FS_XAXIS = 0;
     public final int FS_YAXIS = 1;
@@ -20,11 +20,11 @@ public class ElectroKendro extends CalSet{
 
 
     //xbox buttons and axes
-    public final int XB_FINTAKE = 1;
-    public final int XB_RINTAKE = 2;
+    public final int XB_REVOLVE = 1;//public final int XB_FINTAKE = 1;
+    public final int XB_SHOOT = 2;//public final int XB_RINTAKE = 2;
     public final int XB_FIELDORIENT = 3;
-    public final int XB_ANGRESET = 4;
-    public final int XB_AUTOTRENCH = -1;
+    public final int XB_ANGRESET = 5;
+    public final int XB_AUTOTRENCH = 4;
 
     public final int XB_XAXIS = 0;
     public final int XB_YAXIS = 1;

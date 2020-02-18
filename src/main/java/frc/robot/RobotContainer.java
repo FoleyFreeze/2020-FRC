@@ -77,9 +77,9 @@ public class RobotContainer {
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
     m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
     m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));
-    m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
+    //m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
     m_input.manualShoot.whileActiveOnce(new ManualShoot(this));
-    m_input.revolve.whileActiveOnce(new ManualRevolve(this));
+    //m_input.revolve.whileActiveOnce(new ManualRevolve(this));
     m_input.jogUp.whileActiveOnce(new Jog(this, true, true));
     m_input.jogDn.whileActiveOnce(new Jog(this, true, false));
     m_input.jogL.whileActiveOnce(new Jog(this, false, true));

@@ -43,8 +43,8 @@ public class MotorSparkMax extends Motor{
     }
 
     public void setPower(double power){
-        if(power > 0) power *= cals.maxPower;
-        else if(power < 0) power *= cals.minPower;
+        if(power > 0) power = cals.maxPower;
+        else if(power < 0) power = cals.minPower;
         //System.out.println(power);
         motor.set(power);
     }

@@ -32,23 +32,29 @@ public class CannonClimber extends SubsystemBase{
     public CannonClimber(CannonCals sCals, ClimberCals cCals){
         shootCals = sCals;
         climbCals = cCals;
+        if(!sCals.disabled) {
+            motor = Motor.initMotor(shootCals.ccMotor);
+            motor2 = Motor.initMotor(shootCals.ccMotor);
+            hoodSol = new Solenoid(sCals.hoodSolValue);
+            stopSol = new Solenoid(sCals.stopSolValue);
+            camLightsSol = new Solenoid(sCals.camLightsSol);
+        }
 
-        motor = Motor.initMotor(shootCals.ccMotor);
-        motor2 = Motor.initMotor(shootCals.ccMotor);
-
-        hoodSol = new Solenoid(sCals.hoodSolValue);
-        stopSol = new Solenoid(sCals.stopSolValue);
-        camLightsSol = new Solenoid(sCals.camLightsSol);
-        shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
-        dropFoot = new Solenoid(cCals.dropFootValue);
+        if(!cCals.disabled){
+            shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
+            dropFoot = new Solenoid(cCals.dropFootValue);
+        }
         
-        if(sCals.disabled && cCals.disabled) return;
     }
     
     public void setpower(double power){
         if(shootCals.disabled) return;
         motor.setPower(power);
         motor2.setPower(power);
+        Display.put("CCMotorCurrent 0", motor.getCurrent());
+        Display.put("CCMotorCurrent 1", motor2.getCurrent());
+        Display.put("CC Motor Temp 0", motor.getTemp());
+        Display.put("CC Motor Temp 1", motor2.getTemp());
     }
 
     public void setspeed(double speed){
@@ -59,8 +65,9 @@ public class CannonClimber extends SubsystemBase{
 
     public void prime(double distToTgt){
         distToTgt += shootCals.initJogDist;
-        if(climbCals.disabled && shootCals.disabled) return;
-        shootVsClimb.set(false);
+        if(shootCals.disabled) return;
+        if(!climbCals.disabled) shootVsClimb.set(false);
+
         double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
@@ -111,7 +118,7 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public void periodic(){
-        if(climbCals.disabled && shootCals.disabled) return;
+        if(climbCals.disabled || shootCals.disabled) return;
         if(Timer.getFPGATimestamp()>solRestTime){
             switch(hTgtPos){
                 case LOW:
@@ -169,7 +176,7 @@ public class CannonClimber extends SubsystemBase{
         Display.put("CCMotorCurrent 0", motor.getCurrent());
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
-        Display.put("CC Motor Temp 1", motor.getTemp());
+        Display.put("CC Motor Temp 1", motor2.getTemp());
     }
 
     public void jogUpDn(boolean up){
