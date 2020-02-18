@@ -145,6 +145,7 @@ public class Drivetrain extends SubsystemBase{
 
         driveKinematics = new SwerveDriveKinematics(fLWheelLoc, fRWheelLoc, rLWheelLoc, rRWheelLoc);
         driveOdom = new SwerveDriveOdometry(driveKinematics, new Rotation2d());
+        distSens = new DistanceSensors();
     }
 
     public double parkTime = 0.0;
@@ -155,7 +156,6 @@ public class Drivetrain extends SubsystemBase{
     public double prevAng = 0.0;
     public double goalAng = 0.0;
     public double robotAng = 0;
-    public DistanceSensors distSens = new DistanceSensors();
     public Translation2d fRWheelLoc;
     public Translation2d fLWheelLoc;
     public Translation2d rRWheelLoc;
@@ -163,6 +163,7 @@ public class Drivetrain extends SubsystemBase{
     public SwerveDriveKinematics driveKinematics;
     public SwerveDriveOdometry driveOdom;
     public Pose2d drivePos;
+    public DistanceSensors distSens;
 
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
         drive(strafe, rot, centX, centY, fieldOrient, 1);

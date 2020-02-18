@@ -71,14 +71,14 @@ public class Inputs{
             angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
             autoTrench = new JoystickButton(joy, cals.XB_AUTOTRENCH);
         }
-
+/*
         climbUp = new JoystickButton(ds, cals.DS_CLIMBUP);
         climbDn = new JoystickButton(ds, cals.DS_CLIMBDN);
         enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
         dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
         manualIntake = new JoystickButton(ds, cals.DS_MINTAKE);
         revolve = new JoystickButton(ds, cals.DS_REVOLVE);
-        manualShoot = new JoystickButton(joy, cals.XB_SHOOT);
+        
         shift = new JoystickButton(ds, cals.DS_SHIFT);
         camMode = new JoystickButton(ds, cals.DS_CAMMODE);
         trenchMode = new JoystickButton(ds, cals.DS_TRENCHMODE);
@@ -86,7 +86,9 @@ public class Inputs{
         jogUp = new JoystickButton(ds, cals.DS_JOGUP);
         jogDn = new JoystickButton(ds, cals.DS_JOGDN);
         jogR = new JoystickButton(ds, cals.DS_JOGR);
-        jogL = new JoystickButton(ds, cals.DS_JOGL);
+        jogL = new JoystickButton(ds, cals.DS_JOGL);*/
+
+        manualShoot = new JoystickButton(joy, cals.XB_SHOOT);
     }
 
     public boolean fieldOrient(){

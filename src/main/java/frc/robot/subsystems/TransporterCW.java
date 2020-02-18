@@ -38,6 +38,7 @@ public class TransporterCW extends SubsystemBase{
         this.tCals = tCals;
         this.cCals = cCals;
         mSubsystem = subsystem;
+        if(tCals.disabled && cCals.disabled) return;
 
         if(tCals.disabled && cCals.disabled) return;
 
