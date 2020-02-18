@@ -78,7 +78,7 @@ public class Inputs{
         dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
         manualIntake = new JoystickButton(ds, cals.DS_MINTAKE);
         revolve = new JoystickButton(ds, cals.DS_REVOLVE);
-        manualShoot = new JoystickButton(ds, cals.DS_MSHOOT);
+        manualShoot = new JoystickButton(joy, cals.XB_SHOOT);
         shift = new JoystickButton(ds, cals.DS_SHIFT);
         camMode = new JoystickButton(ds, cals.DS_CAMMODE);
         trenchMode = new JoystickButton(ds, cals.DS_TRENCHMODE);

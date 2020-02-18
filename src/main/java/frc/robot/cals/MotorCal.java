@@ -74,6 +74,7 @@ public class MotorCal {
         minPower = min;
         if(minPower > 0) minPower = -min;
         maxPower = max;
+        if(maxPower < 0) maxPower = -max;
         return this;
     }
 
