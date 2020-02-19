@@ -8,4 +8,16 @@ public class PneumaticsCals extends CalSet{
     public final double pauseTime = 5.0;
 
     public final int PNE_PSENSORID = -1;
+
+    public PneumaticsCals(){
+        switch(type){
+            case COMPETITION:
+
+            break;
+
+            case PRACTICE:
+
+            break;
+        }
+    }
 }

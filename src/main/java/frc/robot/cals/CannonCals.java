@@ -5,15 +5,15 @@ import frc.robot.cals.MotorCal.MotorType;
 public class CannonCals extends CalSet {
 
     public boolean disabled = true;
-    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, -1);
-    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, -1);
-    public int hoodSolValue = -1;
-    public int stopSolValue = -1;
-    public int camLightsSol = -1;
-    public int ShootVClimbValue = -1;
+    public MotorCal ccMotor;
+    public MotorCal ccMotor2;
+    public int hoodSolValue;
+    public int stopSolValue;
+    public int camLightsSol;
+    public int ShootVClimbValue;
     public double layupDist;
     public double trenchDist;
-    public double power;
+    public double shootPwr = -1;
     public double kPDrive;
     public double tolerance = 3.0;
     public double initJogDist = 0.0;
@@ -38,7 +38,13 @@ public class CannonCals extends CalSet {
             break;
 
             case PRACTICE:
+                ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(-0.55, 0.55);
+                ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().limit(-0.55, 0.55);
 
+                hoodSolValue = -1;
+                stopSolValue = -1;
+                camLightsSol = -1;
+                ShootVClimbValue = -1;
             break;
         }
     }

@@ -46,6 +46,8 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
             nte = tab.add("Last Error", "N/A").withPosition(6, 1).getEntry();
             map.put(nte.getName(), nte);
+            nte = tab.add("Comp/Prac", "N/A").withPosition(7, 1).getEntry();
+            map.put(nte.getName(), nte);
         
         tab = Shuffleboard.getTab("DriveTrain");
             nte = tab.add("DMotorCurrent 0", 0.0).withPosition(0, 0).getEntry();

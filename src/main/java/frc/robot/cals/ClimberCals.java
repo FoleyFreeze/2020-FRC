@@ -15,7 +15,7 @@ public class ClimberCals extends CalSet {
             break;
 
             case PRACTICE:
-
+            
             break;
         }
     }

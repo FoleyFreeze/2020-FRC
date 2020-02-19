@@ -10,6 +10,7 @@ import frc.robot.cals.ElectroKendro;
 import frc.robot.util.Vector;
 
 public class Inputs{
+
     public boolean flySky;//there is also an f310
     
     public Joystick joy = new Joystick(0);

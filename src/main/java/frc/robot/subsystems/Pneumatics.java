@@ -17,8 +17,8 @@ public class Pneumatics extends SubsystemBase{
 
     public Pneumatics(PneumaticsCals cals){
         mCals = cals;
-        pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
         if(mCals.disabled) return;
+        pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
     }
 
     public void pauseReq(boolean breakThresh){

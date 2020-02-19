@@ -245,5 +245,7 @@ public class Drivetrain extends SubsystemBase{
 
         Display.put("DistSenseInfo Re", distSens.getRear().toString());
         Display.put("DistSenseInfo Ri", distSens.getRight().toString());
+
+        robotAng = navX.getAngle();
     }
 }
