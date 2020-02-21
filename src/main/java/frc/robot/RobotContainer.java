@@ -60,7 +60,7 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
     CommandScheduler.getInstance().registerSubsystem(m_intake);
     
-    m_intake.setDefaultCommand(new AutoGather(this, 0.0, m_input.autoGather()));
+    //m_intake.setDefaultCommand(new AutoGather(this, 0.0, m_input.autoGather()));
     m_drivetrain.setDefaultCommand(m_JoystickDrive);
     
     // Configure the button bindings    

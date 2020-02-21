@@ -10,26 +10,41 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Display extends SubsystemBase{
 
     public static HashMap<String, NetworkTableEntry> map = new HashMap<>();
+    static NetworkTableEntry error;
 
     public Display(){
     }
 
+    public static void addToTab(ShuffleboardTab tab, String name, double init, int x, int y){
+        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+        map.put(name,nte);
+    }
+    public static void addToTab(ShuffleboardTab tab, String name, String init, int x, int y){
+        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+        map.put(name,nte);
+    }
+    public static void addToTab(ShuffleboardTab tab, String name, boolean init, int x, int y){
+        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+        map.put(name,nte);
+    }
+
     public static void init(){
         ShuffleboardTab tab = Shuffleboard.getTab("Comp");
-            NetworkTableEntry nte = tab.add("Selected Auton", "default").withPosition(1,0).getEntry();
-            map.put(nte.getName(), nte);
-            nte = tab.add("Pi Alive", false).withPosition(2, 0).getEntry();
-            map.put(nte.getName(), nte);
-            nte = tab.add("Last Target", "time, dist, ang").withPosition(3, 0).getEntry();
-            map.put(nte.getName(), nte);
+            addToTab(tab, "Selected Auton", "default", 1, 0);
+            addToTab(tab, "Pi Alive", false, 2, 0);
+            String name;
+            NetworkTableEntry nte;
+            name = "Last Target";
+            nte = tab.add(name, "time, dist, ang").withPosition(3, 0).getEntry();
+            map.put(name, nte);
+            name = "Last";
             nte = tab.add("Last Ball", "time, dist, ang").withPosition(4, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("DT", 0.0).withPosition(5, 0).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Image DT", 0.0).withPosition(6, 0).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Robo Pos", "x, y").withPosition(7, 0).getEntry();
-            map.put(nte.getName(), nte);
+            addToTab(tab, "Robo Pos", "x, y", 7, 0);
             nte = tab.add("NavX Ang", 0.0).withPosition(0, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Motors Good", true).withPosition(1, 1).getEntry();
@@ -46,7 +61,10 @@ public class Display extends SubsystemBase{
             map.put(nte.getName(), nte);
             nte = tab.add("Last Error", "N/A").withPosition(6, 1).getEntry();
             map.put(nte.getName(), nte);
-            nte = tab.add("Comp/Prac", "N/A").withPosition(7, 1).getEntry();
+            error = nte;
+            System.out.println("Error Name");
+            System.out.println(nte.getName());
+            nte = tab.add("RobotType", "N/A").withPosition(7, 1).getEntry();
             map.put(nte.getName(), nte);
         
         tab = Shuffleboard.getTab("DriveTrain");
@@ -182,7 +200,7 @@ public class Display extends SubsystemBase{
         if(map.containsKey(name)){
             map.get(name).setDouble(data);
         } else {
-            //map.get("Last Error").setString(name);
+            error.setString(name);
         }
     }
 
@@ -190,7 +208,7 @@ public class Display extends SubsystemBase{
         if(map.containsKey(name)){
             map.get(name).setBoolean(data);
         } else {
-            //map.get("Last Error").setString(name);
+            error.setString(name);
         }
     }
 
@@ -198,8 +216,7 @@ public class Display extends SubsystemBase{
         if(map.containsKey(name)){
             map.get(name).setString(data);
         } else {
-            //map.get("Last Error").setString(name);
-
+            error.setString(name);
         }
     }
 }
