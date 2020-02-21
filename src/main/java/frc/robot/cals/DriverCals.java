@@ -2,7 +2,7 @@ package frc.robot.cals;
 
 public class DriverCals extends CalSet {
 
-    public boolean disabled = true;
+    public boolean disabled = false;
 
     public MotorCal[] driveMotors = {   
         MotorCal.spark( 1).ramp(0.3).limit(0.5, 0.5).coast(), 
@@ -34,6 +34,11 @@ public class DriverCals extends CalSet {
     public double trenchRunAngKp = 0.01;
     public double trenchRunDistKp = 0.01;
 
+    public double autoDriveStrafeKp = 0.01;
+    public double autoDriveAngKp = 0.01;
+    public double autoDriveStrafeRange = 6;
+    public double autoDriveAngRange = 6;
+
     public final double DRV_XROBOTCENT = 0.0;
     public final double DRV_YROBOTCENT = 0.0;
 
@@ -54,6 +59,25 @@ public class DriverCals extends CalSet {
 
             case PRACTICE:
                 angleOffset = new double[]{3.052,3.037,0.536,2.168};
+            break;
+
+            case LASTYEAR:
+                angleOffset = new double[]{0.988,4.673,0.688,3.042};
+                
+                driveMotors[0] = MotorCal.spark( 1).ramp(0.3).limit(0.5, 0.5).coast();
+                driveMotors[1] = MotorCal.spark(14).ramp(0.3).limit(0.5, 0.5).coast();
+                driveMotors[2] = MotorCal.spark(20).ramp(0.3).limit(0.5, 0.5).coast();
+                driveMotors[3] = MotorCal.spark(15).ramp(0.3).limit(0.5, 0.5).coast();
+
+                turnMotors[0] = MotorCal.spark( 5).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001);
+                turnMotors[1] = MotorCal.spark(11).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001); 
+                turnMotors[2] = MotorCal.spark( 4).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001); 
+                turnMotors[3] = MotorCal.spark(10).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001);
+
+                turnEncoderIds[0] = 0;
+                turnEncoderIds[1] = 1;
+                turnEncoderIds[2] = 2;
+                turnEncoderIds[3] = 3;
             break;
 
         }

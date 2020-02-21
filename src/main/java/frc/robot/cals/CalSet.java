@@ -6,18 +6,22 @@ import frc.robot.subsystems.Display;
 public class CalSet {
 
     public static enum BotType {
-        COMPETITION, PRACTICE
+        COMPETITION, PRACTICE, LASTYEAR
     }
     public static BotType type;
 
     public static void identifyBot(){
         DigitalInput di = new DigitalInput(9);//TODO: make this a constant id
-        if(di.get()){
+        DigitalInput lastYearDi = new DigitalInput(8);
+        if(!lastYearDi.get()){
+            type = BotType.LASTYEAR;
+        } else if(di.get()){
             type = BotType.COMPETITION;
         } else {
             type = BotType.PRACTICE;
         }
         di.close();
+        lastYearDi.close();
 
         Display.put("Comp/Prac", type.toString());
     } 

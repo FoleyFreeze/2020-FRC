@@ -28,6 +28,7 @@ import frc.robot.commands.ZeroReset;
 import frc.robot.commands.TrenchRun.Orientation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.AutoGather;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Climb;
@@ -95,6 +96,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new AutoDrive(this, 0, 120, 0, true);
   }
 }

@@ -3,6 +3,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -24,6 +30,9 @@ public class Drivetrain extends SubsystemBase{
         Vector rotVec;
         Vector wheelVec;
         double angleOffset;
+        double prevTime;
+        double prevPos;
+        SwerveModuleState state;
         
         //create a wheel object to make assigning motor values easier
         public Wheel(DriverCals cals, int idx){
@@ -33,6 +42,9 @@ public class Drivetrain extends SubsystemBase{
             location = Vector.fromXY(cals.xPos[idx], cals.yPos[idx]);
             this.idx = idx;
             this.angleOffset = cals.angleOffset[cals.turnEncoderIds[idx]];
+            state = new SwerveModuleState();
+            prevTime = 0;
+            prevPos = 0;
         }
 
         public double calcRotVec(double centX, double centY){
@@ -86,6 +98,20 @@ public class Drivetrain extends SubsystemBase{
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
         }
+
+        public SwerveModuleState getState(){
+            double time = Timer.getFPGATimestamp();
+            double pos = driveMotor.getPosition();
+            
+            double velocity = (pos - prevPos)/(time - prevTime)*k.driveGearRatio;
+            Rotation2d wheelAng = new Rotation2d(Math.toRadians(turnMotor.getPosition()*k.turnGearRatio)%360);
+            prevTime = time;
+            prevPos = pos;
+            
+            state.speedMetersPerSecond = velocity;
+            state.angle = wheelAng;
+            return state;
+        }
     }
 
     Wheel[] wheels;
@@ -105,6 +131,16 @@ public class Drivetrain extends SubsystemBase{
         }
 
         navX = new AHRS(Port.kMXP);
+
+        fLWheelLoc = new Translation2d(k.xPos[0], k.yPos[0]);
+        fRWheelLoc = new Translation2d(k.xPos[1], k.yPos[1]);
+        rLWheelLoc = new Translation2d(k.xPos[2], k.yPos[2]);
+        rRWheelLoc = new Translation2d(k.xPos[3], k.yPos[3]);
+
+        driveKinematics = new SwerveDriveKinematics(fLWheelLoc, fRWheelLoc, rLWheelLoc, rRWheelLoc);
+        driveOdom = new SwerveDriveOdometry(driveKinematics, new Rotation2d());
+        
+        
     }
 
     public double parkTime = 0.0;
@@ -116,9 +152,24 @@ public class Drivetrain extends SubsystemBase{
     public double goalAng = 0.0;
     public double robotAng = 0;
     public DistanceSensors distSens = new DistanceSensors();
+    public Translation2d fRWheelLoc;
+    public Translation2d fLWheelLoc;
+    public Translation2d rRWheelLoc;
+    public Translation2d rLWheelLoc;
+    public SwerveDriveKinematics driveKinematics;
+    public SwerveDriveOdometry driveOdom;
+    public Pose2d drivePos;
+
+    public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
+        drive(strafe, rot, centX, centY, fieldOrient, 1);
+    }
+    
+    public void drive(Vector strafe, double rot){
+        drive(strafe, rot, 0, 0, mSubsystem.m_input.fieldOrient());
+    }
 
         //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
-    public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
+    public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient, double maxPower){
         if(k.disabled) return;
         currentTime = Timer.getFPGATimestamp();
         //SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", 
@@ -181,7 +232,7 @@ public class Drivetrain extends SubsystemBase{
 
         }
         
-        double maxPower = 1;
+        //double maxPower = 1;
         if(mSubsystem.m_input.pitMode()){
             maxPower = 0.2;
         }
@@ -246,6 +297,10 @@ public class Drivetrain extends SubsystemBase{
         Display.put("DistSenseInfo Re", distSens.getRear().toString());
         Display.put("DistSenseInfo Ri", distSens.getRight().toString());
 
-        robotAng = navX.getAngle();
+        robotAng = -navX.getAngle();
+        Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng));
+        
+        drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
+            wheels[2].getState(), wheels[3].getState());
     }
 }
