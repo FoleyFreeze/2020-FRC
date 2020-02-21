@@ -23,7 +23,8 @@ public class CalSet {
         di.close();
         lastYearDi.close();
 
-        Display.put("Comp/Prac", type.toString());
+        Display.put("RobotType", type.toString());
+        System.out.println("RobotType: " + type);
     } 
 
     public static boolean isCompBot(){

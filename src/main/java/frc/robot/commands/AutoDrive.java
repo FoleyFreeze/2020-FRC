@@ -20,11 +20,12 @@ public class AutoDrive extends CommandBase{
     private double errorRot;
     private boolean deltaVsField;
     private Pose2d pose;
-    private DriverCals mCals = m_subsystem.m_drivetrain.k;
+    private DriverCals mCals;
 
     public AutoDrive(RobotContainer subsystem, double deltaX, double deltaY, double angle, boolean deltaVsField){
         m_subsystem = subsystem;
         addRequirements(m_subsystem.m_drivetrain);
+        mCals = m_subsystem.m_drivetrain.k;
         this.deltaX = deltaX;
         this.deltaY = deltaY;
         this.tgtRot = angle;

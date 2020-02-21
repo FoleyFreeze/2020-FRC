@@ -302,5 +302,9 @@ public class Drivetrain extends SubsystemBase{
         
         drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
             wheels[2].getState(), wheels[3].getState());
+
+        double x = drivePos.getTranslation().getX();
+        double y = drivePos.getTranslation().getY();
+        Display.put("Robo Pos", String.format("%.0f %.0f",x,y));
     }
 }

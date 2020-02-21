@@ -64,15 +64,15 @@ public class DriverCals extends CalSet {
             case LASTYEAR:
                 angleOffset = new double[]{0.988,4.673,0.688,3.042};
                 
-                driveMotors[0] = MotorCal.spark( 1).ramp(0.3).limit(0.5, 0.5).coast();
-                driveMotors[1] = MotorCal.spark(14).ramp(0.3).limit(0.5, 0.5).coast();
-                driveMotors[2] = MotorCal.spark(20).ramp(0.3).limit(0.5, 0.5).coast();
-                driveMotors[3] = MotorCal.spark(15).ramp(0.3).limit(0.5, 0.5).coast();
+                driveMotors[0] = MotorCal.spark( 1).ramp(0.3).limit(0.2, 0.2).coast();
+                driveMotors[1] = MotorCal.spark(14).ramp(0.3).limit(0.2, 0.2).coast();
+                driveMotors[2] = MotorCal.spark(20).ramp(0.3).limit(0.2, 0.2).coast();
+                driveMotors[3] = MotorCal.spark(15).ramp(0.3).limit(0.2, 0.2).coast();
 
-                turnMotors[0] = MotorCal.spark( 5).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001);
-                turnMotors[1] = MotorCal.spark(11).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001); 
-                turnMotors[2] = MotorCal.spark( 4).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001); 
-                turnMotors[3] = MotorCal.spark(10).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.6, 0.6).brake().ramp(0.001);
+                turnMotors[0] = MotorCal.spark( 5).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.2, 0.2).brake().ramp(0.001);
+                turnMotors[1] = MotorCal.spark(11).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.2, 0.2).brake().ramp(0.001); 
+                turnMotors[2] = MotorCal.spark( 4).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.2, 0.2).brake().ramp(0.001); 
+                turnMotors[3] = MotorCal.spark(10).pid(0.002, 0, 0.004, 0).dFilt(0.01).limit(0.2, 0.2).brake().ramp(0.001);
 
                 turnEncoderIds[0] = 0;
                 turnEncoderIds[1] = 1;
