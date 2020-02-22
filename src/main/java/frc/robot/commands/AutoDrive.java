@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
@@ -19,7 +20,7 @@ public class AutoDrive extends CommandBase{
     private double errorY;
     private double errorRot;
     private boolean deltaVsField;
-    private Pose2d pose;
+    
     private DriverCals mCals;
 
     public AutoDrive(RobotContainer subsystem, double deltaX, double deltaY, double angle, boolean deltaVsField){
@@ -30,12 +31,11 @@ public class AutoDrive extends CommandBase{
         this.deltaY = deltaY;
         this.tgtRot = angle;
         this.deltaVsField = deltaVsField;
-
-        pose = m_subsystem.m_drivetrain.drivePos;
     }
 
     @Override
     public void initialize(){
+        Pose2d pose = m_subsystem.m_drivetrain.drivePos;
         if(deltaVsField){
             tgtX = pose.getTranslation().getX() + deltaX;
             tgtY = pose.getTranslation().getY() + deltaY;
@@ -43,16 +43,25 @@ public class AutoDrive extends CommandBase{
             tgtX = deltaX;
             tgtY = deltaY;
         }
+        SmartDashboard.putNumber("AutoXtgt",tgtX);
+        SmartDashboard.putNumber("AutoYtgt",tgtY);
     }
 
     @Override
     public void execute(){
-        errorX = (tgtX - pose.getTranslation().getX()) * mCals.autoDriveStrafeKp;
-        errorY = (tgtY - pose.getTranslation().getY()) * mCals.autoDriveStrafeKp;
-        errorRot = (Math.toRadians(tgtRot) - pose.getRotation().getRadians()) * mCals.autoDriveAngKp;
+        Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        errorX = (tgtX - pose.getTranslation().getX());
+        errorY = (tgtY - pose.getTranslation().getY());
+        errorRot = tgtRot - m_subsystem.m_drivetrain.robotAng;
+        if(errorRot > 180) errorRot-= 360;
+        else if(errorRot < -180) errorRot+=360;
 
-        Vector strafe = Vector.fromXY(errorX, errorY);
-        m_subsystem.m_drivetrain.drive(strafe, errorRot, 0, 0, true, 0.2);
+        Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
+        m_subsystem.m_drivetrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, 0.2);
+
+        SmartDashboard.putNumber("AutoXerr",errorX);
+        SmartDashboard.putNumber("AutoYerr",errorY);
+        SmartDashboard.putNumber("AutoAngerr",errorRot);
     }
 
     @Override

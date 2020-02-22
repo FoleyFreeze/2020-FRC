@@ -182,18 +182,22 @@ public class Inputs{
     }
 
     public boolean enableBudClimb(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_ENABLEBUDCLIMB);
     }
 
     public boolean climbUp(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_CLIMBUP);
     }
 
     public boolean climbDn(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_CLIMBDN);
     }
 
     public boolean dropFoot(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_DROPFOOT);
     }
 
@@ -202,18 +206,22 @@ public class Inputs{
     }
 
     public boolean trench(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_TRENCHMODE);
     }
 
     public boolean cam(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_CAMMODE);
     }
 
     public boolean intake(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_MINTAKE);
     }
 
     public boolean revolve(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_REVOLVE);
     }
 
@@ -226,6 +234,7 @@ public class Inputs{
     }
 
     public boolean pitMode(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_PITMODE);
     }
 }

@@ -44,15 +44,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    I2C mux = new I2C(edu.wpi.first.wpilibj.I2C.Port.kOnboard, 0x70);
-    byte[] cs2 = {0x02};
-    byte[] cs4 = {0x04};
-    System.out.println("Mux write returned: " + mux.writeBulk(cs2));
-    mux.close();
-
-    ds = new I2CDistSense(Port.kOnboard, Unit.kInches, RangeProfile.kDefault);
-    ds.setEnabled(true);
-    ds.setAutomaticMode(true);
   }
 
   /**
@@ -74,8 +65,6 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("dt",dt);
     Display.put("DT", dt);
     lastTime = time;
-
-    SmartDashboard.putData("ds", ds);
   }
   
   I2CDistSense ds;
@@ -102,7 +91,7 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_autonomousCommand.schedule(false);
     }
   }
 

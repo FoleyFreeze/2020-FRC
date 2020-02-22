@@ -72,8 +72,13 @@ public class MotorCal {
 
     public MotorCal limit(double min, double max){
         minPower = min;
+        if(minPower > 0) minPower = -min;
         maxPower = max;
         return this;
+    }
+
+    public MotorCal limit(double lim){
+        return limit(lim,lim);
     }
 
     public MotorCal dFilt(double filter){

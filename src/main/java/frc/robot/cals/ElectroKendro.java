@@ -37,6 +37,7 @@ public class ElectroKendro extends CalSet{
 
 
     //driver station buttons and switches
+    public final boolean DS_ENABLED = false;
     public final int DS_CLIMBUP = -1;
     public final int DS_CLIMBDN = -1;
     public final int DS_ENABLEBUDCLIMB = -1;
