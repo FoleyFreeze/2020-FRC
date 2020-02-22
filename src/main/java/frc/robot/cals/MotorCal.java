@@ -38,8 +38,7 @@ public class MotorCal {
     MotorCal(MotorType type, int id, double powerLim){
         this.type = type;
         this.id = id;
-        this.maxPower = powerLim;
-        this.minPower = -powerLim;
+        limit(powerLim);
     }
 
     MotorCal(MotorType type, int id){

@@ -30,11 +30,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoShoot;
-<<<<<<< HEAD
 import frc.robot.commands.AutonSquare;
-=======
-import frc.robot.commands.CWCombo;
->>>>>>> CW logic v2, to be debugged
 import frc.robot.commands.Climb;
 import frc.robot.commands.Jog;
 
@@ -64,7 +60,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
-    CommandScheduler.getInstance().registerSubsystem(m_intake);
+    //CommandScheduler.getInstance().registerSubsystem(m_intake);
     
     //m_intake.setDefaultCommand(new AutoGather(this, 0.0, m_input.autoGather()));
     m_drivetrain.setDefaultCommand(m_JoystickDrive);
@@ -80,12 +76,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_input.shoot.whileActiveOnce(new AutoShoot(this));
-    m_input.angleReset.whileActiveOnce(new ZeroReset(this));
+    //m_input.shoot.whileActiveOnce(new AutoShoot(this));
+    //m_input.angleReset.whileActiveOnce(new ZeroReset(this));
     //m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
     //m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));
     //m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
-    m_input.manualShoot.whileActiveOnce(new ManualShoot(this));
+    //m_input.manualShoot.whileActiveOnce(new ManualShoot(this));
     //m_input.revolve.whileActiveOnce(new ManualRevolve(this));
     //m_input.jogUp.whileActiveOnce(new Jog(this, true, true));
     //m_input.jogDn.whileActiveOnce(new Jog(this, true, false));

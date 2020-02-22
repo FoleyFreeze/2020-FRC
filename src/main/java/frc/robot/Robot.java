@@ -66,8 +66,6 @@ public class Robot extends TimedRobot {
     Display.put("DT", dt);
     lastTime = time;
   }
-  
-  I2CDistSense ds;
 
   double lastTime = 0;
 
