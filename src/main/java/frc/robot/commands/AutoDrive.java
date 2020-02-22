@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
+import frc.robot.util.Util;
 import frc.robot.util.Vector;
 
 public class AutoDrive extends CommandBase{
@@ -50,6 +51,8 @@ public class AutoDrive extends CommandBase{
     @Override
     public void execute(){
         Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        double poseX = pose.getTranslation().getX();
+        double poseY = pose.getTranslation().getX();
         errorX = (tgtX - pose.getTranslation().getX());
         errorY = (tgtY - pose.getTranslation().getY());
         errorRot = tgtRot - m_subsystem.m_drivetrain.robotAng;
@@ -57,7 +60,15 @@ public class AutoDrive extends CommandBase{
         else if(errorRot < -180) errorRot+=360;
 
         Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
-        m_subsystem.m_drivetrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, 0.2);
+
+        double power = mCals.autoDriveMaxPwr;
+        double distFromStart = poseX -tgtX + deltaX;
+        double startPwr = ((power - mCals.autoDriveStartPwr)/(mCals.autoDriveStartDist)) * distFromStart 
+            + mCals.autoDriveStartPwr;
+        double endPwr = ((power - mCals.autoDriveEndPwr)/(mCals.autoDriveEndDist)) * errorX + mCals.autoDriveEndPwr;
+        power = Util.min(power, startPwr, endPwr);
+
+        m_subsystem.m_drivetrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, power);
 
         SmartDashboard.putNumber("AutoXerr",errorX);
         SmartDashboard.putNumber("AutoYerr",errorY);
