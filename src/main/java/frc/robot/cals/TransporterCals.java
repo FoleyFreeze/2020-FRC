@@ -22,6 +22,10 @@ public class TransporterCals extends CalSet {
             case PRACTICE:
 
             break;
+
+            case LASTYEAR:
+            
+            break;
         }
     }
 }

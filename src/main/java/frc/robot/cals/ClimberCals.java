@@ -17,6 +17,10 @@ public class ClimberCals extends CalSet {
             case PRACTICE:
             
             break;
+
+            case LASTYEAR:
+
+            break;
         }
     }
 }
