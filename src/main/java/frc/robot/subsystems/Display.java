@@ -45,8 +45,7 @@ public class Display extends SubsystemBase{
             nte = tab.add("Image DT", 0.0).withPosition(6, 0).getEntry();
             map.put(nte.getName(), nte);
             addToTab(tab, "Robo Pos", "x, y", 7, 0);
-            nte = tab.add("NavX Ang", 0.0).withPosition(0, 1).getEntry();
-            map.put(nte.getName(), nte);
+            addToTab(tab, "NavX Ang", 0, 0, 1);
             nte = tab.add("Motors Good", true).withPosition(1, 1).getEntry();
             map.put(nte.getName(), nte);
             nte = tab.add("Ball Number", 1).withPosition(2, 1).getEntry();
