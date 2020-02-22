@@ -16,7 +16,8 @@ public class Util{
     public static double min(double... num){//smart min
         double min = num[0];
         for(double i : num){
-            if(i < min) min = i;
+            int i2 = (int) i;
+            if(num[i2] < min) min = num[i2];
         }
         return min;
     }
@@ -24,7 +25,8 @@ public class Util{
     public static double max(double... num){//smart max
         double max = num[0];
         for(double i : num){
-            if(i > max) max = i;
+            int i2 = (int) i;
+            if(num[i2] > max) max = num[i2];
         }
         return max;
     }
