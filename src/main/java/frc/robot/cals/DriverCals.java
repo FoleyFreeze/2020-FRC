@@ -36,6 +36,11 @@ public class DriverCals extends CalSet {
     public double autoDriveAngKp = 0.01;
     public double autoDriveStrafeRange = 6;
     public double autoDriveAngRange = 6;
+    public double autoDriveMaxPwr = 0.5;
+    public double autoDriveStartPwr = 0.1;
+    public double autoDriveEndPwr = 0.1;
+    public double autoDriveStartDist = 36;
+    public double autoDriveEndDist = 36;
 
     public final double DRV_XROBOTCENT = 0.0;
     public final double DRV_YROBOTCENT = 0.0;
