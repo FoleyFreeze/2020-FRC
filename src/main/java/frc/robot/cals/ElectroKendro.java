@@ -41,17 +41,18 @@ public class ElectroKendro extends CalSet{
     public final int DS_CLIMBDN = -1;
     public final int DS_ENABLEBUDCLIMB = -1;
     public final int DS_DROPFOOT = -1;
-    public final int DS_MINTAKE = -1;
-    public final int DS_REVOLVE = -1;
-    public final int DS_MSHOOT = -1;
-    public final int DS_SHIFT = -1;
-    public final int DS_CAMMODE = -1;
-    public final int DS_TRENCHMODE = -1;
-    public final int DS_PITMODE = -1;
-    public final int DS_JOGUP = -1;
-    public final int DS_JOGDN = -1;
-    public final int DS_JOGR = -1;
+    public final int DS_MINTAKE = 3;
+    public final int DS_REVOLVE = 1;
+    public final int DS_MSHOOT = 2;
+    public final int DS_SHIFT = 5;
+    public final int DS_CAMMODE = 8;
+    public final int DS_TRENCHMODE = 9;
+    public final int DS_PITMODE = 4;
+    public final int DS_JOGUP = 11;
+    public final int DS_JOGDN = 10;
+    public final int DS_JOGR = 7;
     public final int DS_JOGL = -1;
+    public final int DS_TWOVTHREE = 6;
 
     public ElectroKendro(){
 
