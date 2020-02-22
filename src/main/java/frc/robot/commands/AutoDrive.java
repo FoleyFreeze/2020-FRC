@@ -20,6 +20,7 @@ public class AutoDrive extends CommandBase{
     private double errorY;
     private double errorRot;
     private boolean deltaVsField;
+    private Pose2d startPos;
     
     private DriverCals mCals;
 
@@ -36,6 +37,7 @@ public class AutoDrive extends CommandBase{
     @Override
     public void initialize(){
         Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        startPos = pose;
         if(deltaVsField){
             tgtX = pose.getTranslation().getX() + deltaX;
             tgtY = pose.getTranslation().getY() + deltaY;
@@ -59,7 +61,9 @@ public class AutoDrive extends CommandBase{
         Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
 
         double power = mCals.autoDriveMaxPwr;
-        double distFromStart = tgtY - deltaY;
+        double tgtDist = (tgtY - startPos.getTranslation().getY()) / (tgtX - startPos.getTranslation().getX());
+        double errorDist = (errorY - startPos.getTranslation().getY()) / (errorX - startPos.getTranslation().getX());
+        double distFromStart = tgtDist - errorDist;
         double startPwr = ((power - mCals.autoDriveStartPwr)/(mCals.autoDriveStartDist)) * distFromStart 
             + mCals.autoDriveStartPwr;
         double endPwr = ((power - mCals.autoDriveEndPwr)/(mCals.autoDriveEndDist)) * errorY + mCals.autoDriveEndPwr;
