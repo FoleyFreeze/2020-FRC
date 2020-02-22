@@ -46,6 +46,10 @@ public class CannonCals extends CalSet {
                 camLightsSol = -1;
                 ShootVClimbValue = -1;
             break;
+
+            case LASTYEAR:
+
+            break;
         }
     }
 }

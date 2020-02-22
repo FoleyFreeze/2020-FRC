@@ -16,6 +16,10 @@ public class VisionCals extends CalSet {
             case PRACTICE:
 
             break;
+
+            case LASTYEAR:
+
+            break;
         }
     }
 }

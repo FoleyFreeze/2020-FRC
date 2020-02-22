@@ -24,6 +24,10 @@ public class CWheelCals extends CalSet {
             case PRACTICE:
 
             break;
+
+            case LASTYEAR:
+
+            break;
         }
     }
 }
