@@ -12,4 +12,22 @@ public class Util{
         double x = value - axis[i];
         return slope*x + table[i];
     }
+
+    public static double min(double... num){//smart min
+        double min = num[0];
+        for(double i : num){
+            int i2 = (int) i;
+            if(num[i2] < min) min = num[i2];
+        }
+        return min;
+    }
+
+    public static double max(double... num){//smart max
+        double max = num[0];
+        for(double i : num){
+            int i2 = (int) i;
+            if(num[i2] > max) max = num[i2];
+        }
+        return max;
+    }
 }

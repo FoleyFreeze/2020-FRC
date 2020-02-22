@@ -12,7 +12,7 @@ public class DistanceSensors{
         public double timestamp;
 
         public String toString(){
-            return String.format("T: %0f, D: %.1f, \u03B8: %0f", Timer.getFPGATimestamp() - timestamp, dist, angle);
+            return String.format("T: %.0f, D: %.1f, \u03B8: %.0f", Timer.getFPGATimestamp() - timestamp, dist, angle);
         }
     }
 

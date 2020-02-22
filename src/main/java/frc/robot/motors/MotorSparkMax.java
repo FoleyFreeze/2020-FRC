@@ -34,17 +34,22 @@ public class MotorSparkMax extends Motor{
             motor.getPIDController().setD(cal.kD);
             motor.getPIDController().setFF(cal.kF);
             motor.getPIDController().setDFilter(cal.kDFilt);
-            motor.getPIDController().setOutputRange(-cal.minPower, 
+            motor.getPIDController().setOutputRange(cal.minPower, 
                 cal.maxPower);
             motor.setClosedLoopRampRate(cal.rampRate);
         }
         
         motor.setInverted(cal.invert);
+
+        motor.getEncoder().setPosition(0);
     }
 
     public void setPower(double power){
-        if(power > 0) power = cals.maxPower;
-        else if(power < 0) power = cals.minPower;
+        if(power > 1) power = 1;
+        else if(power < -1) power = -1;
+
+        if(power > cals.maxPower) power *= cals.maxPower;
+        else if(power < cals.minPower) power *= cals.minPower;
         //System.out.println(power);
         motor.set(power);
     }

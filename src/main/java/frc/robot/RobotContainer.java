@@ -28,8 +28,9 @@ import frc.robot.commands.ZeroReset;
 import frc.robot.commands.TrenchRun.Orientation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.AutoGather;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.AutonSquare;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Jog;
 
@@ -51,7 +52,9 @@ public class RobotContainer {
   public Display m_display = new Display();
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
   public TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
-  public Vision m_vision = new Vision(new VisionCals()); 
+  public Vision m_vision = new Vision(new VisionCals());
+
+  private SequentialCommandGroup autonCmds;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -95,6 +98,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    autonCmds.addCommands(
+      new AutonSquare(this)
+    );
+    return autonCmds;
   }
 }

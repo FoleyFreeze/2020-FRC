@@ -1,47 +1,91 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.cals.DriverCals;
+import frc.robot.util.Util;
 import frc.robot.util.Vector;
 
 public class AutoDrive extends CommandBase{
 
     private RobotContainer m_subsystem;
-    public double m_distance;
-    public double m_direction;
-    public double[] m_start;
-    public double m_power;
+    private double tgtX;
+    private double tgtY;
+    private double tgtRot;
+    private double deltaX;
+    private double deltaY;
+    private double errorX;
+    private double errorY;
+    private double errorRot;
+    private boolean deltaVsField;
+    private Pose2d startPos;
+    
+    private DriverCals mCals;
 
-    public AutoDrive(RobotContainer subsystem, double distance, double direction, double power){
+    public AutoDrive(RobotContainer subsystem, double deltaX, double deltaY, double angle, boolean deltaVsField){
         m_subsystem = subsystem;
-        m_distance = distance;
-        m_direction = direction;
-        m_power = power;
+        addRequirements(m_subsystem.m_drivetrain);
+        mCals = m_subsystem.m_drivetrain.k;
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
+        this.tgtRot = angle;
+        this.deltaVsField = deltaVsField;
     }
 
     @Override
     public void initialize(){
-        m_start = m_subsystem.m_drivetrain.getDist();
+        Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        startPos = pose;
+        if(deltaVsField){
+            tgtX = pose.getTranslation().getX() + deltaX;
+            tgtY = pose.getTranslation().getY() + deltaY;
+        } else {
+            tgtX = deltaX;
+            tgtY = deltaY;
+        }
+        SmartDashboard.putNumber("AutoXtgt",tgtX);
+        SmartDashboard.putNumber("AutoYtgt",tgtY);
     }
 
     @Override
     public void execute(){
-        Vector strafe = new Vector(m_power, m_direction);
-        m_subsystem.m_drivetrain.drive(strafe, 0, 0, 0, true);
+        Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        errorX = (tgtX - pose.getTranslation().getX());
+        errorY = (tgtY - pose.getTranslation().getY());
+        errorRot = tgtRot - m_subsystem.m_drivetrain.robotAng;
+        if(errorRot > 180) errorRot-= 360;
+        else if(errorRot < -180) errorRot+=360;
+
+        Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
+
+        double power = mCals.autoDriveMaxPwr;
+        double tgtDist = (tgtY - startPos.getTranslation().getY()) / (tgtX - startPos.getTranslation().getX());
+        double errorDist = (errorY - startPos.getTranslation().getY()) / (errorX - startPos.getTranslation().getX());
+        double distFromStart = tgtDist - errorDist;
+        double startPwr = ((power - mCals.autoDriveStartPwr)/(mCals.autoDriveStartDist)) * distFromStart 
+            + mCals.autoDriveStartPwr;
+        double endPwr = ((power - mCals.autoDriveEndPwr)/(mCals.autoDriveEndDist)) * errorY + mCals.autoDriveEndPwr;
+        power = Util.min(power, startPwr, endPwr);
+
+        m_subsystem.m_drivetrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, power);
+
+        SmartDashboard.putNumber("AutoXerr",errorX);
+        SmartDashboard.putNumber("AutoYerr",errorY);
+        SmartDashboard.putNumber("AutoAngerr",errorRot);
     }
 
     @Override
     public void end(boolean interrupted){
-
+        m_subsystem.m_drivetrain.drive(new Vector(0, 0), 0, 0, 0, true);
     }
 
     @Override
     public boolean isFinished(){
-        double[] dists = m_subsystem.m_drivetrain.getDist();
-        double diff = 0;
-        for(int i = 0 ; i < dists.length ; i++){
-            diff += Math.abs(dists[i] - m_start[i]);
-        }
-        return diff / 4 > m_distance;
+        if(Math.abs(errorX) < mCals.autoDriveStrafeRange && Math.abs(errorY) < 
+        mCals.autoDriveStrafeRange && Math.abs(errorRot) < mCals.autoDriveAngRange){
+            return true;
+        } else return false;
     }
 }

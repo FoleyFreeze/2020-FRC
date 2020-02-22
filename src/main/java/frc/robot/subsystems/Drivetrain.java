@@ -3,6 +3,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -24,6 +30,9 @@ public class Drivetrain extends SubsystemBase{
         Vector rotVec;
         Vector wheelVec;
         double angleOffset;
+        double prevTime;
+        double prevPos;
+        SwerveModuleState state;
         
         //create a wheel object to make assigning motor values easier
         public Wheel(DriverCals cals, int idx){
@@ -33,6 +42,9 @@ public class Drivetrain extends SubsystemBase{
             location = Vector.fromXY(cals.xPos[idx], cals.yPos[idx]);
             this.idx = idx;
             this.angleOffset = cals.angleOffset[cals.turnEncoderIds[idx]];
+            state = new SwerveModuleState();
+            prevTime = 0;
+            prevPos = 0;
         }
 
         public double calcRotVec(double centX, double centY){
@@ -73,18 +85,32 @@ public class Drivetrain extends SubsystemBase{
             }
             //SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
             //SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
-            SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
+            //SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
-            double deltaTicks = angleDiff / (2*Math.PI) * k.turnGearRatio;
+            double deltaTicks = angleDiff / (2*Math.PI) * k.turnTicksPerRev;
             double targetTicks = turnMotor.getPosition();
-            if((wheelVec.r != 0 || parkMode) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
+            if((wheelVec.r != 0 || parkMode) /*&& Math.abs(deltaTicks) > k.DRV_TURNDEADBND*/){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
-            SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
-            SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
+            //SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
+            //SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
+        }
+
+        public SwerveModuleState getState(){
+            double time = Timer.getFPGATimestamp();
+            double pos = -driveMotor.getPosition();
+            
+            double velocity = (pos - prevPos)/(time - prevTime) / k.driveTicksPerIn;
+            Rotation2d wheelAng = new Rotation2d((enc.getVoltage() - angleOffset) * 2*Math.PI / 5);
+            prevTime = time;
+            prevPos = pos;
+            
+            state.speedMetersPerSecond = velocity;
+            state.angle = wheelAng;
+            return state;
         }
     }
 
@@ -105,6 +131,20 @@ public class Drivetrain extends SubsystemBase{
         }
 
         navX = new AHRS(Port.kMXP);
+        navX.calibrate();
+        try{
+            Thread.sleep(200);
+        } catch(Exception e){
+        }
+        navX.reset();
+
+        fLWheelLoc = new Translation2d(k.xPos[0], k.yPos[0]);
+        fRWheelLoc = new Translation2d(k.xPos[1], k.yPos[1]);
+        rLWheelLoc = new Translation2d(k.xPos[2], k.yPos[2]);
+        rRWheelLoc = new Translation2d(k.xPos[3], k.yPos[3]);
+
+        driveKinematics = new SwerveDriveKinematics(fLWheelLoc, fRWheelLoc, rLWheelLoc, rRWheelLoc);
+        driveOdom = new SwerveDriveOdometry(driveKinematics, new Rotation2d());
         distSens = new DistanceSensors();
     }
 
@@ -116,10 +156,25 @@ public class Drivetrain extends SubsystemBase{
     public double prevAng = 0.0;
     public double goalAng = 0.0;
     public double robotAng = 0;
+    public Translation2d fRWheelLoc;
+    public Translation2d fLWheelLoc;
+    public Translation2d rRWheelLoc;
+    public Translation2d rLWheelLoc;
+    public SwerveDriveKinematics driveKinematics;
+    public SwerveDriveOdometry driveOdom;
+    public Pose2d drivePos;
     public DistanceSensors distSens;
 
-        //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
+        drive(strafe, rot, centX, centY, fieldOrient, 1);
+    }
+    
+    public void drive(Vector strafe, double rot){
+        drive(strafe, rot, 0, 0, mSubsystem.m_input.fieldOrient());
+    }
+
+        //joystick x, joystick y, joystick rot, center of rotation x and y, field oriented
+    public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient, double maxPower){
         if(k.disabled) return;
         currentTime = Timer.getFPGATimestamp();
         //SmartDashboard.putString("Strafe", String.format("%.2f, %.0f", 
@@ -130,7 +185,7 @@ public class Drivetrain extends SubsystemBase{
             strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
         }
         
-        SmartDashboard.putBoolean("Driving Straigth", driveStraight);
+        //SmartDashboard.putBoolean("Driving Straigth", driveStraight);
         
         if(0 == rot && 0 == strafe.r){
             if(parkTime <= currentTime){
@@ -153,7 +208,7 @@ public class Drivetrain extends SubsystemBase{
 
         //SmartDashboard.putNumber("Rot", rot);
         //SmartDashboard.putNumber("parkTime", parkTime);
-        SmartDashboard.putBoolean("parkMode", parkMode);
+        //SmartDashboard.putBoolean("parkMode", parkMode);
         
         double maxMag = 0;
         for(Wheel w : wheels){//calculate rotation
@@ -182,18 +237,20 @@ public class Drivetrain extends SubsystemBase{
 
         }
         
-        double maxPower = 1;
+        //double maxPower = 1;
         if(mSubsystem.m_input.pitMode()){
             maxPower = 0.2;
         }
+
         if(Math.abs(maxOut.wheelVec.r) > maxPower){
             double reducRatio = maxPower/maxOut.wheelVec.r;
 
-            strafe.r *= reducRatio;
+            //strafe.r *= reducRatio;
 
             for(Wheel w: wheels){
-                w.rotVec.r *= reducRatio;
-                w.wheelVec= Vector.add(strafe, w.rotVec);
+                //w.rotVec.r *= reducRatio;
+                //w.wheelVec= Vector.add(strafe, w.rotVec);
+                w.wheelVec.r *= reducRatio;
             }
         }
 
@@ -203,8 +260,8 @@ public class Drivetrain extends SubsystemBase{
             //SmartDashboard.putString("FinalWheel" + w.idx, 
             //    w.wheelVec.toString());
             w.drive(parkMode);
-            SmartDashboard.putNumber("DrivePower "+w.idx, strafe.r);
-            SmartDashboard.putNumber("Turn Pwr" + w.idx, w.rotVec.r);
+            //SmartDashboard.putNumber("DrivePower "+w.idx, strafe.r);
+            //SmartDashboard.putNumber("Turn Pwr" + w.idx, w.rotVec.r);
         }
 
         prevAng = navX.getAngle();
@@ -221,7 +278,7 @@ public class Drivetrain extends SubsystemBase{
     public double[] getDist(){
         double[] dists = new double[4];
         for(int i = 0 ; i < wheels.length ; i++){
-            dists[i] = wheels[i].driveMotor.getPosition() * k.driveGearRatio;
+            dists[i] = wheels[i].driveMotor.getPosition() / k.driveTicksPerIn;
         }
         return dists;
     }
@@ -246,5 +303,15 @@ public class Drivetrain extends SubsystemBase{
 
         Display.put("DistSenseInfo Re", distSens.getRear().toString());
         Display.put("DistSenseInfo Ri", distSens.getRight().toString());
+
+        robotAng = -navX.getAngle();
+        Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng));
+        
+        drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
+            wheels[2].getState(), wheels[3].getState());
+
+        double x = drivePos.getTranslation().getX();
+        double y = drivePos.getTranslation().getY();
+        Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
     }
 }

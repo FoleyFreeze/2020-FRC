@@ -32,19 +32,16 @@ public class CannonClimber extends SubsystemBase{
     public CannonClimber(CannonCals sCals, ClimberCals cCals){
         shootCals = sCals;
         climbCals = cCals;
-        if(!sCals.disabled) {
-            motor = Motor.initMotor(shootCals.ccMotor);
-            motor2 = Motor.initMotor(shootCals.ccMotor2);
-            hoodSol = new Solenoid(sCals.hoodSolValue);
-            stopSol = new Solenoid(sCals.stopSolValue);
-            camLightsSol = new Solenoid(sCals.camLightsSol);
-        }
+        if(sCals.disabled || cCals.disabled) return;
 
-        if(!cCals.disabled){
-            shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
-            dropFoot = new Solenoid(cCals.dropFootValue);
-        }
-        
+        motor = Motor.initMotor(shootCals.ccMotor);
+        motor2 = Motor.initMotor(shootCals.ccMotor2);
+
+        hoodSol = new Solenoid(sCals.hoodSolValue);
+        stopSol = new Solenoid(sCals.stopSolValue);
+        camLightsSol = new Solenoid(sCals.camLightsSol);
+        shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
+        dropFoot = new Solenoid(cCals.dropFootValue);
     }
     
     public void setpower(double power){
