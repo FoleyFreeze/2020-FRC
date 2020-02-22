@@ -30,7 +30,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoShoot;
+<<<<<<< HEAD
 import frc.robot.commands.AutonSquare;
+=======
+import frc.robot.commands.CWCombo;
+>>>>>>> CW logic v2, to be debugged
 import frc.robot.commands.Climb;
 import frc.robot.commands.Jog;
 
@@ -88,6 +92,7 @@ public class RobotContainer {
     //m_input.jogL.whileActiveOnce(new Jog(this, false, true));
     //m_input.jogR.whileActiveOnce(new Jog(this, false, false));
     //m_input.autoTrench.whileActiveOnce(new TrenchRun(this, Orientation.AUTO));
+    //m_input.cwActivate.whileActiveOnce(new CWCombo(this));
   }
 
 

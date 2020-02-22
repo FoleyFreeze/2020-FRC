@@ -54,6 +54,7 @@ public class ElectroKendro extends CalSet{
     public final int DS_JOGR = 7;
     public final int DS_JOGL = -1;
     public final int DS_TWOVTHREE = 6;
+    public final int DS_CWACTIVATE = -1;
 
     public ElectroKendro(){
 

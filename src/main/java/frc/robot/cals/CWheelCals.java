@@ -9,6 +9,8 @@ public class CWheelCals extends CalSet {
     public boolean disabled = true;
     public double rotSpeed = 1;
     public double colSpeed = 0.5;
+    public double cwInitSpeed = 0.2;
+    public double stopBuffer = 0.5;
     public final Color Red = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public final Color Blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
     public final Color Green = ColorMatch.makeColor(0.197, 0.561, 0.240);

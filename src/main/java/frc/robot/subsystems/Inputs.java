@@ -36,6 +36,7 @@ public class Inputs{
     public JoystickButton jogDn;
     public JoystickButton jogL;
     public JoystickButton jogR;
+    public JoystickButton cwActivate;
     
     public double xAxis;
     public double yAxis;
@@ -86,9 +87,9 @@ public class Inputs{
         jogUp = new JoystickButton(ds, cals.DS_JOGUP);
         jogDn = new JoystickButton(ds, cals.DS_JOGDN);
         jogR = new JoystickButton(ds, cals.DS_JOGR);
-        jogL = new JoystickButton(ds, cals.DS_JOGL);*/
-
-        manualShoot = new JoystickButton(joy, cals.XB_SHOOT);
+        jogL = new JoystickButton(ds, cals.DS_JOGL);
+        cwActivate = new JoystickButton(ds, cals.DS_CWACTIVATE);
+        */
     }
 
     public boolean fieldOrient(){

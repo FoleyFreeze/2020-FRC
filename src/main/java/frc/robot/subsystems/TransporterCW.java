@@ -32,6 +32,7 @@ public class TransporterCW extends SubsystemBase{
     public ColorMatch colorMatch;
     public String colorString;
     public Color detectedColor;
+    public Color lastColor;
     public String gameData;
 
     public TransporterCW(TransporterCals tCals, CWheelCals cCals, RobotContainer subsystem){
@@ -102,6 +103,7 @@ public class TransporterCW extends SubsystemBase{
             colorSensor.getIR(), colorSensor.getProximity()));
         Display.put("Detected Color", String.format("Color Guess: " + colorString + 
             " Confidence: %f", match.confidence));
+        lastColor = detectedColor;
     }
 
     //increment the ball storage

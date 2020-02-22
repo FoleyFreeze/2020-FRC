@@ -2,13 +2,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.util.Vector;
 
 public class CWMove extends CommandBase{
     
     RobotContainer m_subsystem;
+    Vector xy;
+    double start;
 
-    public void CWMove(){
-
+    public CWMove(RobotContainer subsystem){
+        m_subsystem = subsystem;
+        addRequirements(m_subsystem.m_drivetrain);
+        xy = Vector.fromXY(0, -12);
+        start = m_subsystem.m_drivetrain.drivePos.getTranslation().getY();
     }
 
     @Override
@@ -18,16 +24,16 @@ public class CWMove extends CommandBase{
 
     @Override
     public void execute(){
-
+        m_subsystem.m_drivetrain.drive(xy, 0);
     }
 
     @Override
     public void end(boolean interrupted){
-
+        m_subsystem.m_transporterCW.launcher.set(false);
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        return m_subsystem.m_drivetrain.drivePos.getTranslation().getY() >= start - 12;
     }
 }
