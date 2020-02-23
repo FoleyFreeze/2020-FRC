@@ -94,7 +94,8 @@ public class Drivetrain extends SubsystemBase{
                 targetTicks += deltaTicks;
             } 
             //SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
-            SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
+            //SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
+            SmartDashboard.putNumber("DrivePwr"+idx,wheelVec.r);
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
         }

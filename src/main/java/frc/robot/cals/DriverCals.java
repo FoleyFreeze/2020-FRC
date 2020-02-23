@@ -5,15 +5,15 @@ public class DriverCals extends CalSet {
     public boolean disabled = false;
 
     public MotorCal[] driveMotors = {   
-        MotorCal.spark(20).ramp(0.3).limit(0.9).coast(), 
-        MotorCal.spark( 1).ramp(0.3).limit(0.9).coast(), 
-        MotorCal.spark(14).ramp(0.3).limit(0.9).coast(), 
-        MotorCal.spark(15).ramp(0.3).limit(0.9).coast()};
+        MotorCal.spark(20).ramp(0.3).limit(1.0).coast(), 
+        MotorCal.spark( 1).ramp(0.3).limit(1.0).coast(), 
+        MotorCal.spark(14).ramp(0.3).limit(1.0).coast(), 
+        MotorCal.spark(15).ramp(0.3).limit(1.0).coast()};
     public MotorCal[] turnMotors = {   
-        MotorCal.spark( 5).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
-        MotorCal.spark( 4).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
-        MotorCal.spark(10).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
-        MotorCal.spark(11).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001)};
+        MotorCal.spark( 5).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001), 
+        MotorCal.spark( 4).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001), 
+        MotorCal.spark(10).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001), 
+        MotorCal.spark(11).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001)};
     public int[] turnEncoderIds = {2, 1, 3, 0};
     public double[] xPos = {-10.75, 10.75, -10.75, 10.75};
     public double[] yPos = {12.5, 12.5, -12.5, -12.5};
