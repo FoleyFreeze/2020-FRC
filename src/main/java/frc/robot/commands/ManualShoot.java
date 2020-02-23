@@ -19,9 +19,9 @@ public class ManualShoot extends CommandBase{
     @Override
     public void execute(){
         if(m_subsystem.m_input.shift()){
-            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.shootPwr);
+            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.power);
         } else{
-            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.shootPwr * -1.0);
+            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.power * -1.0);
         }
     }
 

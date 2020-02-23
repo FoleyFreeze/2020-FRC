@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class Pneumatics extends SubsystemBase{
     
-    private Compressor mCompressor = new Compressor(8);
+    private Compressor mCompressor;
     private PneumaticsCals mCals;
     private double pauseTime;
     private boolean paused;
@@ -18,6 +18,7 @@ public class Pneumatics extends SubsystemBase{
     public Pneumatics(PneumaticsCals cals){
         mCals = cals;
         if(mCals.disabled) return;
+        mCompressor = new Compressor();
         pressureSensor = new AnalogInput(mCals.PNE_PSENSORID);
     }
 

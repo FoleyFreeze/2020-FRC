@@ -67,11 +67,11 @@ public class Drivetrain extends SubsystemBase{
             //SmartDashboard.putNumber("AngleRaw" + idx, 
             //    Math.toDegrees(angleDiff));
 
+            //angle diff is now between -PI and PI
             angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
             //angleDiff = Math.IEEEremainder(angleDiff, 2*Math.PI) - Math.PI;
 
-            //SmartDashboard.putNumber("AngleDiff" + idx, 
-            //    Math.toDegrees(angleDiff));
+            //SmartDashboard.putNumber("AngleDiff" + idx, Math.toDegrees(angleDiff));
 
             if(Math.abs(angleDiff) > Math.PI/2){
                 wheelVec.r *= -1;
@@ -85,16 +85,16 @@ public class Drivetrain extends SubsystemBase{
             }
             //SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
             //SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
-            //SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
+            SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
             double deltaTicks = angleDiff / (2*Math.PI) * k.turnTicksPerRev;
             double targetTicks = turnMotor.getPosition();
-            if((wheelVec.r != 0 || parkMode) /*&& Math.abs(deltaTicks) > k.DRV_TURNDEADBND*/){ //don't turn unless we actually want to move
+            if((wheelVec.r != 0 || parkMode) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             //SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
-            //SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
+            SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
         }
@@ -148,7 +148,7 @@ public class Drivetrain extends SubsystemBase{
         distSens = new DistanceSensors();
     }
 
-    public double parkTime = 0.0;
+    public double parkTime = 9000.0;
     public boolean parkMode = false;
     double currentTime = 0.0;
     public double prevRot;
@@ -245,12 +245,12 @@ public class Drivetrain extends SubsystemBase{
         if(Math.abs(maxOut.wheelVec.r) > maxPower){
             double reducRatio = maxPower/maxOut.wheelVec.r;
 
-            //strafe.r *= reducRatio;
+            strafe.r *= reducRatio;
 
             for(Wheel w: wheels){
-                //w.rotVec.r *= reducRatio;
-                //w.wheelVec= Vector.add(strafe, w.rotVec);
-                w.wheelVec.r *= reducRatio;
+                w.rotVec.r *= reducRatio;
+                w.wheelVec= Vector.add(strafe, w.rotVec);
+                //w.wheelVec.r *= reducRatio;
             }
         }
 

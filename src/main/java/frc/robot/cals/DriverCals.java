@@ -5,15 +5,15 @@ public class DriverCals extends CalSet {
     public boolean disabled = false;
 
     public MotorCal[] driveMotors = {   
-        MotorCal.spark(20).ramp(0.3).limit(0.25).coast(), 
-        MotorCal.spark( 1).ramp(0.3).limit(0.25).coast(), 
-        MotorCal.spark(14).ramp(0.3).limit(0.25).coast(), 
-        MotorCal.spark(15).ramp(0.3).limit(0.25).coast()};
+        MotorCal.spark(20).ramp(0.3).limit(0.9).coast(), 
+        MotorCal.spark( 1).ramp(0.3).limit(0.9).coast(), 
+        MotorCal.spark(14).ramp(0.3).limit(0.9).coast(), 
+        MotorCal.spark(15).ramp(0.3).limit(0.9).coast()};
     public MotorCal[] turnMotors = {   
-        MotorCal.spark( 8).pid(0.08, 0, 0.16, 0).dFilt(0.01).limit(0.3).brake().ramp(0.001), 
-        MotorCal.spark( 4).pid(0.08, 0, 0.16, 0).dFilt(0.01).limit(0.3).brake().ramp(0.001), 
-        MotorCal.spark(10).pid(0.08, 0, 0.16, 0).dFilt(0.01).limit(0.3).brake().ramp(0.001), 
-        MotorCal.spark(11).pid(0.08, 0, 0.16, 0).dFilt(0.01).limit(0.3).brake().ramp(0.001)};
+        MotorCal.spark( 5).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
+        MotorCal.spark( 4).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
+        MotorCal.spark(10).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
+        MotorCal.spark(11).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001)};
     public int[] turnEncoderIds = {2, 1, 3, 0};
     public double[] xPos = {-10.75, 10.75, -10.75, 10.75};
     public double[] yPos = {12.5, 12.5, -12.5, -12.5};
@@ -25,7 +25,7 @@ public class DriverCals extends CalSet {
 
     public double pausePwrPne = 0.9;//driving over this power will pause compressor
 
-    public double parkOffset = 60;//0.5;
+    public double parkOffset = 6000;//0.5;
 
     public double driveStraightKp = 0;//0.05;//100% after abt 100deg of error
     
@@ -48,7 +48,7 @@ public class DriverCals extends CalSet {
     public double gathererDist = 6.75;
     public double climberDist = 8.5;
 
-    public final double DRV_TURNDEADBND = 10;
+    public final double DRV_TURNDEADBND = 0.6;
 
     public final double DRV_GATHERKP = 0.01;
 

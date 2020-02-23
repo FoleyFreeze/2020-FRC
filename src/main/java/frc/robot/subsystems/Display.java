@@ -63,8 +63,7 @@ public class Display extends SubsystemBase{
             error = nte;
             System.out.println("Error Name");
             System.out.println(nte.getName());
-            nte = tab.add("RobotType", "N/A").withPosition(7, 1).getEntry();
-            map.put(nte.getName(), nte);
+            addToTab(tab, "RobotType", "None", 7,1);
         
         tab = Shuffleboard.getTab("DriveTrain");
             nte = tab.add("DMotorCurrent 0", 0.0).withPosition(0, 0).getEntry();

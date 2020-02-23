@@ -5,8 +5,8 @@ public class ElectroKendro extends CalSet{
     //fly sky buttons and axes
     //public final int FS_FINTAKE = 1;
     //public final int FS_RINTAKE = 2;
-    public final int FS_FIELDORIENT = 3;
-    public final int FS_ANGRESET = 5;
+    public final int FS_FIELDORIENT = 5;
+    public final int FS_ANGRESET = 13;
     public final int FS_AUTOTRENCH = 4;
 
     public final int FS_XAXIS = 0;
