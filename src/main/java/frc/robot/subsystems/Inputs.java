@@ -21,21 +21,21 @@ public class Inputs{
     public JoystickButton angleReset;
     public JoystickButton autoTrench;
 
-    public JoystickButton climbUp;
-    public JoystickButton climbDn;
+    public Trigger climbUp;
+    public Trigger climbDn;
     public JoystickButton enableBudClimb;
     public JoystickButton dropFoot;
     public JoystickButton manualIntake;
     public JoystickButton revolve;
     public JoystickButton manualShoot;
     public JoystickButton shift;
-    public JoystickButton camMode;
-    public JoystickButton trenchMode;
+    public Trigger camMode;
+    public Trigger trenchMode;
     public JoystickButton pitMode;
-    public JoystickButton jogUp;
-    public JoystickButton jogDn;
-    public JoystickButton jogL;
-    public JoystickButton jogR;
+    public Trigger jogUp;
+    public Trigger jogDn;
+    public Trigger jogL;
+    public Trigger jogR;
     public JoystickButton cwActivate;
     
     public double xAxis;
@@ -65,6 +65,69 @@ public class Inputs{
             }
         });
 
+        climbUp = new Trigger(new BooleanSupplier(){                
+            @Override
+            public boolean getAsBoolean(){
+                return climbUp();
+            }
+        });
+
+        climbDn = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return climbDn();
+            }
+        });
+
+        camMode = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return cam();
+            }
+        });
+
+        trenchMode = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return trench();
+            }
+        });
+
+        jogUp = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return jogUp();
+            }
+        });
+
+        jogDn = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return jogDn();
+            }
+        });
+
+        jogR = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return jogR();
+            }
+        });
+
+        jogL = new Trigger(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return jogL();
+            }
+        });
+
         if(flySky){
             angleReset = new JoystickButton(joy, cals.FS_ANGRESET);
             autoTrench = new JoystickButton(joy, cals.FS_AUTOTRENCH);
@@ -73,21 +136,12 @@ public class Inputs{
             autoTrench = new JoystickButton(joy, cals.XB_AUTOTRENCH);
         }
 /*
-        climbUp = new JoystickButton(ds, cals.DS_CLIMBUP);
-        climbDn = new JoystickButton(ds, cals.DS_CLIMBDN);
         enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
         dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
         manualIntake = new JoystickButton(ds, cals.DS_MINTAKE);
         revolve = new JoystickButton(ds, cals.DS_REVOLVE);
         
         shift = new JoystickButton(ds, cals.DS_SHIFT);
-        camMode = new JoystickButton(ds, cals.DS_CAMMODE);
-        trenchMode = new JoystickButton(ds, cals.DS_TRENCHMODE);
-        pitMode = new JoystickButton(ds, cals.DS_PITMODE);
-        jogUp = new JoystickButton(ds, cals.DS_JOGUP);
-        jogDn = new JoystickButton(ds, cals.DS_JOGDN);
-        jogR = new JoystickButton(ds, cals.DS_JOGR);
-        jogL = new JoystickButton(ds, cals.DS_JOGL);
         cwActivate = new JoystickButton(ds, cals.DS_CWACTIVATE);
         */
     }
@@ -239,5 +293,21 @@ public class Inputs{
     public boolean pitMode(){
         if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_PITMODE);
+    }
+
+    public boolean jogUp(){
+        return false;
+    }
+
+    public boolean jogDn(){
+        return false;
+    }
+
+    public boolean jogL(){
+        return false;
+    }
+
+    public boolean jogR(){
+        return false;
     }
 }

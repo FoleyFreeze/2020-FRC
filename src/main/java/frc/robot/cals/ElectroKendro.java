@@ -38,23 +38,24 @@ public class ElectroKendro extends CalSet{
 
     //driver station buttons and switches
     public final boolean DS_ENABLED = false;
-    public final int DS_CLIMBUP = -1;
-    public final int DS_CLIMBDN = -1;
-    public final int DS_ENABLEBUDCLIMB = -1;
-    public final int DS_DROPFOOT = -1;
+    public final int DS_CLIMBUP = 2;
+    public final int DS_CLIMBDN = 2;
+    public final int DS_ENABLEBUDCLIMB = 9;
+    public final int DS_DROPFOOT = 8;
     public final int DS_MINTAKE = 3;
     public final int DS_REVOLVE = 1;
     public final int DS_MSHOOT = 2;
     public final int DS_SHIFT = 5;
-    public final int DS_CAMMODE = 8;
-    public final int DS_TRENCHMODE = 9;
+    public final int DS_CAMMODE = 1;
+    public final int DS_TRENCHMODE = 1;
     public final int DS_PITMODE = 4;
-    public final int DS_JOGUP = 11;
-    public final int DS_JOGDN = 10;
-    public final int DS_JOGR = 7;
-    public final int DS_JOGL = -1;
+    public final int DS_JOGUP = 0;
+    public final int DS_JOGDN = 180;
+    public final int DS_JOGR = 90;
+    public final int DS_JOGL = 270;
     public final int DS_TWOVTHREE = 6;
-    public final int DS_CWACTIVATE = -1;
+    public final int DS_CWACTIVATE = 7;
+    public final int DS_CWROTPOS = 10;
 
     public ElectroKendro(){
 
