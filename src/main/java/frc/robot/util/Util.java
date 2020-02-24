@@ -13,20 +13,18 @@ public class Util{
         return slope*x + table[i];
     }
 
-    public static double min(double... num){//smart min
-        double min = num[0];
-        for(double i : num){
-            int i2 = (int) i;
-            if(num[i2] < min) min = num[i2];
+    public static double min(double... nums){//smart min
+        double min = nums[0];
+        for(double num : nums){
+            if(num < min) min = num;
         }
         return min;
     }
 
-    public static double max(double... num){//smart max
-        double max = num[0];
-        for(double i : num){
-            int i2 = (int) i;
-            if(num[i2] > max) max = num[i2];
+    public static double max(double... nums){//smart max
+        double max = nums[0];
+        for(double num : nums){
+            if(num > max) max = num;
         }
         return max;
     }

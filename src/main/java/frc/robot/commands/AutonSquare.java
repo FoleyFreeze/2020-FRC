@@ -11,10 +11,10 @@ public class AutonSquare extends SequentialCommandGroup{
         m_subsystem = subsystem;
 
         addCommands(
-            new AutoDrive(subsystem, 48, 0, 0, true),
-            new AutoDrive(subsystem, 0, 48, -90, true),
-            new AutoDrive(subsystem, -48, 0, -180, true),
-            new AutoDrive(subsystem, 0, -48, -270, true)
+            new AutoDrive(subsystem, 120, 0, -90, false),
+            new AutoDrive(subsystem, 120, 120, 180, false),
+            new AutoDrive(subsystem, 0, 120, 90, false),
+            new AutoDrive(subsystem, 0, 0, 0, false)
         );
     }
 }

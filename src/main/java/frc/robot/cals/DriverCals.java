@@ -5,15 +5,15 @@ public class DriverCals extends CalSet {
     public boolean disabled = false;
 
     public MotorCal[] driveMotors = {   
-        MotorCal.spark(20).ramp(0.3).limit(1.0).coast(), 
-        MotorCal.spark( 1).ramp(0.3).limit(1.0).coast(), 
-        MotorCal.spark(14).ramp(0.3).limit(1.0).coast(), 
-        MotorCal.spark(15).ramp(0.3).limit(1.0).coast()};
+        MotorCal.spark( 20/*1*/).ramp(0.3).limit(0.75).coast(), 
+        MotorCal.spark(1/*20*/).ramp(0.3).limit(0.75).coast(), 
+        MotorCal.spark(14).ramp(0.3).limit(0.75).coast(), 
+        MotorCal.spark(15).ramp(0.3).limit(0.75).coast()};
     public MotorCal[] turnMotors = {   
-        MotorCal.spark( 5).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001), 
-        MotorCal.spark( 4).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001), 
-        MotorCal.spark(10).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001), 
-        MotorCal.spark(11).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.75).brake().ramp(0.001)};
+        MotorCal.spark( 5).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
+        MotorCal.spark( 4).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
+        MotorCal.spark(10).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001), 
+        MotorCal.spark(11).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.5).brake().ramp(0.001)};
     public int[] turnEncoderIds = {2, 1, 3, 0};
     public double[] xPos = {-10.75, 10.75, -10.75, 10.75};
     public double[] yPos = {12.5, 12.5, -12.5, -12.5};
@@ -32,15 +32,15 @@ public class DriverCals extends CalSet {
     public double trenchRunAngKp = 0.01;
     public double trenchRunDistKp = 0.01;
 
-    public double autoDriveStrafeKp = 0.01;
-    public double autoDriveAngKp = 0.01;
-    public double autoDriveStrafeRange = 6;
-    public double autoDriveAngRange = 6;
-    public double autoDriveMaxPwr = 0.3;
-    public double autoDriveStartPwr = 0.03;
-    public double autoDriveEndPwr = 0.05;
-    public double autoDriveStartDist = 42;
-    public double autoDriveEndDist = 42;
+    public double autoDriveStrafeKp = 0.1; //full power in 10in
+    public double autoDriveAngKp = 0.02; //50deg is full power
+    public double autoDriveStrafeRange = 3;
+    public double autoDriveAngRange = 5;
+    public double autoDriveMaxPwr = 0.75;
+    public double autoDriveStartPwr = 0.25;
+    public double autoDriveEndPwr = 0.25;
+    public double autoDriveStartDist = 36;
+    public double autoDriveEndDist = 36;
 
     public final double DRV_XROBOTCENT = 0.0;
     public final double DRV_YROBOTCENT = 0.0;
@@ -65,17 +65,17 @@ public class DriverCals extends CalSet {
             break;
 
             case LASTYEAR:
-                angleOffset = new double[]{0.988,4.673,0.688,3.042};
+                angleOffset = new double[]{0.988,4.673,0.688, 1.757};
                 
-                driveMotors[0] = MotorCal.spark( 1).ramp(0.3).limit(0.5).coast().invert();
-                driveMotors[1] = MotorCal.spark(14).ramp(0.3).limit(0.5).coast().invert();
-                driveMotors[2] = MotorCal.spark(20).ramp(0.3).limit(0.5).coast().invert();
-                driveMotors[3] = MotorCal.spark(15).ramp(0.3).limit(0.5).coast().invert();
+                driveMotors[0] = MotorCal.spark( 1).ramp(0.3).limit(1.0).coast().invert();
+                driveMotors[1] = MotorCal.spark(14).ramp(0.3).limit(1.0).coast().invert();
+                driveMotors[2] = MotorCal.spark(20).ramp(0.3).limit(1.0).coast().invert();
+                driveMotors[3] = MotorCal.spark(15).ramp(0.3).limit(1.0).coast().invert();
 
-                turnMotors[0] = MotorCal.spark( 5).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.2).brake().ramp(0.001);
-                turnMotors[1] = MotorCal.spark(11).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.2).brake().ramp(0.001); 
-                turnMotors[2] = MotorCal.spark( 4).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.2).brake().ramp(0.001); 
-                turnMotors[3] = MotorCal.spark(10).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.2).brake().ramp(0.001);
+                turnMotors[0] = MotorCal.spark( 5).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.6).brake().ramp(0.001);
+                turnMotors[1] = MotorCal.spark(11).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.6).brake().ramp(0.001); 
+                turnMotors[2] = MotorCal.spark( 4).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.6).brake().ramp(0.001); 
+                turnMotors[3] = MotorCal.spark(10).pid(0.25, 0, 0.2, 0).dFilt(0.01).limit(0.6).brake().ramp(0.001);
 
                 turnEncoderIds[0] = 0;
                 turnEncoderIds[1] = 1;

@@ -44,17 +44,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final Drivetrain m_drivetrain = new Drivetrain(new DriverCals(), this);
   public final Intake m_intake = new Intake(new IntakeCals());
-
   public final Inputs m_input = new Inputs(new ElectroKendro());
-  public final JoystickDrive m_JoystickDrive = new JoystickDrive(this);
-
   public CannonClimber m_cannonClimber = new CannonClimber(new CannonCals(), new ClimberCals());
   public Display m_display = new Display();
   public Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
   public TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
   public Vision m_vision = new Vision(new VisionCals());
 
-  private SequentialCommandGroup autonCmds;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -63,7 +59,7 @@ public class RobotContainer {
     //CommandScheduler.getInstance().registerSubsystem(m_intake);
     
     //m_intake.setDefaultCommand(new AutoGather(this, 0.0, m_input.autoGather()));
-    m_drivetrain.setDefaultCommand(m_JoystickDrive);
+    m_drivetrain.setDefaultCommand(new JoystickDrive(this));
     
     // Configure the button bindings    
     configureButtonBindings();
@@ -77,7 +73,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //m_input.shoot.whileActiveOnce(new AutoShoot(this));
-    //m_input.angleReset.whileActiveOnce(new ZeroReset(this));
+    m_input.angleReset.whileActiveOnce(new ZeroReset(this));
     //m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
     //m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));
     //m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
@@ -99,9 +95,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    autonCmds.addCommands(
-      new AutonSquare(this)
-    );
-    return autonCmds;
+
+    return new AutonSquare(this);
   }
 }

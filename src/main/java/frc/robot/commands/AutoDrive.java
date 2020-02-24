@@ -18,9 +18,10 @@ public class AutoDrive extends CommandBase{
     private double deltaY;
     private double errorX;
     private double errorY;
+    private double startX;
+    private double startY;
     private double errorRot;
     private boolean deltaVsField;
-    private Pose2d startPos;
     
     private DriverCals mCals;
 
@@ -37,10 +38,11 @@ public class AutoDrive extends CommandBase{
     @Override
     public void initialize(){
         Pose2d pose = m_subsystem.m_drivetrain.drivePos;
-        startPos = pose;
+        startX = pose.getTranslation().getX();
+        startY = pose.getTranslation().getY();
         if(deltaVsField){
-            tgtX = pose.getTranslation().getX() + deltaX;
-            tgtY = pose.getTranslation().getY() + deltaY;
+            tgtX = startX + deltaX;
+            tgtY = startY + deltaY;
         } else {
             tgtX = deltaX;
             tgtY = deltaY;
@@ -52,8 +54,10 @@ public class AutoDrive extends CommandBase{
     @Override
     public void execute(){
         Pose2d pose = m_subsystem.m_drivetrain.drivePos;
-        errorX = (tgtX - pose.getTranslation().getX());
-        errorY = (tgtY - pose.getTranslation().getY());
+        double x = pose.getTranslation().getX();
+        double y = pose.getTranslation().getY();
+        errorX = (tgtX - x);
+        errorY = (tgtY - y);
         errorRot = tgtRot - m_subsystem.m_drivetrain.robotAng;
         if(errorRot > 180) errorRot-= 360;
         else if(errorRot < -180) errorRot+=360;
@@ -61,12 +65,13 @@ public class AutoDrive extends CommandBase{
         Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
 
         double power = mCals.autoDriveMaxPwr;
-        double tgtDist = (tgtY - startPos.getTranslation().getY()) / (tgtX - startPos.getTranslation().getX());
-        double errorDist = (errorY - startPos.getTranslation().getY()) / (errorX - startPos.getTranslation().getX());
-        double distFromStart = tgtDist - errorDist;
+        double dfsX = x - startX;
+        double dfsY = y - startY;
+        double distFromStart = Math.sqrt(dfsX*dfsX + dfsY*dfsY);
+        double distToTarget = Math.sqrt(errorX*errorX + errorY*errorY);
         double startPwr = ((power - mCals.autoDriveStartPwr)/(mCals.autoDriveStartDist)) * distFromStart 
             + mCals.autoDriveStartPwr;
-        double endPwr = ((power - mCals.autoDriveEndPwr)/(mCals.autoDriveEndDist)) * errorY + mCals.autoDriveEndPwr;
+        double endPwr = ((power - mCals.autoDriveEndPwr)/(mCals.autoDriveEndDist)) * distToTarget + mCals.autoDriveEndPwr;
         power = Util.min(power, startPwr, endPwr);
 
         m_subsystem.m_drivetrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, power);
@@ -74,6 +79,9 @@ public class AutoDrive extends CommandBase{
         SmartDashboard.putNumber("AutoXerr",errorX);
         SmartDashboard.putNumber("AutoYerr",errorY);
         SmartDashboard.putNumber("AutoAngerr",errorRot);
+        SmartDashboard.putNumber("DistFromStart",distFromStart);
+        SmartDashboard.putNumber("DistToTarget",distToTarget);
+        SmartDashboard.putNumber("AutoPower",power);
     }
 
     @Override

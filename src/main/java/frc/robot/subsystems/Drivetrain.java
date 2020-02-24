@@ -60,7 +60,7 @@ public class Drivetrain extends SubsystemBase{
 
         public void drive(boolean parkMode){
             double encVoltage = enc.getVoltage();
-            SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
+            //SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
             double currentAngle = ((encVoltage - angleOffset) 
                 *2*Math.PI/5);
             double angleDiff = wheelVec.theta - currentAngle;
@@ -85,7 +85,7 @@ public class Drivetrain extends SubsystemBase{
             }
             //SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
             //SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
-            SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
+            //SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
             double deltaTicks = angleDiff / (2*Math.PI) * k.turnTicksPerRev;
@@ -95,7 +95,7 @@ public class Drivetrain extends SubsystemBase{
             } 
             //SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
             //SmartDashboard.putNumber("DeltaTicks" + idx, deltaTicks);
-            SmartDashboard.putNumber("DrivePwr"+idx,wheelVec.r);
+            //SmartDashboard.putNumber("DrivePwr"+idx,wheelVec.r);
             driveMotor.setPower(wheelVec.r);
             turnMotor.setPosition(targetTicks);
         }
@@ -137,7 +137,7 @@ public class Drivetrain extends SubsystemBase{
             Thread.sleep(200);
         } catch(Exception e){
         }
-        navX.reset();
+        navX.zeroYaw();
 
         fLWheelLoc = new Translation2d(k.xPos[0], k.yPos[0]);
         fRWheelLoc = new Translation2d(k.xPos[1], k.yPos[1]);
@@ -183,7 +183,9 @@ public class Drivetrain extends SubsystemBase{
         //SmartDashboard.putNumber("prevAngle", prevAng);
         //SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
-            strafe.theta -= Math.toRadians(-navX.getAngle()) - Math.PI/2;
+            strafe.theta -= Math.toRadians(-navX.getAngle()) /*- Math.PI/2*/;
+            while(strafe.theta > 180) strafe.theta -= 360;
+            while(strafe.theta < -180) strafe.theta += 360;
         }
         
         //SmartDashboard.putBoolean("Driving Straigth", driveStraight);
@@ -314,5 +316,10 @@ public class Drivetrain extends SubsystemBase{
         double x = drivePos.getTranslation().getX();
         double y = drivePos.getTranslation().getY();
         Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
+    }
+
+    public void zeroAll(){
+        navX.zeroYaw();
+        driveOdom.resetPosition(new Pose2d(), new Rotation2d());
     }
 }

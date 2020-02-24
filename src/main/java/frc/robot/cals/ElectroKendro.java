@@ -6,7 +6,7 @@ public class ElectroKendro extends CalSet{
     //public final int FS_FINTAKE = 1;
     //public final int FS_RINTAKE = 2;
     public final int FS_FIELDORIENT = 5;
-    public final int FS_ANGRESET = 13;
+    public final int FS_ANGRESET = 10;
     public final int FS_AUTOTRENCH = 4;
 
     public final int FS_XAXIS = 0;
@@ -15,7 +15,7 @@ public class ElectroKendro extends CalSet{
 
     public final double FS_LOWDEADBND = 0.05;
     public final double FS_HIGHDEADBND = 1.0;
-    public final double FS_EXPONENT = 1.0;
+    public final double FS_EXPONENT = 1.4;
 
 
 

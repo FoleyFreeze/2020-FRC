@@ -18,7 +18,7 @@ public class ZeroReset extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.m_drivetrain.navX.zeroYaw();
+        m_subsystem.m_drivetrain.zeroAll();
     }
 
     @Override
@@ -27,7 +27,12 @@ public class ZeroReset extends CommandBase{
     }
 
     @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
+
+    @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
 }
