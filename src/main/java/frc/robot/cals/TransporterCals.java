@@ -11,6 +11,7 @@ public class TransporterCals extends CalSet {
     public double countsPerIndex = 40/24 * 36/52 * 20/64 * 13/64 / 4096;//18.0/32.0/5.0*2048.0;
     public final double TN_LOADSPEED = 0.2;
     public final double TN_STOPSPEED = -0.0;
+    public double idxFinTime = 0.1;
 
     public TransporterCals(){
 

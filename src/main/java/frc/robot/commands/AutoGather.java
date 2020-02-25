@@ -48,6 +48,9 @@ public class AutoGather extends CommandBase {
             m_subsystem.m_intake.depSol.set(false);
             m_subsystem.m_intake.spinmotor.setSpeed(-m_power);
         }
+
+        if(m_subsystem.m_transporterCW.isIndexing) m_power = m_subsystem.m_intake.mCals.idxPower * Math.signum(m_power);
+
         m_subsystem.m_intake.setPower(m_power);
     }
 

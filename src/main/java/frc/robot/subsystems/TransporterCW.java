@@ -7,6 +7,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,7 +27,9 @@ public class TransporterCW extends SubsystemBase{
     public Solenoid launcher;
     public Solenoid CWNotTransport;
     private double targetpos = 0;
+    private double timeAtIdx;
     private boolean[] ballpositions = {false, false, false, false, false};
+    public boolean isIndexing;
     public int ballnumber = 0;
     private RobotContainer mSubsystem;
     public ColorMatch colorMatch;
@@ -104,11 +107,13 @@ public class TransporterCW extends SubsystemBase{
         Display.put("Detected Color", String.format("Color Guess: " + colorString + 
             " Confidence: %f", match.confidence));
         lastColor = detectedColor;
+        isIndexing = Timer.getFPGATimestamp() >= timeAtIdx + tCals.idxFinTime;
     }
 
     //increment the ball storage
     public void index(double positions){
         targetpos += positions * tCals.countsPerIndex;
+        timeAtIdx = Timer.getFPGATimestamp();
     }
 
     //used for gathering
@@ -145,6 +150,4 @@ public class TransporterCW extends SubsystemBase{
     public void deploy(boolean activated){
         CWNotTransport.set(activated);
     }
-
-
 }
