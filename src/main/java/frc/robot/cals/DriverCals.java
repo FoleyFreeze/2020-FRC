@@ -27,10 +27,11 @@ public class DriverCals extends CalSet {
 
     public double parkOffset = 6000;//0.5;
 
-    public double driveStraightKp = 0;//0.05;//100% after abt 100deg of error
+    public double driveStraightKp = 0.05;//100% after abt 100deg of error
     
     public double trenchRunAngKp = 0.01;
     public double trenchRunDistKp = 0.01;
+    public double trenchRunMaxSpd = 1;
 
     public double autoDriveStrafeKp = 0.1; //full power in 10in
     public double autoDriveAngKp = 0.02; //50deg is full power

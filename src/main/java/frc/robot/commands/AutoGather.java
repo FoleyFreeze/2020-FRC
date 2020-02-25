@@ -44,6 +44,10 @@ public class AutoGather extends CommandBase {
             m_subsystem.m_drivetrain.drive(strafe, rot, 0, 0, m_subsystem.m_input.fieldOrient());
         }
         
+        if(m_subsystem.m_transporterCW.ballnumber >= 5 && !m_subsystem.m_input.shift()){
+            m_subsystem.m_intake.depSol.set(false);
+            m_subsystem.m_intake.spinmotor.setSpeed(-m_power);
+        }
         m_subsystem.m_intake.setPower(m_power);
     }
 

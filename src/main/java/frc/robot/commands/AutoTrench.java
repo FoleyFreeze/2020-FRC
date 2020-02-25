@@ -2,12 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.cals.DriverCals;
 import frc.robot.util.Vector;
 import frc.robot.util.DistanceSensors.DistData;
 
-public class TrenchRun extends CommandBase{
+public class AutoTrench extends CommandBase{
 
     private RobotContainer m_subsystem;
+    private DriverCals m_cals = m_subsystem.m_drivetrain.k;
     private double wallDist;
     public double targetAngle;
     public enum Orientation{
@@ -15,7 +17,7 @@ public class TrenchRun extends CommandBase{
     }
     public Orientation orient;
 
-    public TrenchRun(RobotContainer subsystem, Orientation orient){
+    public AutoTrench(RobotContainer subsystem, Orientation orient){
         m_subsystem = subsystem;
         addRequirements(m_subsystem.m_drivetrain);
 
@@ -67,17 +69,21 @@ public class TrenchRun extends CommandBase{
         }
 
         double distDiff = (dist.dist - wallDist);
-        double distPower = m_subsystem.m_drivetrain.k.trenchRunDistKp * distDiff;
+        double distPower = m_cals.trenchRunDistKp * distDiff;
         double angDiff = targetAngle - m_subsystem.m_drivetrain.navX.getAngle();
         if(Math.abs(angDiff) > 180){
             if(angDiff > 0){
                 angDiff -= 360;
             } else angDiff += 360;
         }
-        double angPower = m_subsystem.m_drivetrain.k.trenchRunAngKp * angDiff;
+        double angPower = m_cals.trenchRunAngKp * angDiff;
 
         Vector forward = Vector.fromXY(distPower, m_subsystem.m_input.getY());
-        m_subsystem.m_drivetrain.drive(forward, angPower, 0, 0, true);
+        double maxPwr = m_cals.trenchRunMaxSpd;
+        if(m_subsystem.m_input.shift()){
+            maxPwr *= 0.2;
+        }
+        m_subsystem.m_drivetrain.drive(forward, angPower, 0, 0, true, maxPwr);
     }
 
     @Override

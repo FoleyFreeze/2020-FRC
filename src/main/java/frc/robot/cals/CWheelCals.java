@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.util.Color;
 public class CWheelCals extends CalSet {
 
     public boolean disabled = true;
-    public double rotSpeed = 1;
+    public double rotSpeed = 0.75;
     public double colSpeed = 0.5;
     public double cwInitSpeed = 0.2;
     public double stopBuffer = 0.5;

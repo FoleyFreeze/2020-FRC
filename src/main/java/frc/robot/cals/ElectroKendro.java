@@ -47,7 +47,7 @@ public class ElectroKendro extends CalSet{
     public final int DS_MSHOOT = 2;
     public final int DS_SHIFT = 5;
     public final int DS_CAMMODE = 1;
-    public final int DS_TRENCHMODE = 1;
+    public final int DS_LAYUP = 1;
     public final int DS_PITMODE = 4;
     public final int DS_JOGUP = 0;
     public final int DS_JOGDN = 180;

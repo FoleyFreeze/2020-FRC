@@ -27,7 +27,7 @@ public class TransporterCW extends SubsystemBase{
     public Solenoid CWNotTransport;
     private double targetpos = 0;
     private boolean[] ballpositions = {false, false, false, false, false};
-    private int ballnumber = 0;
+    public int ballnumber = 0;
     private RobotContainer mSubsystem;
     public ColorMatch colorMatch;
     public String colorString;

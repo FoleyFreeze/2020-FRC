@@ -58,9 +58,16 @@ public class AutoShoot extends CommandBase{
                 dist = m_cals.layupDist;
             } else dist = m_cals.trenchDist;
         }
-        if(error >= m_cals.tolerance) aligned = true;//make dependent on dist
+        if(error <= m_cals.tolerance) aligned = true;//make dependent on dist
         
-        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, m_subsystem.m_input.fieldOrient());
+        double maxPwr = m_cals.maxMovePwr;
+        if(m_subsystem.m_input.shift()){
+            dist *= 0.2;
+            maxPwr *= 0.2;
+        }
+
+        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, 
+            m_subsystem.m_input.fieldOrient(), maxPwr);
         
         m_subsystem.m_cannonClimber.prime(dist);
 

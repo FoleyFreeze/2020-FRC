@@ -11,10 +11,11 @@ public class CannonCals extends CalSet {
     public int stopSolValue = 0;
     public int camLightsSol;
     public int ShootVClimbValue;
-    public double layupDist = 12.0;
+    public double layupDist = 24.0;
     public double trenchDist = 208.75;
     public double power = 0.5;
     public double kPDrive = 0.05;
+    public double maxMovePwr = 1;
     public double tolerance = 3.0;
     public double initJogDist = 0.0;
     public double initJogAng = 0.0;

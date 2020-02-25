@@ -227,15 +227,15 @@ public class Inputs{
 
     //operator
     public boolean twoVThree(){
-        return false;
+        return ds.getRawButton(cals.DS_TWOVTHREE);
     }
 
     public boolean cwRotNotPos(){
-        return false;
+        return ds.getRawButton(cals.DS_TWOVTHREE);
     }
 
     public boolean cwActivate(){
-        return false;
+        return ds.getRawButton(cals.DS_CWACTIVATE);
     }
 
     public boolean enableBudClimb(){
@@ -245,12 +245,12 @@ public class Inputs{
 
     public boolean climbUp(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_CLIMBUP);
+        return ds.getRawAxis(cals.DS_CLIMBUP) == 1;
     }
 
     public boolean climbDn(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_CLIMBDN);
+        return ds.getRawAxis(cals.DS_CLIMBDN) == -1;
     }
 
     public boolean dropFoot(){
@@ -259,17 +259,17 @@ public class Inputs{
     }
 
     public boolean layup(){
-        return (!cam() && !trench());
+        return ds.getRawAxis(cals.DS_LAYUP) == 1;
     }
 
     public boolean trench(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_TRENCHMODE);
+        return (!layup() && !cam());
     }
 
     public boolean cam(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_CAMMODE);
+        return ds.getRawAxis(cals.DS_CAMMODE) == -1;
     }
 
     public boolean intake(){
@@ -283,11 +283,11 @@ public class Inputs{
     }
 
     public boolean shoot(){
-        return false;
+        return ds.getRawButton(cals.DS_MSHOOT);
     }
 
     public boolean shift(){
-        return false;
+        return ds.getRawButton(cals.DS_SHIFT);
     }
 
     public boolean pitMode(){
@@ -296,18 +296,18 @@ public class Inputs{
     }
 
     public boolean jogUp(){
-        return false;
+        return ds.getPOV() == cals.DS_JOGUP;
     }
 
     public boolean jogDn(){
-        return false;
+        return ds.getPOV() == cals.DS_JOGDN;
     }
 
     public boolean jogL(){
-        return false;
+        return ds.getPOV() == cals.DS_JOGL;
     }
 
     public boolean jogR(){
-        return false;
+        return ds.getPOV() == cals.DS_JOGR;
     }
 }
