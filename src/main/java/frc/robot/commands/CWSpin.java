@@ -32,10 +32,10 @@ public class CWSpin extends CommandBase{
     @Override
     public void execute(){
         if(m_subsystem.m_input.cwRotNotPos()){
-            transCW.loadMotor.setSpeed(m_cals.rotSpeed);
+            //transCW.loadMotor.setSpeed(m_cals.rotSpeed);
             if(transCW.detectedColor != transCW.lastColor) wedgeCount++;
         }else{
-            transCW.loadMotor.setSpeed(m_cals.colSpeed);
+            //transCW.loadMotor.setSpeed(m_cals.colSpeed);
         }
     }
 

@@ -8,27 +8,23 @@ import frc.robot.util.Vector;
 public class AutoGather extends CommandBase {
 
     private RobotContainer m_subsystem;
-    private double m_power;
-    private boolean m_activate;
     private boolean auton;
 
-    public AutoGather(RobotContainer subsystem, double power, boolean activate){
+    public AutoGather(RobotContainer subsystem){
         m_subsystem = subsystem;
         addRequirements(m_subsystem.m_intake);
         addRequirements(m_subsystem.m_drivetrain);
-
-        m_power = power;
-        m_activate = activate;
     }
 
     @Override
     public void initialize(){
         auton = DriverStation.getInstance().isAutonomous();
+        m_subsystem.m_vision.NTEnablePiBall(true);
+        m_subsystem.m_intake.dropIntake(true);
     }
+
     @Override
     public void execute(){
-        m_subsystem.m_intake.depSol.set(m_activate);
-
         if(m_subsystem.m_input.enableBallCam() && m_subsystem.m_vision.hasBallImage()){//robot has control
 
             Vector strafe = Vector.fromXY(0, m_subsystem.m_vision.ballData.element().dist * 
@@ -47,19 +43,22 @@ public class AutoGather extends CommandBase {
         }
         
         if(m_subsystem.m_transporterCW.ballnumber >= 5 && !m_subsystem.m_input.shift()){
-            m_subsystem.m_intake.depSol.set(false);
-            m_subsystem.m_intake.spinmotor.setSpeed(-m_power);
+            m_subsystem.m_intake.dropIntake(false);
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.backwardPower);
+        } else if(m_subsystem.m_transporterCW.isIndexing()){
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.idxPower);
+        } else {
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.forwardPower);
         }
-
-        if(m_subsystem.m_transporterCW.isIndexing) m_power = m_subsystem.m_intake.mCals.idxPower * Math.signum(m_power);
-
-        m_subsystem.m_intake.setPower(m_power);
     }
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_intake.depSol.set(false);
+        m_subsystem.m_intake.dropIntake(false);
+        m_subsystem.m_intake.setPower(0);
+        m_subsystem.m_vision.NTEnablePiBall(false);
     }
+    
     @Override
     public boolean isFinished(){
         if(auton){

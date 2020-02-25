@@ -108,4 +108,14 @@ public class Vision extends SubsystemBase{
 
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
+
+    public void NTEnablePiTgt(boolean set){
+        NetworkTable nt = NetworkTableInstance.getDefault().getTable("Pi");
+        nt.getInstance().getEntry("Tgt Enable").setBoolean(set);
+    }
+
+    public void NTEnablePiBall(boolean set){
+        NetworkTable nt = NetworkTableInstance.getDefault().getTable("Pi");
+        nt.getInstance().getEntry("Ball Enable").setBoolean(set);
+    }
 }

@@ -26,7 +26,7 @@ public class CWStop extends CommandBase{
 
     @Override
     public void execute(){
-        transCW.loadMotor.setPower(0.0);
+        //transCW.(0.0); //TODO: figure out how to pass this command
         if(transCW.detectedColor != transCW.lastColor) stopTime = Timer.getFPGATimestamp();
     }
 

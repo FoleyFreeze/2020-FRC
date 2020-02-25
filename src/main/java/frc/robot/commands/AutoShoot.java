@@ -28,6 +28,7 @@ public class AutoShoot extends CommandBase{
     public void initialize(){
         if(m_subsystem.m_input.cam()){
             m_subsystem.m_cannonClimber.setCamLights(true);
+            m_subsystem.m_vision.NTEnablePiTgt(true);
         }
         
         auton = DriverStation.getInstance().isAutonomous();
@@ -90,11 +91,12 @@ public class AutoShoot extends CommandBase{
     public void end(boolean interrupted){
         m_subsystem.m_cannonClimber.setpower(0);
         m_subsystem.m_cannonClimber.setCamLights(false);
+        m_subsystem.m_vision.NTEnablePiTgt(false);
     }
 
     @Override
     public boolean isFinished(){
-        if(auton) return Timer.getFPGATimestamp() >= shootFinTime;
+        if(auton) return Timer.getFPGATimestamp() >= shootFinTime && m_subsystem.m_transporterCW.ballnumber == 0;
         return false;
     }
 }

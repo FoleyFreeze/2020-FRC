@@ -13,7 +13,8 @@ public class CWMove extends CommandBase{
     public CWMove(RobotContainer subsystem){
         m_subsystem = subsystem;
         addRequirements(m_subsystem.m_drivetrain);
-        xy = Vector.fromXY(0, -6);
+        addRequirements(m_subsystem.m_transporterCW);
+        xy = Vector.fromXY(0, -1);
         start = m_subsystem.m_drivetrain.drivePos.getTranslation().getY();
     }
 
@@ -29,13 +30,11 @@ public class CWMove extends CommandBase{
 
     @Override
     public void end(boolean interrupted){
-        if(isFinished()){
-            m_subsystem.m_transporterCW.launcher.set(false);
-        }
+        m_subsystem.m_transporterCW.deployCW(false);
     }
 
     @Override
     public boolean isFinished(){
-        return m_subsystem.m_drivetrain.drivePos.getTranslation().getY() >= start - 6;
+        return m_subsystem.m_drivetrain.drivePos.getTranslation().getY() >= start - 3;
     }
 }

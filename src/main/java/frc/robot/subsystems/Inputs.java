@@ -23,20 +23,16 @@ public class Inputs{
 
     public Trigger climbUp;
     public Trigger climbDn;
-    public JoystickButton enableBudClimb;
     public JoystickButton dropFoot;
     public JoystickButton manualIntake;
     public JoystickButton revolve;
     public JoystickButton manualShoot;
-    public JoystickButton shift;
-    public Trigger camMode;
-    public Trigger trenchMode;
-    public JoystickButton pitMode;
     public Trigger jogUp;
     public Trigger jogDn;
     public Trigger jogL;
     public Trigger jogR;
     public JoystickButton cwActivate;
+    public Trigger layupTrigger;
     
     public double xAxis;
     public double yAxis;
@@ -80,19 +76,11 @@ public class Inputs{
             }
         });
 
-        camMode = new Trigger(new BooleanSupplier(){
+        layupTrigger = new Trigger(new BooleanSupplier(){
         
             @Override
             public boolean getAsBoolean() {
-                return cam();
-            }
-        });
-
-        trenchMode = new Trigger(new BooleanSupplier(){
-        
-            @Override
-            public boolean getAsBoolean() {
-                return trench();
+                return layup();
             }
         });
 
@@ -146,6 +134,45 @@ public class Inputs{
         */
     }
 
+    private double threshDeadband(double raw, double limitLow, double limitHigh){
+        if(Math.abs(raw) < limitLow){
+            return 0.0;
+        }else if(Math.abs(raw) > limitHigh){
+            return 1.0 * Math.signum(raw);
+        }
+        else{
+            return raw;
+        }
+    }
+
+    private double scaleDeadband(double raw, double limitLow, double limitHigh){
+        double temp = 1/(1-(limitLow+(1-limitHigh)));
+        if(Math.abs(raw) > limitHigh) return 1.0 * Math.signum(raw);
+        else if(Math.abs(raw) < limitLow) return 0.0;
+        else return temp * (Math.abs(raw)-limitLow) * Math.signum(raw);
+    }
+
+    private double expo(double raw, double expo){
+        return Math.pow(Math.abs(raw), expo) * Math.signum(raw);
+    }
+
+    //driver
+    public boolean autoShoot(){
+        return false;
+    }
+
+    public boolean autoGather(){
+        return false;
+    }
+
+    public boolean autoTrench(){
+        return false;
+    }
+
+    public boolean enableBallCam(){
+        return false;
+    }
+
     public boolean fieldOrient(){
         if(flySky){
             return joy.getRawButton(cals.FS_FIELDORIENT);
@@ -186,55 +213,19 @@ public class Inputs{
         return v;
     }
 
-    private double threshDeadband(double raw, double limitLow, double limitHigh){
-        if(Math.abs(raw) < limitLow){
-            return 0.0;
-        }else if(Math.abs(raw) > limitHigh){
-            return 1.0 * Math.signum(raw);
-        }
-        else{
-            return raw;
-        }
-    }
-
-    private double scaleDeadband(double raw, double limitLow, double limitHigh){
-        double temp = 1/(1-(limitLow+(1-limitHigh)));
-        if(Math.abs(raw) > limitHigh) return 1.0 * Math.signum(raw);
-        else if(Math.abs(raw) < limitLow) return 0.0;
-        else return temp * (Math.abs(raw)-limitLow) * Math.signum(raw);
-    }
-
-    private double expo(double raw, double expo){
-        return Math.pow(Math.abs(raw), expo) * Math.signum(raw);
-    }
-
-    //driver
-    public boolean autoShoot(){
-        return false;
-    }
-
-    public boolean autoGather(){
-        return false;
-    }
-
-    public boolean autoTrench(){
-        return false;
-    }
-
-    public boolean enableBallCam(){
-        return false;
-    }
-
     //operator
     public boolean twoVThree(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_TWOVTHREE);
     }
 
     public boolean cwRotNotPos(){
-        return ds.getRawButton(cals.DS_TWOVTHREE);
+        if(!cals.DS_ENABLED) return false;
+        return ds.getRawButton(cals.DS_CWROTPOS);
     }
 
     public boolean cwActivate(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_CWACTIVATE);
     }
 
@@ -245,12 +236,12 @@ public class Inputs{
 
     public boolean climbUp(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_CLIMBUP) == 1;
+        return ds.getRawAxis(cals.DS_CLIMBUP) > 0.5;
     }
 
     public boolean climbDn(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_CLIMBDN) == -1;
+        return ds.getRawAxis(cals.DS_CLIMBDN) < -0.5;
     }
 
     public boolean dropFoot(){
@@ -259,7 +250,8 @@ public class Inputs{
     }
 
     public boolean layup(){
-        return ds.getRawAxis(cals.DS_LAYUP) == 1;
+        if(!cals.DS_ENABLED) return false;
+        return ds.getRawAxis(cals.DS_LAYUP) > 0.5;
     }
 
     public boolean trench(){
@@ -269,7 +261,7 @@ public class Inputs{
 
     public boolean cam(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_CAMMODE) == -1;
+        return ds.getRawAxis(cals.DS_CAMMODE) < -0.5;
     }
 
     public boolean intake(){
@@ -283,10 +275,12 @@ public class Inputs{
     }
 
     public boolean shoot(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_MSHOOT);
     }
 
     public boolean shift(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getRawButton(cals.DS_SHIFT);
     }
 
@@ -296,18 +290,22 @@ public class Inputs{
     }
 
     public boolean jogUp(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getPOV() == cals.DS_JOGUP;
     }
 
     public boolean jogDn(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getPOV() == cals.DS_JOGDN;
     }
 
     public boolean jogL(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getPOV() == cals.DS_JOGL;
     }
 
     public boolean jogR(){
+        if(!cals.DS_ENABLED) return false;
         return ds.getPOV() == cals.DS_JOGR;
     }
 }

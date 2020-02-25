@@ -3,8 +3,6 @@ package frc.robot.cals;
 public class ElectroKendro extends CalSet{
 
     //fly sky buttons and axes
-    //public final int FS_FINTAKE = 1;
-    //public final int FS_RINTAKE = 2;
     public final int FS_FIELDORIENT = 5;
     public final int FS_ANGRESET = 10;
     public final int FS_AUTOTRENCH = 4;
@@ -20,8 +18,8 @@ public class ElectroKendro extends CalSet{
 
 
     //xbox buttons and axes
-    public final int XB_REVOLVE = 1;//public final int XB_FINTAKE = 1;
-    public final int XB_SHOOT = 2;//public final int XB_RINTAKE = 2;
+    public final int XB_REVOLVE = 1;
+    public final int XB_SHOOT = 2;
     public final int XB_FIELDORIENT = 3;
     public final int XB_ANGRESET = 5;
     public final int XB_AUTOTRENCH = 4;

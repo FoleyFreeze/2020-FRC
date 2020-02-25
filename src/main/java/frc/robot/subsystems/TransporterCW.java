@@ -27,7 +27,6 @@ public class TransporterCW extends SubsystemBase{
     public Solenoid launcher;
     public Solenoid CWNotTransport;
     private double targetpos = 0;
-    private double timeAtIdx;
     private boolean[] ballpositions = {false, false, false, false, false};
     public boolean isIndexing;
     public int ballnumber = 0;
@@ -66,15 +65,18 @@ public class TransporterCW extends SubsystemBase{
         if(!mSubsystem.m_input.cwActivate()){
             CWNotTransport.set(false);
         }
+
         rotateMotor.setPosition(targetpos);
+
         int x = (int) Math.round(rotateMotor.getPosition() / tCals.countsPerIndex);
-        if(ballpositions[(x + 3) % 5]){
+        if(ballpositions[(x + 3) % 5] && launcher.get()){
             ballnumber--;
             ballpositions[x % 5] = false;
         }
-        if(mSubsystem.m_input.autoGather() && !ballpositions[x%5]){
+
+        if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
             loadMotor.setPower(tCals.TN_LOADSPEED);
-        }else if(mSubsystem.m_input.autoGather()) {
+        }else if(mSubsystem.m_intake.isOut()) {
             loadMotor.setPower(tCals.TN_STOPSPEED);
         }else if(CWNotTransport.get()){
             if(mSubsystem.m_input.cwRotNotPos()){
@@ -107,17 +109,22 @@ public class TransporterCW extends SubsystemBase{
         Display.put("Detected Color", String.format("Color Guess: " + colorString + 
             " Confidence: %f", match.confidence));
         lastColor = detectedColor;
-        isIndexing = Timer.getFPGATimestamp() >= timeAtIdx + tCals.idxFinTime;
     }
 
     //increment the ball storage
     public void index(double positions){
         targetpos += positions * tCals.countsPerIndex;
-        timeAtIdx = Timer.getFPGATimestamp();
+    }
+
+    public boolean isIndexing(){
+        if(tCals.disabled) return false;
+        double error = targetpos - rotateMotor.getPosition();
+        return Math.abs(error) > tCals.allowedIndexError;
     }
 
     //used for gathering
     public void gatherIndex(){
+        if(tCals.disabled) return;
         double error = targetpos - rotateMotor.getPosition();
         if(ballSensor.get() && error < tCals.countsPerIndex / 2 && ballnumber < 5){ //only spin if not moving & we have an open spot
             ballnumber++;
@@ -128,6 +135,7 @@ public class TransporterCW extends SubsystemBase{
     }
 
     public void shootAll(){
+        if(tCals.disabled) return;
         enablefire(ballnumber > 0);
         double error = targetpos - rotateMotor.getPosition();
         if(error < tCals.countsPerIndex/2 && ballnumber > 0){
@@ -137,6 +145,7 @@ public class TransporterCW extends SubsystemBase{
 
     //stop shooting
     public void stoprot(){
+        if(tCals.disabled) return;
         enablefire(false);
         double x = rotateMotor.getPosition() / tCals.countsPerIndex;
         x = Math.round(x);
@@ -144,10 +153,12 @@ public class TransporterCW extends SubsystemBase{
     }
 
     public void enablefire(boolean on){
+        if(tCals.disabled) return;
         launcher.set(on);
     }
 
-    public void deploy(boolean activated){
+    public void deployCW(boolean activated){
+        if(tCals.disabled) return;
         CWNotTransport.set(activated);
     }
 }

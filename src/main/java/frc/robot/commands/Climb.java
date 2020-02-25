@@ -27,7 +27,7 @@ public class Climb extends CommandBase{
 
     @Override
     public void end(boolean interrupted){
-
+        m_subsystem.m_cannonClimber.setpower(0);
     }
 
     @Override

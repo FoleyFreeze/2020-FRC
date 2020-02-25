@@ -24,13 +24,12 @@ public class CWColor extends CommandBase{
 
     @Override
     public void execute(){
-
-        m_subsystem.m_transporterCW.deploy(true);
+        m_subsystem.m_transporterCW.deployCW(true);
     }
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_transporterCW.deploy(false);
+        m_subsystem.m_transporterCW.deployCW(false);
     }
 
     @Override

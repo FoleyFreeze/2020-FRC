@@ -25,7 +25,7 @@ public class CWInit extends CommandBase{
 
     @Override
     public void execute(){
-        transCW.loadMotor.setSpeed(m_cals.cwInitSpeed);
+        //transCW.loadMotor.setSpeed(m_cals.cwInitSpeed);
     }
 
     @Override
