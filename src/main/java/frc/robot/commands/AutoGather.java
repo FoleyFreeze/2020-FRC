@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.util.Vector;
@@ -9,6 +10,7 @@ public class AutoGather extends CommandBase {
     private RobotContainer m_subsystem;
     private double m_power;
     private boolean m_activate;
+    private boolean auton;
 
     public AutoGather(RobotContainer subsystem, double power, boolean activate){
         m_subsystem = subsystem;
@@ -21,7 +23,7 @@ public class AutoGather extends CommandBase {
 
     @Override
     public void initialize(){
-
+        auton = DriverStation.getInstance().isAutonomous();
     }
     @Override
     public void execute(){
@@ -60,6 +62,9 @@ public class AutoGather extends CommandBase {
     }
     @Override
     public boolean isFinished(){
+        if(auton){
+            return m_subsystem.m_transporterCW.ballnumber >= 5;
+        }
         return false;
     }
 }

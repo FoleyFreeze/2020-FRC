@@ -21,6 +21,7 @@ public class CannonCals extends CalSet {
     public double initJogAng = 0.0;
     public double distJog = 3.0;
     public double angJog = 1.0;
+    public double shootTime = .25;
     public double[][] rpm = {{1000.0, 2000.0, 5400.0},
                              {1000.0, 2000.0, 5400.0},
                              {1000.0, 2000.0, 5400.0}, 

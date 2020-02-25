@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.CannonCals;
@@ -10,6 +12,8 @@ public class AutoShoot extends CommandBase{
     private RobotContainer m_subsystem;
     private CannonCals m_cals;
     public double rotCam = 0.0;
+    public boolean auton;
+    public double shootFinTime;
     
     public AutoShoot(RobotContainer subsystem){
         m_subsystem = subsystem;
@@ -25,6 +29,8 @@ public class AutoShoot extends CommandBase{
         if(m_subsystem.m_input.cam()){
             m_subsystem.m_cannonClimber.setCamLights(true);
         }
+        
+        auton = DriverStation.getInstance().isAutonomous();
     }
 
     @Override
@@ -71,7 +77,10 @@ public class AutoShoot extends CommandBase{
         
         m_subsystem.m_cannonClimber.prime(dist);
 
-        if(m_subsystem.m_cannonClimber.ready() && aligned) m_subsystem.m_transporterCW.shootAll();
+        if(m_subsystem.m_cannonClimber.ready() && aligned && m_subsystem.m_transporterCW.ballnumber > 0){
+            m_subsystem.m_transporterCW.shootAll();
+            shootFinTime = Timer.getFPGATimestamp() + m_subsystem.m_cannonClimber.shootCals.shootTime;
+        } 
         else m_subsystem.m_transporterCW.stoprot();
 
 
@@ -85,6 +94,7 @@ public class AutoShoot extends CommandBase{
 
     @Override
     public boolean isFinished(){
+        if(auton) return Timer.getFPGATimestamp() >= shootFinTime;
         return false;
     }
 }
