@@ -174,6 +174,7 @@ public class CannonClimber extends SubsystemBase{
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
         Display.put("CC Motor Temp 1", motor2.getTemp());
+        Display.put("RPM", motor.getSpeed());
     }
 
     public void jogUpDn(boolean up){
