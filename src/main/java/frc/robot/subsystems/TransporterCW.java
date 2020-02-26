@@ -4,7 +4,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -21,7 +21,7 @@ public class TransporterCW extends SubsystemBase{
     public Motor loadMotor;
     public TransporterCals tCals;
     public CWheelCals cCals;
-    public DigitalInput ballSensor;
+    public AnalogInput ballSensor;
     public ColorSensorV3 colorSensor;
     public Solenoid launcher;
     public Solenoid CWNotTransport;
@@ -44,7 +44,8 @@ public class TransporterCW extends SubsystemBase{
 
         rotateMotor = Motor.initMotor(tCals.rotateMotor);
         loadMotor = Motor.initMotor(tCals.loadMotor);
-        ballSensor = new DigitalInput(tCals.sensorValue);
+        ballSensor = new AnalogInput(tCals.sensorValue);
+        ballSensor.setAverageBits(4);
         colorSensor = new ColorSensorV3(Port.kOnboard);
         launcher = new Solenoid(tCals.launcherValue);
         CWNotTransport = new Solenoid(tCals.CWNotTransport);
@@ -125,7 +126,7 @@ public class TransporterCW extends SubsystemBase{
     public void gatherIndex(){
         if(tCals.disabled) return;
         double error = targetpos - rotateMotor.getPosition();
-        if(ballSensor.get() && error < tCals.countsPerIndex / 2 && ballnumber < 5){ //only spin if not moving & we have an open spot
+        if(hasBall() && Math.abs(error) < tCals.countsPerIndex / 2 && ballnumber < 5){ //only spin if not moving & we have an open spot
             ballnumber++;
             int x = (int) Math.round(targetpos/tCals.countsPerIndex);
             ballpositions[x % 5] = true;
@@ -137,7 +138,7 @@ public class TransporterCW extends SubsystemBase{
         if(tCals.disabled) return;
         enablefire(ballnumber > 0);
         double error = targetpos - rotateMotor.getPosition();
-        if(error < tCals.countsPerIndex/2 && ballnumber > 0){
+        if(Math.abs(error) < tCals.countsPerIndex/2 && ballnumber > 0){
             index(1);
         }
     }
@@ -159,5 +160,10 @@ public class TransporterCW extends SubsystemBase{
     public void deployCW(boolean activated){
         if(tCals.disabled) return;
         CWNotTransport.set(activated);
+    }
+
+    public boolean hasBall(){
+        double volts = ballSensor.getAverageVoltage();
+        return volts > tCals.hasBallMinV && volts < tCals.hasBallMinV;
     }
 }

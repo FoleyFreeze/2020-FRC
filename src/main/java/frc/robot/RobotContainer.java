@@ -7,8 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.cals.CWheelCals;
 import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
@@ -27,6 +26,7 @@ import frc.robot.cals.VisionCals;
 import frc.robot.commands.ZeroReset;
 import frc.robot.commands.AutoTrench.Orientation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoDrive;
@@ -48,15 +48,21 @@ public class RobotContainer {
   public final TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
   public final Vision m_vision = new Vision(new VisionCals());
 
+  public SendableChooser<CommandBase> autonChooser;
   
   public RobotContainer() {
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain, m_intake, 
     m_cannonClimber, m_pneumatics, m_transporterCW);
     
     m_drivetrain.setDefaultCommand(new JoystickDrive(this));
-    
-      
+
     configureButtonBindings();
+
+    autonChooser = new SendableChooser<>();
+    autonChooser.setDefaultOption("DriveOnly", new AutoDrive(this, 0, -36, 0, true));
+    autonChooser.addOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new AutoDrive(this,0,-36,0,true)));
+    
+    autonChooser.addOption("AutoSquare", new AutonSquare(this));
   }
 
   
@@ -78,7 +84,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-
-    return new AutonSquare(this);
+    return autonChooser.getSelected();
   }
 }

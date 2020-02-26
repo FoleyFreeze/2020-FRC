@@ -22,7 +22,7 @@ public class DropFoot extends CommandBase{
 
     @Override
     public void execute(){
-        if(m_subsystem.m_input.enableBudClimb())m_subsystem.m_cannonClimber.dropFoot(m_activated);
+        if(m_subsystem.m_input.enableBudClimb()) m_subsystem.m_cannonClimber.dropFoot(m_activated);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class DropFoot extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
 }

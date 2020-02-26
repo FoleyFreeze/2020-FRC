@@ -27,8 +27,8 @@ public class JoystickDrive extends CommandBase{
         Vector strafe = m_subsystem.m_input.getXY();
         double rot = m_subsystem.m_input.getRot();
         double pausePwr = m_subsystem.m_drivetrain.k.pausePwrPne;
-        //m_subsystem.m_pneumatics.pauseReq(strafe.r > pausePwr 
-          //  || Math.abs(rot) > pausePwr);
+        m_subsystem.m_pneumatics.pauseReq(strafe.r > pausePwr 
+                || Math.abs(rot) > pausePwr);
         
         m_subsystem.m_drivetrain.drive(strafe, 
             rot, m_subsystem.m_drivetrain.k.DRV_XROBOTCENT, 

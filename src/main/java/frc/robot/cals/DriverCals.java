@@ -33,6 +33,10 @@ public class DriverCals extends CalSet {
     public double trenchRunDistKp = 0.01;
     public double trenchRunMaxSpd = 1;
 
+    public double autoShootAngKp = 0;
+    public double autoBallAngKp = 0;
+    public double autoBallDistKp = 0;
+
     public double autoDriveStrafeKp = 0.1; //full power in 10in
     public double autoDriveAngKp = 0.02; //50deg is full power
     public double autoDriveStrafeRange = 3;

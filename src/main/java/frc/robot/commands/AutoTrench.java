@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
+import frc.robot.util.Util;
 import frc.robot.util.Vector;
 import frc.robot.util.DistanceSensors.DistData;
 
@@ -70,20 +71,23 @@ public class AutoTrench extends CommandBase{
 
         double distDiff = (dist.dist - wallDist);
         double distPower = m_cals.trenchRunDistKp * distDiff;
-        double angDiff = targetAngle - m_subsystem.m_drivetrain.navX.getAngle();
-        if(Math.abs(angDiff) > 180){
-            if(angDiff > 0){
-                angDiff -= 360;
-            } else angDiff += 360;
-        }
+        double angDiff = Util.angleDiff(targetAngle, m_subsystem.m_drivetrain.robotAng);
         double angPower = m_cals.trenchRunAngKp * angDiff;
 
-        Vector forward = Vector.fromXY(distPower, m_subsystem.m_input.getY());
-        double maxPwr = m_cals.trenchRunMaxSpd;
-        if(m_subsystem.m_input.shift()){
-            maxPwr *= 0.2;
+        //limit PID powers to the cal value
+        if(Math.abs(angPower) > m_cals.trenchRunMaxSpd){
+            if(angPower > 0) angPower = m_cals.trenchRunMaxSpd;
+            else if(angPower < 0) angPower = -m_cals.trenchRunMaxSpd;
         }
-        m_subsystem.m_drivetrain.drive(forward, angPower, 0, 0, true, maxPwr);
+
+        if(Math.abs(distPower) > m_cals.trenchRunMaxSpd){
+            if(distPower > 0) distPower = m_cals.trenchRunMaxSpd;
+            else if(distPower < 0) distPower = -m_cals.trenchRunMaxSpd;
+        }
+
+        Vector forward = Vector.fromXY(distPower, m_subsystem.m_input.getY());
+
+        m_subsystem.m_drivetrain.drive(forward, angPower, 0, 0, true);
     }
 
     @Override

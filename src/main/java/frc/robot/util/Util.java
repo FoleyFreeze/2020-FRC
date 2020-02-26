@@ -28,4 +28,14 @@ public class Util{
         }
         return max;
     }
+
+    public static double angleDiff(double angle1, double angle2){
+        double delta = angle1 - angle2;
+        delta %= 360;
+        if(Math.abs(delta) > 180){
+            if(delta > 0) delta -= 360;
+            else delta += 360;
+        }
+        return delta;
+    }
 }

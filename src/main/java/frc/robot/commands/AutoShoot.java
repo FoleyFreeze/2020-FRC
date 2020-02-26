@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.CannonCals;
 import frc.robot.subsystems.Vision.VisionData;
+import frc.robot.util.Util;
 
 public class AutoShoot extends CommandBase{
 
@@ -59,15 +60,9 @@ public class AutoShoot extends CommandBase{
             }
 
             double robotAngle = m_subsystem.m_drivetrain.robotAng;
-            error = rotCam - robotAngle;
-            error %= 360;
-            if(error > 180) error -=360;
-            else if(error < -180) error +=360;
+            error = Util.angleDiff(rotCam, robotAngle);
             
-            double deltaAngle = robotAngle - prevRobotAngle;
-            deltaAngle %= 360;
-            if(deltaAngle > 180) deltaAngle -=360;
-            else if(deltaAngle < -180) deltaAngle +=360;
+            double deltaAngle = Util.angleDiff(robotAngle, prevRobotAngle);
 
             double d = (deltaAngle)/(time - prevTime);
             rot = error * m_cals.kPDrive - d * m_cals.kDDrive;

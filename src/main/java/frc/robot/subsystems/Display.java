@@ -16,24 +16,37 @@ public class Display extends SubsystemBase{
     }
 
     public static void addToTab(ShuffleboardTab tab, String name, double init, int x, int y){
-        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-        map.put(name,nte);
+        if(map.containsKey(name)){
+            NetworkTableEntry nte = map.get(name);
+            tab.add(name, nte.getValue());
+        } else {
+            NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+            map.put(name,nte);
+        }
     }
     public static void addToTab(ShuffleboardTab tab, String name, String init, int x, int y){
-        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-        map.put(name,nte);
+        if(map.containsKey(name)){
+            NetworkTableEntry nte = map.get(name);
+            tab.add(name, nte.getValue());
+        } else {
+            NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+            map.put(name,nte);
+        }
     }
     public static void addToTab(ShuffleboardTab tab, String name, boolean init, int x, int y){
-        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-        map.put(name,nte);
+        if(map.containsKey(name)){
+            NetworkTableEntry nte = map.get(name);
+            tab.add(name, nte.getValue());
+        } else {
+            NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+            map.put(name,nte);
+        }
     }
 
     public static void init(){
         ShuffleboardTab tab = Shuffleboard.getTab("Comp");
             addToTab(tab, "Selected Auton", "default", 1, 0);
             addToTab(tab, "Pi Alive", false, 2, 0);
-            String name;
-            NetworkTableEntry nte;
             addToTab(tab, "Last Target", "t, d, theta", 3, 0);
             addToTab(tab, "Last Ball", "t, d, theta", 4, 0);
             addToTab(tab, "DT", 0, 5, 0);

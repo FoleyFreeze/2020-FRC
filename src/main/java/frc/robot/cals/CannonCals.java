@@ -13,7 +13,7 @@ public class CannonCals extends CalSet {
     public int ShootVClimbValue;
     public double layupDist = 24.0;
     public double trenchDist = 208.75;
-    public double power = 0.5;
+    public double manualPower = 0.5;
     public double kPDrive = 0.05;
     public double kDDrive = 0.05;
     public double maxRot = 0.2;

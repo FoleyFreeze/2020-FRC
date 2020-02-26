@@ -58,9 +58,7 @@ public class AutoDrive extends CommandBase{
         double y = pose.getTranslation().getY();
         errorX = (tgtX - x);
         errorY = (tgtY - y);
-        errorRot = tgtRot - m_subsystem.m_drivetrain.robotAng;
-        if(errorRot > 180) errorRot-= 360;
-        else if(errorRot < -180) errorRot+=360;
+        errorRot = Util.angleDiff(tgtRot, m_subsystem.m_drivetrain.robotAng);
 
         Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
 
