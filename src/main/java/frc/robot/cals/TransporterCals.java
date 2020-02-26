@@ -4,7 +4,7 @@ public class TransporterCals extends CalSet {
 
     public boolean disabled = true;
     public MotorCal rotateMotor = MotorCal.spark(12).pid(0.001, 0, 0, 0).limit(0.1).ramp(0.3).brake();
-    public MotorCal loadMotor = MotorCal.srx(-1); //this is the gate wheels and the CW motor
+    public MotorCal loadMotor = MotorCal.nullMtr(-1); //this is the gate wheels and the CW motor
     public int CWNotTransport = -1;
     public int sensorValue = -1;
     public int launcherValue = -1;

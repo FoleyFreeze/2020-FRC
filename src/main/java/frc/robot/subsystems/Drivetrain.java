@@ -151,6 +151,7 @@ public class Drivetrain extends SubsystemBase{
 
     public double parkTime = 9000.0;
     public boolean parkMode = false;
+    boolean motorsGood = true;
     double currentTime = 0.0;
     public double prevRot;
     public boolean driveStraight = false;
@@ -298,10 +299,12 @@ public class Drivetrain extends SubsystemBase{
         if(k.disabled) return;
         Display.put("NavX Ang", navX.getAngle());
         for(Wheel w: wheels){
+            if(w.idx == 0) motorsGood = true;
             Display.put("DMotorCurrent " + w.idx, wheels[w.idx].driveMotor.getCurrent());
             Display.put("TMotorCurrent " + w.idx, wheels[w.idx].turnMotor.getCurrent());
             Display.put("DMotorTemp " + w.idx, wheels[w.idx].driveMotor.getTemp());
             Display.put("TMotorTemp " + w.idx, wheels[w.idx].turnMotor.getTemp());
+            if(wheels[w.idx].driveMotor.getTemp() >= 70) motorsGood = false;
         }
 
         Display.put("DistSenseInfo Re", distSens.getRear().toString());
@@ -316,6 +319,7 @@ public class Drivetrain extends SubsystemBase{
         double x = drivePos.getTranslation().getX();
         double y = drivePos.getTranslation().getY();
         Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
+        Display.put("Motors Good", motorsGood);
     }
 
     public void zeroAll(){

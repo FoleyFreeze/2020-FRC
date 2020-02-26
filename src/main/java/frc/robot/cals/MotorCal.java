@@ -16,7 +16,7 @@ public class MotorCal {
     public boolean invert = false;
 
     public enum MotorType{
-        PWM_TALON, SPARK_MAX, TALON_SRX
+        PWM_TALON, SPARK_MAX, TALON_SRX, NULL
     }
 
     public static MotorCal spark(int id){

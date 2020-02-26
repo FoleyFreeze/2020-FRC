@@ -42,7 +42,7 @@ public class MotorTalonSRX extends Motor{
     }    
     
     public void setSpeed(double speed){
-        motor.set(ControlMode.Position, speed);
+        motor.set(ControlMode.Position, speed * 2048/600);
     }
     
     public double getCurrent(){
@@ -51,5 +51,10 @@ public class MotorTalonSRX extends Motor{
 
     public double getTemp(){
         return 0;
+    }
+
+    @Override
+    public double getSpeed() {
+        return motor.getSelectedSensorVelocity() * 600/2048;
     }
 }
