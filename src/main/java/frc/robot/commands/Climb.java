@@ -17,7 +17,7 @@ public class Climb extends CommandBase{
 
     @Override
     public void initialize(){
-        m_subsystem.m_cannonClimber.climbMode();
+        m_subsystem.m_cannonClimber.climbMode(true);
     }
 
     @Override
@@ -28,6 +28,7 @@ public class Climb extends CommandBase{
     @Override
     public void end(boolean interrupted){
         m_subsystem.m_cannonClimber.setpower(0);
+        m_subsystem.m_cannonClimber.climbMode(false);
     }
 
     @Override

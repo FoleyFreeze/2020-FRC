@@ -15,7 +15,8 @@ public class CannonCals extends CalSet {
     public double trenchDist = 208.75;
     public double power = 0.5;
     public double kPDrive = 0.05;
-    public double maxMovePwr = 1;
+    public double kDDrive = 0.05;
+    public double maxRot = 0.2;
     public double tolerance = 3.0;
     public double initJogDist = 0.0;
     public double initJogAng = 0.0;

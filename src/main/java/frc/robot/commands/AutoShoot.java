@@ -14,6 +14,8 @@ public class AutoShoot extends CommandBase{
     public double rotCam = 0.0;
     public boolean auton;
     public double shootFinTime;
+    double prevRobotAngle;
+    double prevTime;
     
     public AutoShoot(RobotContainer subsystem){
         m_subsystem = subsystem;
@@ -32,10 +34,13 @@ public class AutoShoot extends CommandBase{
         }
         
         auton = DriverStation.getInstance().isAutonomous();
+        prevRobotAngle = m_subsystem.m_drivetrain.robotAng;
+        prevTime = 0;
     }
 
     @Override
     public void execute(){
+        double time = Timer.getFPGATimestamp();
         double rot;
         double error;
         boolean aligned = false;
@@ -53,11 +58,23 @@ public class AutoShoot extends CommandBase{
                 rotCam = Math.asin(29.25/dist * Math.sin(angOfTgt));
             }
 
-            error = rotCam - m_subsystem.m_drivetrain.robotAng;
+            double robotAngle = m_subsystem.m_drivetrain.robotAng;
+            error = rotCam - robotAngle;
             error %= 360;
             if(error > 180) error -=360;
             else if(error < -180) error +=360;
-            rot = error * m_cals.kPDrive;
+            
+            double deltaAngle = robotAngle - prevRobotAngle;
+            deltaAngle %= 360;
+            if(deltaAngle > 180) deltaAngle -=360;
+            else if(deltaAngle < -180) deltaAngle +=360;
+
+            double d = (deltaAngle)/(time - prevTime);
+            rot = error * m_cals.kPDrive - d * m_cals.kDDrive;
+
+            if(rot > m_cals.maxRot) rot = m_cals.maxRot;
+            else if(rot < -m_cals.maxRot) rot = -m_cals.maxRot;
+
         }else {
             rot = m_subsystem.m_input.getRot();
             error = 0;
@@ -65,16 +82,10 @@ public class AutoShoot extends CommandBase{
                 dist = m_cals.layupDist;
             } else dist = m_cals.trenchDist;
         }
-        if(error <= m_cals.tolerance) aligned = true;//make dependent on dist
+        if(Math.abs(error) <= m_cals.tolerance) aligned = true;//make dependent on dist
         
-        double maxPwr = m_cals.maxMovePwr;
-        if(m_subsystem.m_input.shift()){
-            dist *= 0.2;
-            maxPwr *= 0.2;
-        }
-
         m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, 
-            m_subsystem.m_input.fieldOrient(), maxPwr);
+            m_subsystem.m_input.fieldOrient());
         
         m_subsystem.m_cannonClimber.prime(dist);
 
@@ -84,7 +95,8 @@ public class AutoShoot extends CommandBase{
         } 
         else m_subsystem.m_transporterCW.stoprot();
 
-
+        prevRobotAngle = m_subsystem.m_drivetrain.robotAng;
+        prevTime = time;
     }
 
     @Override

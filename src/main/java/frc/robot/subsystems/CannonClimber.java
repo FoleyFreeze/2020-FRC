@@ -193,9 +193,9 @@ public class CannonClimber extends SubsystemBase{
     }
 
     //Climber
-    public void climbMode(){
+    public void climbMode(boolean set){
         if(climbCals.disabled && shootCals.disabled) return;
-        shootVsClimb.set(true);
+        shootVsClimb.set(set);
     }
     public void dropFoot(boolean on){
         if(climbCals.disabled && shootCals.disabled) return;
