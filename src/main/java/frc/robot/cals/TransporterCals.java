@@ -15,7 +15,7 @@ public class TransporterCals extends CalSet {
     public final double TN_LOADSPEED = 0.50;
     public final double TN_STOPSPEED = -0.0;
     public double gateRestTime = 2;
-    public double maxGateCurr = 7.5;
+    public double maxGateCurr = 29; //MrC 7.5;
 
     public TransporterCals(){
 
