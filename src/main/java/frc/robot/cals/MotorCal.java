@@ -14,6 +14,8 @@ public class MotorCal {
     public double rampRate;
     public boolean brake;
     public boolean invert = false;
+    public boolean follow = false;
+    public int followID;
 
     public enum MotorType{
         PWM_TALON, SPARK_MAX, TALON_SRX, NULL
@@ -51,6 +53,12 @@ public class MotorCal {
         kI = i;
         kD = d;
         kF = f;
+        return this;
+    }
+
+    public MotorCal follow(int id){
+        follow = true;
+        followID = id;
         return this;
     }
 

@@ -4,8 +4,8 @@ import frc.robot.cals.MotorCal.MotorType;
 
 public class IntakeCals extends CalSet {
 
-    public boolean disabled = true;
-    public MotorCal spinMotor = new MotorCal(MotorType.TALON_SRX, 7);
+    public boolean disabled = false;
+    public MotorCal spinMotor = new MotorCal(MotorType.TALON_SRX, 6).invert();
     public int depSolValue = 7;
     public double forwardPower = 0.5;
     public double backwardPower = -0.5;

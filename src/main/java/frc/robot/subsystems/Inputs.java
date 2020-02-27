@@ -123,15 +123,12 @@ public class Inputs{
             angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
             autoTrench = new JoystickButton(joy, cals.XB_AUTOTRENCH);
         }
-/*
-        enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
+
         dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
         manualIntake = new JoystickButton(ds, cals.DS_MINTAKE);
-        revolve = new JoystickButton(ds, cals.DS_REVOLVE);
-        
-        shift = new JoystickButton(ds, cals.DS_SHIFT);
+        manualShoot = new JoystickButton(ds, cals.DS_MSHOOT);
+        revolve = new JoystickButton(ds, cals.DS_REVOLVE);        
         cwActivate = new JoystickButton(ds, cals.DS_CWACTIVATE);
-        */
     }
 
     private double threshDeadband(double raw, double limitLow, double limitHigh){

@@ -47,7 +47,7 @@ public class CannonClimber extends SubsystemBase{
     public void setpower(double power){
         if(shootCals.disabled) return;
         motor.setPower(power);
-        motor2.setPower(power);
+        //motor2.setPower(power);
         Display.put("CCMotorCurrent 0", motor.getCurrent());
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
@@ -57,7 +57,7 @@ public class CannonClimber extends SubsystemBase{
     public void setspeed(double speed){
         if(shootCals.disabled) return;
         motor.setSpeed(speed);
-        motor2.setSpeed(speed);
+        //motor2.setSpeed(speed);
     }
 
     public void prime(double distToTgt){

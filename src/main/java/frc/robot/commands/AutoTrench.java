@@ -10,7 +10,7 @@ import frc.robot.util.DistanceSensors.DistData;
 public class AutoTrench extends CommandBase{
 
     private RobotContainer m_subsystem;
-    private DriverCals m_cals = m_subsystem.m_drivetrain.k;
+    private DriverCals m_cals;
     private double wallDist;
     public double targetAngle;
     public enum Orientation{
@@ -20,6 +20,7 @@ public class AutoTrench extends CommandBase{
 
     public AutoTrench(RobotContainer subsystem, Orientation orient){
         m_subsystem = subsystem;
+        m_cals = m_subsystem.m_drivetrain.k;
         addRequirements(m_subsystem.m_drivetrain);
 
         this.orient = orient;
@@ -37,8 +38,8 @@ public class AutoTrench extends CommandBase{
                 wallDist = 8.5;
                 break;
             case AUTO:
-                if(180 - Math.abs(m_subsystem.m_drivetrain.navX.getAngle()) 
-                    < 90 - Math.abs(m_subsystem.m_drivetrain.navX.getAngle())){
+                if(180 - Math.abs(m_subsystem.m_drivetrain.robotAng) 
+                    < 90 - Math.abs(m_subsystem.m_drivetrain.robotAng)){
                     targetAngle = 180;
                     wallDist = 6.75;
                     break;

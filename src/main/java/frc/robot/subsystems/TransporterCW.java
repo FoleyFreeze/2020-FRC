@@ -98,12 +98,13 @@ public class TransporterCW extends SubsystemBase{
             colorString = "Yellow";
         } else colorString = "N/A";
 
+        Display.put("Current Pos", rotateMotor.getPosition() / tCals.countsPerIndex);
         Display.put("Ball Number", ballnumber);
         Display.put("TCMotorCurrent0", rotateMotor.getCurrent());
         Display.put("TCMotorCurrent1", loadMotor.getCurrent());
         Display.put("TC Motor Temp 0", rotateMotor.getTemp());
         Display.put("TC Motor Temp 1", loadMotor.getTemp());
-        Display.put("Color Info", String.format("R: %f G: %f B: %f IR: %f Prox: %f", 
+        Display.put("Color Info", String.format("R: %d G: %d B: %d IR: %d Prox: %d", 
             colorSensor.getRed(), colorSensor.getGreen(), colorSensor.getBlue(), 
             colorSensor.getIR(), colorSensor.getProximity()));
         Display.put("Detected Color", String.format("Color Guess: " + colorString + 

@@ -15,10 +15,11 @@ public class Display extends SubsystemBase{
     public Display(){
     }
 
+    //TODO: figure out how to add the same data to multiple tabs
     public static void addToTab(ShuffleboardTab tab, String name, double init, int x, int y){
         if(map.containsKey(name)){
             NetworkTableEntry nte = map.get(name);
-            tab.add(name, nte.getValue());
+            //tab.add(name, nte.getValue());
         } else {
             NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
             map.put(name,nte);
@@ -27,7 +28,7 @@ public class Display extends SubsystemBase{
     public static void addToTab(ShuffleboardTab tab, String name, String init, int x, int y){
         if(map.containsKey(name)){
             NetworkTableEntry nte = map.get(name);
-            tab.add(name, nte.getValue());
+            //tab.add(name, nte.getValue());
         } else {
             NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
             map.put(name,nte);
@@ -36,7 +37,7 @@ public class Display extends SubsystemBase{
     public static void addToTab(ShuffleboardTab tab, String name, boolean init, int x, int y){
         if(map.containsKey(name)){
             NetworkTableEntry nte = map.get(name);
-            tab.add(name, nte.getValue());
+            //tab.add(name, nte.getValue());
         } else {
             NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
             map.put(name,nte);

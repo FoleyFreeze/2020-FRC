@@ -9,11 +9,13 @@ public class ManualShoot extends CommandBase{
 
     public ManualShoot(RobotContainer subsystem){
         m_subsystem = subsystem;
+        addRequirements(m_subsystem.m_cannonClimber);
+        addRequirements(m_subsystem.m_transporterCW);
     }
 
     @Override
     public void initialize(){
-
+        m_subsystem.m_transporterCW.enablefire(true);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class ManualShoot extends CommandBase{
     @Override
     public void end(boolean interrupted){
         m_subsystem.m_cannonClimber.setpower(0);
+        m_subsystem.m_transporterCW.enablefire(false);
     }
 
     @Override

@@ -80,7 +80,8 @@ public class RobotContainer {
     m_input.jogL.whileActiveOnce(new Jog(this, false, true));
     m_input.jogR.whileActiveOnce(new Jog(this, false, false));
     m_input.autoTrench.whileActiveOnce(new AutoTrench(this, Orientation.AUTO));
-    m_input.cwActivate.whileActiveOnce(new CWCombo(this));
+    //m_input.cwActivate.whileActiveOnce(new CWCombo(this));
+    //TODO: enable when the CW works
   }
 
   public Command getAutonomousCommand() {

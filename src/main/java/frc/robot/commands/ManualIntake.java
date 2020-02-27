@@ -9,11 +9,12 @@ public class ManualIntake extends CommandBase{
 
     public ManualIntake(RobotContainer subsystem){
         m_subsystem = subsystem;
+        addRequirements(m_subsystem.m_intake);
     }
 
     @Override
     public void initialize(){
-
+        m_subsystem.m_intake.dropIntake(true);
     }
 
     @Override
@@ -23,8 +24,6 @@ public class ManualIntake extends CommandBase{
         } else{
             m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.forwardPower);
         }
-
-        m_subsystem.m_intake.dropIntake(true);
     }
 
     @Override

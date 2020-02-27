@@ -4,9 +4,9 @@ import frc.robot.cals.MotorCal.MotorType;
 
 public class CannonCals extends CalSet {
 
-    public boolean disabled = true;
-    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).invert().limit(0.5);
-    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, -1); //new MotorCal(MotorType.TALON_SRX, 3).follow(2);
+    public boolean disabled = false;
+    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(0.5);
+    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().follow(2);
     public int hoodSolValue = 1;
     public int stopSolValue = 0;
     public int camLightsSol = 3; //3 4 or 5
@@ -41,6 +41,7 @@ public class CannonCals extends CalSet {
             break;
 
             case PRACTICE:
+                /*
                 ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(-0.55, 0.55);
                 ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().limit(-0.55, 0.55);
 
@@ -48,6 +49,7 @@ public class CannonCals extends CalSet {
                 stopSolValue = 0;
                 camLightsSol = -1;
                 ShootVClimbValue = -1;
+                */
             break;
 
             case LASTYEAR:
