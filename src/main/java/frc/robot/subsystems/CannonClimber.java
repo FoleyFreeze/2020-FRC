@@ -29,6 +29,8 @@ public class CannonClimber extends SubsystemBase{
     HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
 
+    double targetSpeed = 0;
+
     public CannonClimber(CannonCals sCals, ClimberCals cCals){
         shootCals = sCals;
         climbCals = cCals;
@@ -52,6 +54,8 @@ public class CannonClimber extends SubsystemBase{
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
         Display.put("CC Motor Temp 1", motor2.getTemp());
+        
+        targetSpeed = 0;
     }
 
     public void setspeed(double speed){
@@ -59,6 +63,7 @@ public class CannonClimber extends SubsystemBase{
         //motor.setSpeed(speed);
         //motor2.setSpeed(speed);
         motor.setPower(speed / shootCals.falconRpmPerPower);
+        targetSpeed = speed;
     }
 
     public void prime(double distToTgt){
@@ -112,7 +117,7 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public boolean ready(){
-        return false;
+        return Math.abs(motor.getSpeed() - targetSpeed) < shootCals.allowedRpmError;
     }
 
     public void periodic(){
@@ -184,6 +189,7 @@ public class CannonClimber extends SubsystemBase{
         }else{
             shootCals.initJogDist -= shootCals.distJog;
         }
+        Display.put("JogUpDn", shootCals.initJogDist);
     }
 
     public void jogLR(boolean left){
@@ -192,6 +198,7 @@ public class CannonClimber extends SubsystemBase{
         }else{
             shootCals.initJogAng += shootCals.angJog;
         }
+        Display.put("JogLR", shootCals.initJogAng);
     }
 
     //Climber

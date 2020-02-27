@@ -18,9 +18,9 @@ public class Jog extends CommandBase{
     @Override
     public void initialize(){
         if(jogUpDnvsLR){
-            mSubsystem.m_cannonClimber.jogLR(jogPlusMinus);
-        } else {
             mSubsystem.m_cannonClimber.jogUpDn(jogPlusMinus);
+        } else {
+            mSubsystem.m_cannonClimber.jogLR(jogPlusMinus);
         }
     }
 
@@ -32,6 +32,11 @@ public class Jog extends CommandBase{
     @Override
     public void end(boolean interrupted){
 
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 
     @Override

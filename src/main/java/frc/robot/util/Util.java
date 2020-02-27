@@ -6,7 +6,7 @@ public class Util{
         if(value >= axis[axis.length - 1]) return table[table.length - 1];
 
         int i = axis.length-1;
-        while(axis[i--] > value);
+        while(axis[--i] > value); 
 
         double slope = (table[i+1]-table[i])/(axis[i+1]-axis[i]);
         double x = value - axis[i];

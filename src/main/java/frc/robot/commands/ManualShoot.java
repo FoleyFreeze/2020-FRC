@@ -15,7 +15,7 @@ public class ManualShoot extends CommandBase{
 
     @Override
     public void initialize(){
-        m_subsystem.m_transporterCW.enablefire(true);
+        //m_subsystem.m_transporterCW.enablefire(true);
     }
 
     @Override
@@ -24,7 +24,10 @@ public class ManualShoot extends CommandBase{
             m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.manualPower * -1.0);
         } else{
             //m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.manualPower);
-            m_subsystem.m_cannonClimber.prime(120);
+            m_subsystem.m_cannonClimber.prime(36);
+            if(m_subsystem.m_cannonClimber.ready()){
+                m_subsystem.m_transporterCW.enablefire(true);
+            }
         }
     }
 
