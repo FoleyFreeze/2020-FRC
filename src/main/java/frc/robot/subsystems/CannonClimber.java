@@ -56,8 +56,9 @@ public class CannonClimber extends SubsystemBase{
 
     public void setspeed(double speed){
         if(shootCals.disabled) return;
-        motor.setSpeed(speed);
+        //motor.setSpeed(speed);
         //motor2.setSpeed(speed);
+        motor.setPower(speed / shootCals.falconRpmPerPower);
     }
 
     public void prime(double distToTgt){

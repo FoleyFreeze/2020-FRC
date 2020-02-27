@@ -7,6 +7,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -75,16 +76,16 @@ public class TransporterCW extends SubsystemBase{
         }
 
         if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
-            loadMotor.setPower(tCals.TN_LOADSPEED);
+            gatePower(tCals.TN_LOADSPEED);
         }else if(mSubsystem.m_intake.isOut()) {
-            loadMotor.setPower(tCals.TN_STOPSPEED);
+            gatePower(tCals.TN_STOPSPEED);
         }else if(CWNotTransport.get()){
             if(mSubsystem.m_input.cwRotNotPos()){
-                loadMotor.setPower(cCals.rotSpeed);
+                gatePower(cCals.rotSpeed);
             } else{
-                loadMotor.setPower(cCals.colSpeed);
+                gatePower(cCals.colSpeed);
             }
-        } else loadMotor.setPower(0.0);
+        } else gatePower(0.0);
 
         detectedColor = colorSensor.getColor();
         ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
@@ -132,6 +133,19 @@ public class TransporterCW extends SubsystemBase{
             int x = (int) Math.round(targetpos/tCals.countsPerIndex);
             ballpositions[x % 5] = true;
             index(1);
+        }
+    }
+
+    double restTime = 0;
+    public void gatePower(double power){
+        if(restTime > Timer.getFPGATimestamp()){
+            loadMotor.setPower(tCals.TN_STOPSPEED);
+        } else {
+            loadMotor.setPower(power);
+        }
+
+        if(loadMotor.getCurrent() > tCals.maxGateCurr){
+            restTime = Timer.getFPGATimestamp() + tCals.gateRestTime;
         }
     }
 

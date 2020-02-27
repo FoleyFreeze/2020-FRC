@@ -23,7 +23,8 @@ public class ManualShoot extends CommandBase{
         if(m_subsystem.m_input.shift()){
             m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.manualPower * -1.0);
         } else{
-            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.manualPower);
+            //m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.manualPower);
+            m_subsystem.m_cannonClimber.prime(120);
         }
     }
 

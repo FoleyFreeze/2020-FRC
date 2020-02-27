@@ -12,8 +12,10 @@ public class TransporterCals extends CalSet {
     public int launcherValue = 2;
     public double countsPerIndex = 24/40.0 * 52/36.0 * 64/20.0 * 64/13.0;
     public double allowedIndexError = 0.2 * countsPerIndex;
-    public final double TN_LOADSPEED = 0.2;
+    public final double TN_LOADSPEED = 0.50;
     public final double TN_STOPSPEED = -0.0;
+    public double gateRestTime = 2;
+    public double maxGateCurr = 7.5;
 
     public TransporterCals(){
 

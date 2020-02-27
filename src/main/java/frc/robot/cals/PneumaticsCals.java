@@ -1,8 +1,8 @@
 package frc.robot.cals;
 
 public class PneumaticsCals extends CalSet{
-    public final double minPressure = 60;
-    public final double maxPressure = 90;
+    public final double minPressure = 50;
+    public final double maxPressure = 70;
     public final double hystPressure = 20;
     public final boolean disabled = false;
     public final double pauseTime = 5.0;

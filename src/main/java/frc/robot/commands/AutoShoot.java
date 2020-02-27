@@ -46,6 +46,8 @@ public class AutoShoot extends CommandBase{
         double error;
         boolean aligned = false;
         double dist;
+        double centX = 0;
+        double centY = 0;
         if(m_subsystem.m_vision.hasTargetImage() && m_subsystem.m_input.cam()){
             VisionData image = m_subsystem.m_vision.targetData.getFirst();
             rotCam = image.robotangle + image.angle + m_subsystem.m_cannonClimber.shootCals.initJogAng;
@@ -70,6 +72,8 @@ public class AutoShoot extends CommandBase{
             if(rot > m_cals.maxRot) rot = m_cals.maxRot;
             else if(rot < -m_cals.maxRot) rot = -m_cals.maxRot;
 
+            centX = m_cals.shootCentX;
+            centY = m_cals.shootCentY;
         }else {
             rot = m_subsystem.m_input.getRot();
             error = 0;
