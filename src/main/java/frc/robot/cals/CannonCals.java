@@ -26,15 +26,15 @@ public class CannonCals extends CalSet {
     public double shootTime = .25;
     public double shootCentX = 0.0;
     public double shootCentY = 0.0;
-    public double[][] rpm = {{1000.0, 2000.0, 4000.0},
-                             {1000.0, 2000.0, 4000.0},
-                             {1000.0, 2000.0, 4000.0}, 
-                             {1000.0, 2000.0, 4000.0}};
+    public double[][] rpm = {{3000.0, 4000.0, 5400.0},
+                             {3000.0, 4000.0, 5400.0},
+                             {3000.0, 4000.0, 5400.0}, 
+                             {3000.0, 4000.0, 5400.0}};
     public double[][] dist = {{  5.0,  40.0,  80.0},
                               { 60.0, 120.0, 180.0},
                               { 90.0, 150.0, 210.0},
                               {150.0, 250.0, 350.0}};
-    public double allowedRpmError = 50;
+    public double allowedRpmError = 5000;
     public final double SOL_RESTTIME = 0.1;                                
 
     public CannonCals(){
