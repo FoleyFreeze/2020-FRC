@@ -6,11 +6,11 @@ public class CannonCals extends CalSet {
 
     public boolean disabled = true;
     public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).invert().limit(0.5);
-    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).limit(0.5);
-    public int hoodSolValue = 2;
+    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, -1); //new MotorCal(MotorType.TALON_SRX, 3).follow(2);
+    public int hoodSolValue = 1;
     public int stopSolValue = 0;
-    public int camLightsSol;
-    public int ShootVClimbValue;
+    public int camLightsSol = 3; //3 4 or 5
+    public int ShootVClimbValue = 6;
     public double layupDist = 24.0;
     public double trenchDist = 208.75;
     public double manualPower = 0.5;

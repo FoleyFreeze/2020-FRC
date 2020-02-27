@@ -5,8 +5,8 @@ public class DriverCals extends CalSet {
     public boolean disabled = false;
 
     public MotorCal[] driveMotors = {   
-        MotorCal.spark( 20/*1*/).ramp(0.3).limit(0.75).coast(), 
-        MotorCal.spark(1/*20*/).ramp(0.3).limit(0.75).coast(), 
+        MotorCal.spark(20).ramp(0.3).limit(0.75).coast(), 
+        MotorCal.spark( 1).ramp(0.3).limit(0.75).coast(), 
         MotorCal.spark(14).ramp(0.3).limit(0.75).coast(), 
         MotorCal.spark(15).ramp(0.3).limit(0.75).coast()};
     public MotorCal[] turnMotors = {   
