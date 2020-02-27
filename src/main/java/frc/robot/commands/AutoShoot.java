@@ -83,7 +83,7 @@ public class AutoShoot extends CommandBase{
         }
         if(Math.abs(error) <= m_cals.tolerance) aligned = true;//make dependent on dist
         
-        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, 
+        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, centX, centY, 
             m_subsystem.m_input.fieldOrient());
         
         m_subsystem.m_cannonClimber.prime(dist);
