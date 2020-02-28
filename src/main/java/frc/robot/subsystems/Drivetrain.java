@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
@@ -82,14 +83,14 @@ public class Drivetrain extends SubsystemBase{
                     wheelVec.theta -= Math.PI;
                 }
             }
-            //SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
+            SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
             //SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
-            //SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
+            SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
             double deltaTicks = angleDiff / (2*Math.PI) * k.turnTicksPerRev;
             double targetTicks = turnMotor.getPosition();
-            if((wheelVec.r != 0 || parkMode) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
+            if((Math.abs(wheelVec.r) > 0.05 /*|| parkMode*/) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             //SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
@@ -190,6 +191,7 @@ public class Drivetrain extends SubsystemBase{
         
         //SmartDashboard.putBoolean("Driving Straigth", driveStraight);
         
+        /*
         if(0 == rot && 0 == strafe.r){
             if(parkTime <= currentTime){
                 parkMode = true;
@@ -199,12 +201,15 @@ public class Drivetrain extends SubsystemBase{
             parkTime = currentTime + k.parkOffset;
             parkMode = false;
         }
+        */
+        parkMode = false;
 
+        /*
         driveStraight = (rot == 0 && !parkMode);
 
         if(driveStraight){
             rot = outRot(k.driveStraightKp, goalAng);
-        }
+        }*/
 
         if(!driveStraight) goalAng = prevAng;
         //SmartDashboard.putNumber("Goal Angle", goalAng);
@@ -304,6 +309,8 @@ public class Drivetrain extends SubsystemBase{
             Display.put("DMotorTemp " + w.idx, wheels[w.idx].driveMotor.getTemp());
             Display.put("TMotorTemp " + w.idx, wheels[w.idx].turnMotor.getTemp());
             if(wheels[w.idx].driveMotor.getTemp() >= 70) motorsGood = false;
+            SmartDashboard.putNumber("Turn Pwr "+w.idx, wheels[w.idx].turnMotor.getSpeed());
+            SmartDashboard.putNumber("Turn Curr "+w.idx, wheels[w.idx].turnMotor.getCurrent());
         }
 
         Display.put("DistSenseInfo Re", distSens.getRear().toString());

@@ -6,10 +6,13 @@ public class ElectroKendro extends CalSet{
     public final int FS_FIELDORIENT = 5;
     public final int FS_ANGRESET = 10;
     public final int FS_AUTOTRENCH = 4;
+    public final int FS_EnblBallCam = 1;
 
     public final int FS_XAXIS = 0;
     public final int FS_YAXIS = 1;
     public final int FS_ROTAXIS = 4;
+    public final int FS_AUTOSHOOT = 3;
+    public final int FS_AUTOGATHER = 2;
 
     public final double FS_LOWDEADBND = 0.05;
     public final double FS_HIGHDEADBND = 1.0;

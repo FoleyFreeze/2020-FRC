@@ -12,8 +12,9 @@ public class CannonCals extends CalSet {
     public int stopSolValue = 0;
     public int camLightsSol = 3; //3 4 or 5
     public int ShootVClimbValue = 6;
-    public double layupDist = 24.0;
+    public double layupDist = 0.0;
     public double trenchDist = 208.75;
+    public double autonDist = 83;
     public double manualPower = 0.5;
     public double kPDrive = 0.05;
     public double kDDrive = 0.05;
@@ -21,21 +22,22 @@ public class CannonCals extends CalSet {
     public double tolerance = 3.0;
     public double initJogDist = 0.0;
     public double initJogAng = 0.0;
-    public double distJog = 3.0;
+    public double distJog = 0.5;
     public double angJog = 1.0;
     public double shootTime = .25;
     public double shootCentX = 0.0;
     public double shootCentY = 0.0;
-    public double[][] rpm = {{3000.0, 4000.0, 5400.0},
-                             {3000.0, 4000.0, 5400.0},
-                             {3000.0, 4000.0, 5400.0}, 
-                             {3000.0, 4000.0, 5400.0}};
-    public double[][] dist = {{  5.0,  40.0,  80.0},
-                              { 60.0, 120.0, 180.0},
-                              { 90.0, 150.0, 210.0},
-                              {150.0, 250.0, 350.0}};
-    public double allowedRpmError = 5000;
-    public final double SOL_RESTTIME = 0.1;                                
+    public double[][] rpm = {{2700.0, 2775.0, 3000.0},
+                             {2700.0, 2900.0, 3000.0},
+                             {2700.0, 3000.0, 4000.0}, 
+                             {2700.0, 3275.0, 5400.0}};
+    public double[][] dist = {{  -1.0,  -1.0,  -0.1},
+                              { -0.5, 0.0, 35.0},
+                              { 30.0, 60.0, 70.0},
+                              {60.0, 83.0, 500.0}};
+    public double allowedRpmError = 150;
+    public double allowedRpmHyst = 500;
+    public final double SOL_RESTTIME = 0.2;                                
 
     public CannonCals(){
         

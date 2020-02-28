@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -29,7 +30,7 @@ public class TransporterCW extends SubsystemBase{
     private double targetpos = 0;
     private boolean[] ballpositions = {false, false, false, false, false};
     public boolean isIndexing;
-    public int ballnumber = 0;
+    public int ballnumber;
     private RobotContainer mSubsystem;
     public ColorMatch colorMatch;
     public String colorString;
@@ -58,7 +59,18 @@ public class TransporterCW extends SubsystemBase{
         colorMatch.addColorMatch(cCals.Yellow);
     }
 
+    boolean first = true;
     public void periodic(){
+        if(DriverStation.getInstance().isAutonomous() && first){
+            first = false;
+            ballnumber = 5;
+            ballpositions[0] = true;
+            ballpositions[1] = true;
+            ballpositions[2] = true;
+            ballpositions[3] = true;
+            ballpositions[4] = true;
+        }
+
         if(tCals.disabled && cCals.disabled) return;
         
         gameData = DriverStation.getInstance().getGameSpecificMessage();
@@ -70,9 +82,9 @@ public class TransporterCW extends SubsystemBase{
         rotateMotor.setPosition(targetpos);
 
         int x = (int) Math.round(rotateMotor.getPosition() / tCals.countsPerIndex);
-        if(ballpositions[(x + 3) % 5] && launcher.get()){
+        if(ballpositions[(x + 4) % 5] && launcher.get()){
             ballnumber--;
-            ballpositions[x % 5] = false;
+            ballpositions[(x + 4) % 5] = false;
         }
 
         if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
@@ -101,6 +113,11 @@ public class TransporterCW extends SubsystemBase{
 
         Display.put("Current Pos", rotateMotor.getPosition() / tCals.countsPerIndex);
         Display.put("Ball Number", ballnumber);
+        Display.put("Ball Position 0", ballpositions[0]);
+        Display.put("Ball Position 1", ballpositions[1]);
+        Display.put("Ball Position 2", ballpositions[2]);
+        Display.put("Ball Position 3", ballpositions[3]);
+        Display.put("Ball Position 4", ballpositions[4]);
         Display.put("TCMotorCurrent0", rotateMotor.getCurrent());
         Display.put("TCMotorCurrent1", loadMotor.getCurrent());
         Display.put("TC Motor Temp 0", rotateMotor.getTemp());
@@ -124,16 +141,25 @@ public class TransporterCW extends SubsystemBase{
         return Math.abs(error) > tCals.allowedIndexError;
     }
 
+    double waitTime = 0;
+    double prevTime = 0;
     //used for gathering
     public void gatherIndex(){
         if(tCals.disabled) return;
         double error = targetpos - rotateMotor.getPosition();
+        double time = Timer.getFPGATimestamp();
         if(hasBall() && Math.abs(error) < tCals.countsPerIndex / 2 && ballnumber < 5){ //only spin if not moving & we have an open spot
-            ballnumber++;
-            int x = (int) Math.round(targetpos/tCals.countsPerIndex);
-            ballpositions[x % 5] = true;
-            index(1);
+            waitTime += time - prevTime;
+            if(waitTime > tCals.ballSenseDelay){
+                waitTime = 0;
+                ballnumber++;
+                int x = (int) Math.round(targetpos/tCals.countsPerIndex);
+                ballpositions[x % 5] = true;
+                index(1);
+            }
         }
+        SmartDashboard.putNumber("waittime",waitTime);
+        prevTime = time;
     }
 
     double restTime = 0;
@@ -153,7 +179,7 @@ public class TransporterCW extends SubsystemBase{
         if(tCals.disabled) return;
         enablefire(ballnumber > 0);
         double error = targetpos - rotateMotor.getPosition();
-        if(Math.abs(error) < tCals.countsPerIndex/2 && ballnumber > 0){
+        if(Math.abs(error) < tCals.countsPerIndex && ballnumber > 0){
             index(1);
         }
     }
@@ -179,6 +205,6 @@ public class TransporterCW extends SubsystemBase{
 
     public boolean hasBall(){
         double volts = ballSensor.getAverageVoltage();
-        return volts > tCals.hasBallMinV && volts < tCals.hasBallMinV;
+        return volts > tCals.hasBallMinV && volts < tCals.hasBallMaxV;
     }
 }

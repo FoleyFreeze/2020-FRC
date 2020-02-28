@@ -38,7 +38,7 @@ public class Pneumatics extends SubsystemBase{
             paused = false;
         }
 
-        pressure = (pressureSensor.getAverageVoltage() - 0.35) * 115 / (1.82-0.35);
+        pressure = .5 * (pressureSensor.getAverageVoltage() - 0.35) * 115 / (1.82-0.35);
 
         if(paused && pressure > mCals.minPressure){
             mCompressor.stop();

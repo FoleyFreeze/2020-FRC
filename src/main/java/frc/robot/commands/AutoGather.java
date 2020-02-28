@@ -56,6 +56,8 @@ public class AutoGather extends CommandBase {
         } else {
             m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.forwardPower);
         }
+
+        m_subsystem.m_transporterCW.gatherIndex();
     }
 
     @Override

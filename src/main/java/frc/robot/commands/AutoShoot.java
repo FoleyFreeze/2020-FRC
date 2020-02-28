@@ -74,6 +74,10 @@ public class AutoShoot extends CommandBase{
 
             centX = m_cals.shootCentX;
             centY = m_cals.shootCentY;
+        } else if(DriverStation.getInstance().isAutonomous()){
+            rot = 0;
+            error = 0;
+            dist = m_cals.autonDist;
         }else {
             rot = m_subsystem.m_input.getRot();
             error = 0;

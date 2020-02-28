@@ -35,17 +35,19 @@ public class Vision extends SubsystemBase{
     }
 
     public boolean hasTargetImage(){
-        VisionData vd = new VisionData();
-        if(targetData.getFirst() == null){
-            return false;
-        } else return Timer.getFPGATimestamp() - vd.timestamp < cals.maxImageTime;
+        if(targetData.size() > 0){
+            VisionData vd = targetData.getFirst();
+            return Timer.getFPGATimestamp() - vd.timestamp < cals.maxImageTime;
+        }
+        return false;
     }
 
     public boolean hasBallImage(){
-        VisionData vd = new VisionData();
-        if(ballData.getFirst() == null){
-            return false;
-        } else return Timer.getFPGATimestamp() - vd.timestamp < cals.maxImageTime;
+        if(ballData.size() > 0){
+            VisionData vd = ballData.getFirst();
+            return Timer.getFPGATimestamp() - vd.timestamp < cals.maxImageTime;
+        }
+        return false;
     }
 
     private void addNTListener(){

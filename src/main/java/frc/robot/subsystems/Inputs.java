@@ -155,19 +155,19 @@ public class Inputs{
 
     //driver
     public boolean autoShoot(){
-        return false;
+        return joy.getRawAxis(cals.FS_AUTOSHOOT) > 0.5;
     }
 
     public boolean autoGather(){
-        return false;
+        return joy.getRawAxis(cals.FS_AUTOGATHER) > 0.5;
     }
 
     public boolean autoTrench(){
-        return false;
+        return joy.getRawButton(cals.FS_AUTOTRENCH);
     }
 
     public boolean enableBallCam(){
-        return false;
+        return joy.getRawButton(cals.FS_EnblBallCam);
     }
 
     public boolean fieldOrient(){
@@ -180,27 +180,39 @@ public class Inputs{
     }
 
     public double getX(){
-        if(flySky) return expo(threshDeadband(joy.getRawAxis(
+        double val;
+        if(flySky) val = expo(threshDeadband(joy.getRawAxis(
             cals.FS_XAXIS), cals.FS_LOWDEADBND, cals.FS_HIGHDEADBND), 
             cals.FS_EXPONENT);
-        else return expo(scaleDeadband(joy.getRawAxis(cals.XB_XAXIS), 
+        else val = expo(scaleDeadband(joy.getRawAxis(cals.XB_XAXIS), 
             cals.XB_LOWDEADBND, cals.XB_HIGHDEADBND), cals.XB_EXPONENT);
+
+        SmartDashboard.putNumber("X", val);
+        return val;
     }
 
     public double getY(){
-        if(flySky) return -expo(threshDeadband(joy.getRawAxis
+        double val;
+        if(flySky) val = -expo(threshDeadband(joy.getRawAxis
             (cals.FS_YAXIS), cals.FS_LOWDEADBND, cals.FS_HIGHDEADBND), 
             cals.FS_EXPONENT);
-        else return -expo(scaleDeadband(joy.getRawAxis(cals.XB_YAXIS), 
+        else val = -expo(scaleDeadband(joy.getRawAxis(cals.XB_YAXIS), 
             cals.XB_LOWDEADBND, cals.XB_HIGHDEADBND), cals.XB_EXPONENT);
+
+        SmartDashboard.putNumber("Y", val);
+        return val;
     }
 
     public double getRot(){
-        if(flySky) return expo(threshDeadband(
+        double val;
+        if(flySky) val = expo(threshDeadband(
             joy.getRawAxis(cals.FS_ROTAXIS), cals.FS_LOWDEADBND, 
             cals.FS_HIGHDEADBND), cals.FS_EXPONENT);
-        else return expo(scaleDeadband(joy.getRawAxis(cals.XB_ROTAXIS),
+        else val = expo(scaleDeadband(joy.getRawAxis(cals.XB_ROTAXIS),
              cals.XB_LOWDEADBND, cals.XB_HIGHDEADBND), cals.XB_EXPONENT);
+
+        SmartDashboard.putNumber("R", val);
+        return val;
     }
 
     public Vector getXY(){
@@ -283,7 +295,7 @@ public class Inputs{
 
     public boolean pitMode(){
         if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_PITMODE);
+        return !ds.getRawButton(cals.DS_PITMODE);
     }
 
     public boolean jogUp(){

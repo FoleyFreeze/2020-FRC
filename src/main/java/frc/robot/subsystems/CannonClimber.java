@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
 import frc.robot.motors.Motor;
@@ -26,12 +28,16 @@ public class CannonClimber extends SubsystemBase{
     private Solenoid dropFoot;
 
     HoodPos hCurrPos = HoodPos.LOW;
-    HoodPos hTgtPos = HoodPos.LOW;
+    public HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
 
     double targetSpeed = 0;
 
-    public CannonClimber(CannonCals sCals, ClimberCals cCals){
+    RobotContainer subsystem;
+
+    public CannonClimber(RobotContainer sub, CannonCals sCals, ClimberCals cCals){
+        subsystem = sub;
+
         shootCals = sCals;
         climbCals = cCals;
         if(sCals.disabled || cCals.disabled) return;
@@ -117,10 +123,18 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public boolean ready(){
-        return Math.abs(motor.getSpeed() - targetSpeed) < shootCals.allowedRpmError;
+        if(subsystem.m_transporterCW.launcher.get()){
+            return Math.abs(motor.getSpeed() - targetSpeed) < shootCals.allowedRpmHyst;
+        } else {
+            return Math.abs(motor.getSpeed() - targetSpeed) < shootCals.allowedRpmError;
+        }
     }
 
     public void periodic(){
+        if(DriverStation.getInstance().isDisabled()){
+            hCurrPos = HoodPos.LOW;
+        }
+
         if(climbCals.disabled || shootCals.disabled) return;
         if(Timer.getFPGATimestamp()>solRestTime){
             switch(hTgtPos){
@@ -181,6 +195,7 @@ public class CannonClimber extends SubsystemBase{
         Display.put("CC Motor Temp 0", motor.getTemp());
         Display.put("CC Motor Temp 1", motor2.getTemp());
         Display.put("RPM", motor.getSpeed());
+        Display.put("Hood Pos", hCurrPos.toString());
     }
 
     public void jogUpDn(boolean up){
