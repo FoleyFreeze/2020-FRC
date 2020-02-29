@@ -5,10 +5,10 @@ public class DriverCals extends CalSet {
     public boolean disabled = false;
 
     public MotorCal[] driveMotors = {   
-        MotorCal.spark(20).ramp(0.3).limit(0.50).coast().currLim(80), 
-        MotorCal.spark( 1).ramp(0.3).limit(0.50).coast().currLim(80), 
-        MotorCal.spark(14).ramp(0.3).limit(0.50).coast().currLim(80), 
-        MotorCal.spark(15).ramp(0.3).limit(0.50).coast().currLim(80)};
+        MotorCal.spark(20).ramp(0.3).limit(0.90).coast().currLim(80), 
+        MotorCal.spark( 1).ramp(0.3).limit(0.90).coast().currLim(80), 
+        MotorCal.spark(14).ramp(0.3).limit(0.90).coast().currLim(80), 
+        MotorCal.spark(15).ramp(0.3).limit(0.90).coast().currLim(80)};
     public MotorCal[] turnMotors = {   
         MotorCal.spark( 5).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.50).brake().ramp(0.001), 
         MotorCal.spark( 4).pid(0.2, 0, 0.25, 0).dFilt(0.01).limit(0.50).brake().ramp(0.001), 

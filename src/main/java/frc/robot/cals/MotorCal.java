@@ -21,6 +21,7 @@ public class MotorCal {
     public double overCurrentRestTime = 5;
     public double tempLimit = 60;
     public double overTempRestTime = 30;
+    public int overCurrentCountDown = 1;
 
     public enum MotorType{
         PWM_TALON, SPARK_MAX, TALON_SRX, NULL
@@ -73,6 +74,10 @@ public class MotorCal {
     }
     public MotorCal currLimCount(int time){
         overCurrentCountLimit = time;
+        return this;
+    }
+    public MotorCal currLimCntDn(int down){
+        overCurrentCountDown = down;
         return this;
     }
 

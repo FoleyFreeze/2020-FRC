@@ -76,7 +76,7 @@ public class MotorSparkMax extends Motor{
         if(getCurrent() > cals.currentLimit){
             overCurrentCount++;
         } else {
-            if(overCurrentCount > 0) overCurrentCount--;
+            if(overCurrentCount > 0) overCurrentCount -= cals.overCurrentCountDown;
         }
 
         if(overCurrentCount > cals.overCurrentCountLimit){

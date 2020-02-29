@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.cals.IntakeCals;
 import frc.robot.motors.Motor;
@@ -18,13 +19,31 @@ public class Intake extends SubsystemBase {
         depSol = new Solenoid(mCals.depSolValue);
     }
 
+    double jamTime;
+    boolean prevJammed = false;
     public void periodic(){
         if(mCals.disabled) return;
         Display.put("InMotorCurr", spinmotor.getCurrent());
     }
     public void setPower(double power){
         if(mCals.disabled) return;
-        spinmotor.setPower(power);
+
+        /*if(Timer.getFPGATimestamp() > jamTime){
+            if(prevJammed) {
+                prevJammed = false;
+            }
+        } 
+        if(spinmotor.isJammed() && !prevJammed){
+            jamTime = Timer.getFPGATimestamp() + mCals.jamRestTime;
+            power = mCals.unjamPwr;
+            prevJammed = true;
+        }*/
+        if(power == mCals.forwardPower){
+            spinmotor.setPower(power);
+        } else {
+            spinmotor.setPower(power);
+        }
+        
     }
     public void setSpeed(double speed){
         if(mCals.disabled) return;
