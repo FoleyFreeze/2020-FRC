@@ -3,7 +3,7 @@ package frc.robot.cals;
 public class TransporterCals extends CalSet {
 
     public boolean disabled = false;
-    public MotorCal rotateMotor = MotorCal.spark(12).pid(0.2, 0, 0.2, 0).invert().limit(0.4).ramp(0.3).currLim(30);
+    public MotorCal rotateMotor = MotorCal.spark(12).pid(0.2, 0, 0.2, 0).invert().limit(0.4).ramp(0.3).currLim(20).currLimTime(25);
     public MotorCal loadMotor = MotorCal.srx(13).invert(); //this is the gate wheels and the CW motor
     public int CWNotTransport = 5;//3 4 or 5
     public int sensorValue = 5;

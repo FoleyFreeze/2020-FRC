@@ -330,6 +330,6 @@ public class Drivetrain extends SubsystemBase{
 
     public void zeroAll(){
         navX.zeroYaw();
-        driveOdom.resetPosition(new Pose2d(), new Rotation2d());
+        driveOdom.resetPosition(new Pose2d(), new Rotation2d(-Math.PI/2));
     }
 }

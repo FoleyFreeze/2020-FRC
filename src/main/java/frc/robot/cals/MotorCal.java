@@ -19,7 +19,7 @@ public class MotorCal {
     public double currentLimit = 50;
     public int overCurrentCountLimit = 50;
     public double overCurrentRestTime = 5;
-    public double tempLimit = 70;
+    public double tempLimit = 60;
     public double overTempRestTime = 30;
 
     public enum MotorType{
@@ -69,6 +69,10 @@ public class MotorCal {
 
     public MotorCal currLim(double lim){
         currentLimit = lim;
+        return this;
+    }
+    public MotorCal currLimTime(int time){
+        overCurrentCountLimit = time;
         return this;
     }
 
