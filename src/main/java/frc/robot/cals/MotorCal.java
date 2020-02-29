@@ -16,6 +16,11 @@ public class MotorCal {
     public boolean invert = false;
     public boolean follow = false;
     public int followID;
+    public double currentLimit = 50;
+    public int overCurrentCountLimit = 50;
+    public double overCurrentRestTime = 5;
+    public double tempLimit = 70;
+    public double overTempRestTime = 30;
 
     public enum MotorType{
         PWM_TALON, SPARK_MAX, TALON_SRX, NULL
@@ -59,6 +64,11 @@ public class MotorCal {
     public MotorCal follow(int id){
         follow = true;
         followID = id;
+        return this;
+    }
+
+    public MotorCal currLim(double lim){
+        currentLimit = lim;
         return this;
     }
 

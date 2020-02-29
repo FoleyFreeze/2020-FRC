@@ -76,7 +76,7 @@ public class CannonClimber extends SubsystemBase{
         distToTgt += shootCals.initJogDist;
         if(shootCals.disabled) return;
         if(!climbCals.disabled) shootVsClimb.set(false);
-
+        
         double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
@@ -117,6 +117,7 @@ public class CannonClimber extends SubsystemBase{
                     break;
             }
         }
+    
 
         double speed = Util.interpolate(shootCals.rpm[hTgtPos.ordinal()], shootCals.dist[hTgtPos.ordinal()], distToTgt);
         setspeed(speed);
@@ -133,6 +134,11 @@ public class CannonClimber extends SubsystemBase{
     public void periodic(){
         if(DriverStation.getInstance().isDisabled()){
             hCurrPos = HoodPos.LOW;
+            hTgtPos = HoodPos.LOW;
+        }
+
+        if(DriverStation.getInstance().isAutonomous()){
+            hTgtPos = HoodPos.HIGH;
         }
 
         if(climbCals.disabled || shootCals.disabled) return;

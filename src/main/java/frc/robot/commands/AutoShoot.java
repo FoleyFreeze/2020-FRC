@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.CannonCals;
+import frc.robot.subsystems.CannonClimber.HoodPos;
 import frc.robot.subsystems.Vision.VisionData;
 import frc.robot.util.Util;
 
@@ -107,6 +108,7 @@ public class AutoShoot extends CommandBase{
         m_subsystem.m_cannonClimber.setpower(0);
         m_subsystem.m_cannonClimber.setCamLights(false);
         m_subsystem.m_vision.NTEnablePiTgt(false);
+        m_subsystem.m_cannonClimber.hTgtPos = HoodPos.LOW;
     }
 
     @Override
