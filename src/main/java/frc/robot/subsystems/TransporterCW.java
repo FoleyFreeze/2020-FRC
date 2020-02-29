@@ -86,7 +86,8 @@ public class TransporterCW extends SubsystemBase{
                 index(1);
                 prevJammed = false;
             }
-        } else if(rotateMotor.isJammed()){
+        } 
+        if(rotateMotor.isJammed() && !prevJammed){
             jamTime = Timer.getFPGATimestamp() + tCals.jamRestTime;
             index(-2);
             prevJammed = true;
