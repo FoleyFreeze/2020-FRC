@@ -133,7 +133,6 @@ public class CannonClimber extends SubsystemBase{
 
     public void periodic(){
         if(DriverStation.getInstance().isDisabled()){
-            hCurrPos = HoodPos.LOW;
             hTgtPos = HoodPos.LOW;
         }
 
