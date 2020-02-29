@@ -60,6 +60,8 @@ public class TransporterCW extends SubsystemBase{
     }
 
     boolean first = true;
+    double jamTime;
+    boolean prevJammed;
     public void periodic(){
         if(DriverStation.getInstance().isAutonomous() && first){
             first = false;
@@ -79,7 +81,19 @@ public class TransporterCW extends SubsystemBase{
             CWNotTransport.set(false);
         }
 
+        if(Timer.getFPGATimestamp() > jamTime){
+            if(prevJammed) {
+                index(1);
+                prevJammed = false;
+            }
+        } else if(rotateMotor.isJammed()){
+            jamTime = Timer.getFPGATimestamp() + tCals.jamRestTime;
+            index(-2);
+            prevJammed = true;
+        }
+
         rotateMotor.setPosition(targetpos);
+        
 
         int x = (int) Math.round(rotateMotor.getPosition() / tCals.countsPerIndex);
         if(ballpositions[(x + 4) % 5] && launcher.get()){

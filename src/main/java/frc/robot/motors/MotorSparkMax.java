@@ -51,32 +51,28 @@ public class MotorSparkMax extends Motor{
 
         if(power > 0) power *= cals.maxPower;
         else if(power < 0) power *= -cals.minPower;
-        
-        
-        if(getCurrent() > cals.currentLimit){
-            overCurrentCount++;
-        } else {
-            if(overCurrentCount > 0) overCurrentCount--;
-        }
 
-        if(overCurrentCount > cals.overCurrentCountLimit){
-            currentTimer = Timer.getFPGATimestamp() + cals.overCurrentRestTime;
-        }
-
-        if(getTemp() > cals.tempLimit){
-            currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
-        }
-
-        if(Timer.getFPGATimestamp() > currentTimer){
-            motor.set(power);
-        } else {
+        checkJammed();
+        if(isJammed()){
             motor.set(0);
+        } else {
+            motor.set(power);
+        }
+    }
+
+    public void setPosition(double position){
+        checkJammed();
+        if(isJammed()){
+            motor.set(0);
+        } else {
+            motor.getPIDController().setReference(position, 
+            ControlType.kPosition);    
         }
     }
 
     double currentTimer = 0;
     int overCurrentCount = 0;
-    public void setPosition(double position){
+    public void checkJammed(){
         if(getCurrent() > cals.currentLimit){
             overCurrentCount++;
         } else {
@@ -91,38 +87,24 @@ public class MotorSparkMax extends Motor{
             currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
         }
 
-        if(Timer.getFPGATimestamp() > currentTimer){
-            motor.getPIDController().setReference(position, 
-            ControlType.kPosition);    
-        } else {
-            motor.set(0);
-        }
+        //return Timer.getFPGATimestamp() < currentTimer;
+    }
+
+    public boolean isJammed(){
+        return Timer.getFPGATimestamp() < currentTimer;
     }
 
     public double getPosition(){
         return motor.getEncoder().getPosition();
     }
-    
+
     public void setSpeed(double speed){
-        if(getCurrent() > cals.currentLimit){
-            overCurrentCount++;
+        checkJammed();
+        if(isJammed()){
+            motor.set(0);
         } else {
-            if(overCurrentCount > 0) overCurrentCount--;
-        }
-
-        if(overCurrentCount > cals.overCurrentCountLimit){
-            currentTimer = Timer.getFPGATimestamp() + cals.overCurrentRestTime;
-        }
-
-        if(getTemp() > cals.tempLimit){
-            currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
-        }
-
-        if(Timer.getFPGATimestamp() > currentTimer){
             motor.getPIDController().setReference(speed, 
             ControlType.kVelocity);
-        } else {
-            motor.set(0);
         }
     }
 

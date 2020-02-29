@@ -30,4 +30,5 @@ public abstract class Motor{
     public abstract double getSpeed();
     public abstract double getCurrent();
     public abstract double getTemp();
+    public abstract boolean isJammed();
 }

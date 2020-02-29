@@ -39,4 +39,8 @@ public class MotorTalonPWM extends Motor {
     public double getTemp(){
         return 0;
     }
+
+    public boolean isJammed(){
+        return false;
+    }
 }

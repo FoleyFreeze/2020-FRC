@@ -43,5 +43,11 @@ public class MotorNull extends Motor{
         // TODO Auto-generated method stub
         return 0;
     }
+
+    @Override
+    public boolean isJammed() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

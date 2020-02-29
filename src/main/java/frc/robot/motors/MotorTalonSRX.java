@@ -89,4 +89,8 @@ public class MotorTalonSRX extends Motor{
     public double getSpeed() {
         return motor.getSelectedSensorVelocity() * 600/2048.0;
     }
+
+    public boolean isJammed(){
+        return false;
+    }
 }

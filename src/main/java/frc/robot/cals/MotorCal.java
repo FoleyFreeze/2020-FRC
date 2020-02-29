@@ -71,8 +71,13 @@ public class MotorCal {
         currentLimit = lim;
         return this;
     }
-    public MotorCal currLimTime(int time){
+    public MotorCal currLimCount(int time){
         overCurrentCountLimit = time;
+        return this;
+    }
+
+    public MotorCal currLimTime(double time){
+        overCurrentRestTime = time;
         return this;
     }
 

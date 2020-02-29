@@ -319,7 +319,7 @@ public class Drivetrain extends SubsystemBase{
         Display.put("DistSenseInfo Ri", distSens.getRight().toString());
 
         robotAng = -navX.getAngle();
-        Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng) - Math.PI/2);
+        Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng)/* - Math.PI/2*/);
         
         drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
             wheels[2].getState(), wheels[3].getState());
@@ -332,6 +332,6 @@ public class Drivetrain extends SubsystemBase{
 
     public void zeroAll(){
         navX.zeroYaw();
-        driveOdom.resetPosition(new Pose2d(), new Rotation2d(-Math.PI/2));
+        driveOdom.resetPosition(new Pose2d(), new Rotation2d(/*-Math.PI/2*/));
     }
 }

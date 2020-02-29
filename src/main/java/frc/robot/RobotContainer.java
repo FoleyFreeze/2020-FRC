@@ -36,6 +36,7 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutonSquare;
 import frc.robot.commands.CWCombo;
 import frc.robot.commands.Climb;
+import frc.robot.commands.DriveTime;
 import frc.robot.commands.Jog;
 
 
@@ -62,7 +63,8 @@ public class RobotContainer {
 
     autonChooser = new SendableChooser<>();
     autonChooser.addOption("DriveOnly", new AutoDrive(this, 0, -48, 0, true));
-    autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new AutoDrive(this,0,-48,90,true)));
+    //autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new AutoDrive(this,0,-48,90,true)));
+    autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new DriveTime(3, this, 0, -0.4, 0)));
     
     autonChooser.addOption("AutoSquare", new AutonSquare(this));
     SmartDashboard.putData(autonChooser);

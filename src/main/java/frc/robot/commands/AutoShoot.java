@@ -109,6 +109,7 @@ public class AutoShoot extends CommandBase{
         m_subsystem.m_cannonClimber.setCamLights(false);
         m_subsystem.m_vision.NTEnablePiTgt(false);
         m_subsystem.m_cannonClimber.hTgtPos = HoodPos.LOW;
+        m_subsystem.m_transporterCW.enablefire(false);
     }
 
     @Override
