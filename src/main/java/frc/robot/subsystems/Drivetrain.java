@@ -15,6 +15,7 @@ import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
 import frc.robot.motors.Motor;
 import frc.robot.util.DistanceSensors;
+import frc.robot.util.Util;
 import frc.robot.util.Vector;
 import frc.robot.util.DistanceSensors.DistData;
 
@@ -63,13 +64,14 @@ public class Drivetrain extends SubsystemBase{
             //SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
             double currentAngle = ((encVoltage - angleOffset) 
                 *2*Math.PI/5);
-            double angleDiff = wheelVec.theta - currentAngle;
+            double angleDiff = Util.angleDiffRad(wheelVec.theta, currentAngle);
             //SmartDashboard.putNumber("AngleRaw" + idx, 
             //    Math.toDegrees(angleDiff));
 
             //angle diff is now between -PI and PI
-            angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
+            //angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
             //angleDiff = Math.IEEEremainder(angleDiff, 2*Math.PI) - Math.PI;
+            angleDiff = Util.angleDiffRad(angleDiff, Math.PI);
 
             //SmartDashboard.putNumber("AngleDiff" + idx, Math.toDegrees(angleDiff));
 
@@ -184,9 +186,9 @@ public class Drivetrain extends SubsystemBase{
         //SmartDashboard.putNumber("prevAngle", prevAng);
         //SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
-            strafe.theta -= Math.toRadians(-navX.getAngle()) /*- Math.PI/2*/;
-            while(strafe.theta > 180) strafe.theta -= 360;
-            while(strafe.theta < -180) strafe.theta += 360;
+            strafe.theta -= Math.toRadians(-navX.getAngle() % 360) /*- Math.PI/2*/;
+            //while(strafe.theta > 180) strafe.theta -= 360;
+            //while(strafe.theta < -180) strafe.theta += 360;
         }
         
         //SmartDashboard.putBoolean("Driving Straigth", driveStraight);
@@ -276,7 +278,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public double outRot(double pCorrection, double targetAng){
-        double error = targetAng - navX.getAngle();
+        double error = Util.angleDiff(targetAng, -navX.getAngle());
         double kP = pCorrection;
         //SmartDashboard.putNumber("Straight Error", error);
         double output = kP * error;

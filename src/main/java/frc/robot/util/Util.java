@@ -38,4 +38,14 @@ public class Util{
         }
         return delta;
     }
+
+    public static double angleDiffRad(double angle1, double angle2){
+        double delta = angle1 - angle2;
+        delta %= Math.PI*2;
+        if(Math.abs(delta) > Math.PI){
+            if(delta > 0) delta -= Math.PI*2;
+            else delta += Math.PI*2;
+        }
+        return delta;
+    }
 }
