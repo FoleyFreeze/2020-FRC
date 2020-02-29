@@ -89,9 +89,8 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        if(Math.abs(errorX) < mCals.autoDriveStrafeRange && Math.abs(errorY) < 
-        mCals.autoDriveStrafeRange && Math.abs(errorRot) < mCals.autoDriveAngRange){
-            return true;
-        } else return false;
+        return Math.abs(errorX) < mCals.autoDriveStrafeRange 
+            && Math.abs(errorY) < mCals.autoDriveStrafeRange 
+            && Math.abs(errorRot) < mCals.autoDriveAngRange;
     }
 }

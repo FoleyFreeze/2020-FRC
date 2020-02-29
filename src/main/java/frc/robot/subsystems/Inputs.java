@@ -23,6 +23,7 @@ public class Inputs{
 
     public Trigger climbUp;
     public Trigger climbDn;
+    public JoystickButton shift;
     public JoystickButton dropFoot;
     public JoystickButton manualIntake;
     public JoystickButton revolve;
@@ -129,6 +130,7 @@ public class Inputs{
         manualShoot = new JoystickButton(ds, cals.DS_MSHOOT);
         revolve = new JoystickButton(ds, cals.DS_REVOLVE);        
         cwActivate = new JoystickButton(ds, cals.DS_CWACTIVATE);
+        shift = new JoystickButton(ds, cals.DS_SHIFT);
     }
 
     private double threshDeadband(double raw, double limitLow, double limitHigh){

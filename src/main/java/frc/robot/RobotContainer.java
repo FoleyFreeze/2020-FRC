@@ -73,8 +73,10 @@ public class RobotContainer {
     m_input.shoot.and(m_input.layupTrigger.negate()).whileActiveOnce(new AutoShoot(this));
     m_input.shoot.and(m_input.layupTrigger).whileActiveOnce(/*new SequentialCommandGroup(new AutoDrive(this, 0, -24, 0, true),*/ new AutoShoot(this));
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
-    m_input.climbUp.whileActiveOnce(new Climb(this, ClimberCals.upPower));
-    m_input.climbDn.whileActiveOnce(new Climb(this, ClimberCals.dnPower));
+    m_input.climbUp.and(m_input.shift.negate()).whileActiveOnce(new Climb(this, ClimberCals.upPower));
+    m_input.climbDn.and(m_input.shift.negate()).whileActiveOnce(new Climb(this, ClimberCals.dnPower));
+    m_input.climbUp.and(m_input.shift).whileActiveOnce(new Climb(this, ClimberCals.shiftUpClimb));
+    m_input.climbDn.and(m_input.shift).whileActiveOnce(new Climb(this, ClimberCals.shiftDnClimb));
     m_input.manualIntake.whileActiveOnce(new ManualIntake(this));
     m_input.manualShoot.whileActiveOnce(new ManualShoot(this));
     m_input.revolve.whileActiveOnce(new ManualRevolve(this));

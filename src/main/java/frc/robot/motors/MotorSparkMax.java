@@ -67,7 +67,7 @@ public class MotorSparkMax extends Motor{
             currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
         }
 
-        if(Timer.getFPGATimestamp() < currentTimer){
+        if(Timer.getFPGATimestamp() > currentTimer){
             motor.set(power);
         } else {
             motor.set(0);
@@ -91,7 +91,7 @@ public class MotorSparkMax extends Motor{
             currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
         }
 
-        if(Timer.getFPGATimestamp() < currentTimer){
+        if(Timer.getFPGATimestamp() > currentTimer){
             motor.getPIDController().setReference(position, 
             ControlType.kPosition);    
         } else {
@@ -118,7 +118,7 @@ public class MotorSparkMax extends Motor{
             currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
         }
 
-        if(Timer.getFPGATimestamp() < currentTimer){
+        if(Timer.getFPGATimestamp() > currentTimer){
             motor.getPIDController().setReference(speed, 
             ControlType.kVelocity);
         } else {
