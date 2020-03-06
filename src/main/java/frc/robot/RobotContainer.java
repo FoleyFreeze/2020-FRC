@@ -36,6 +36,7 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutonSquare;
 import frc.robot.commands.CWCombo;
 import frc.robot.commands.Climb;
+import frc.robot.commands.CountCmd;
 import frc.robot.commands.DriveTime;
 import frc.robot.commands.Jog;
 
@@ -75,6 +76,7 @@ public class RobotContainer {
     m_input.shoot.and(m_input.layupTrigger.negate()).whileActiveOnce(new AutoShoot(this));
     m_input.shoot.and(m_input.layupTrigger).whileActiveOnce(/*new SequentialCommandGroup(new AutoDrive(this, 0, -24, 0, true),*/ new AutoShoot(this));
     m_input.angleReset.whileActiveOnce(new ZeroReset(this));
+    m_input.angleReset.whileActiveOnce(new CountCmd(this));
     m_input.climbUp.and(m_input.shift.negate()).whileActiveOnce(new Climb(this, ClimberCals.upPower));
     m_input.climbDn.and(m_input.shift.negate()).whileActiveOnce(new Climb(this, ClimberCals.dnPower));
     m_input.climbUp.and(m_input.shift).whileActiveOnce(new Climb(this, ClimberCals.shiftUpClimb));

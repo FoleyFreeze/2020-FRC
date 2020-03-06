@@ -65,6 +65,7 @@ public class Display extends SubsystemBase{
             addToTab(tab, "JogUpDn", 0, 8,1);
             addToTab(tab, "JogLR", 0, 8,2);
             addToTab(tab, "RPM", 0, 8, 0);
+            addToTab(tab, "Counter", 0, 9,0);
         
         tab = Shuffleboard.getTab("DriveTrain");
             addToTab(tab, "DMotorCurrent 0", 0, 0, 0);
