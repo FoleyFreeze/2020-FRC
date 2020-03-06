@@ -51,19 +51,25 @@ public class AutoShoot extends CommandBase{
         double centY = 0;
         if(m_subsystem.m_vision.hasTargetImage() && m_subsystem.m_input.cam()){
             VisionData image = m_subsystem.m_vision.targetData.getFirst();
-            rotCam = image.robotangle + image.angle + m_subsystem.m_cannonClimber.shootCals.initJogAng;
 
+            double camAng = image.angle + m_cals.initJogAng;
+            double camAngError = Util.angleDiff(m_subsystem.m_drivetrain.robotAng, camAng);
+            double angDelta = Util.angleDiff(image.robotangle, m_subsystem.m_drivetrain.robotAng);
+            rotCam = Util.angleDiff(camAngError, angDelta);
+            error = rotCam;
             dist = image.dist;
 
+            //if we are doing 3 pointers
             if(m_subsystem.m_input.twoVThree()){
-                double angOfTgt = 180 - rotCam;
-                dist = Math.sqrt(dist*dist + 29.25*29.25 - 2 * dist * 29.25 * Math.cos(angOfTgt));
+                double angTgt = rotCam - m_subsystem.m_drivetrain.robotAng;
+                double hypSin = dist * Math.sin(angTgt);
+                double hypCos = dist * Math.cos(angTgt) + 29.25;
 
-                rotCam = Math.asin(29.25/dist * Math.sin(angOfTgt));
+                dist = Math.sqrt(hypSin*hypSin + hypCos*hypCos);
+                error = Math.atan(hypSin/hypCos);
             }
 
             double robotAngle = m_subsystem.m_drivetrain.robotAng;
-            error = Util.angleDiff(rotCam, robotAngle);
             
             double deltaAngle = Util.angleDiff(robotAngle, prevRobotAngle);
 
