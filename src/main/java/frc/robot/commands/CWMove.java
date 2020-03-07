@@ -2,18 +2,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.TransporterCW;
 import frc.robot.util.Vector;
 
 public class CWMove extends CommandBase{
     
-    RobotContainer m_subsystem;
+    TransporterCW mColorWheel;
     Vector xy;
     double start;
 
-    public CWMove(RobotContainer subsystem){
-        m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_drivetrain);
-        addRequirements(m_subsystem.m_transporterCW);
+    public CWMove(TransporterCW colorwheel){
+        mColorWheel = colorwheel;
+        addRequirements(mColorWheel);
         xy = Vector.fromXY(0, -1);
         start = m_subsystem.m_drivetrain.drivePos.getTranslation().getY();
     }
@@ -30,7 +30,7 @@ public class CWMove extends CommandBase{
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_transporterCW.deployCW(false);
+        mColorWheel.deployCW(false);
     }
 
     @Override

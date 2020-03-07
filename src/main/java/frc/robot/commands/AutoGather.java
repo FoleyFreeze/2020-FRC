@@ -44,11 +44,11 @@ public class AutoGather extends CommandBase {
         
         if(m_subsystem.m_transporterCW.ballnumber >= 5 && !m_subsystem.m_input.shift()){
             m_subsystem.m_intake.dropIntake(false);
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.backwardPower);
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.backwardPower);
         } else if(m_subsystem.m_transporterCW.isIndexing()){
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.idxPower);
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.idxPower);
         } else {
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.forwardPower);
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.forwardPower);
         }
     }
 

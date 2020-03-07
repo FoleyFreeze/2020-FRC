@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.cals.CWheelCals;
+import frc.robot.cals.CwTnCals;
 import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
 import frc.robot.cals.DriverCals;
@@ -22,7 +22,6 @@ import frc.robot.commands.AutoTrench;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
 import frc.robot.cals.PneumaticsCals;
-import frc.robot.cals.TransporterCals;
 import frc.robot.cals.VisionCals;
 import frc.robot.commands.ZeroReset;
 import frc.robot.commands.AutoTrench.Orientation;
@@ -45,7 +44,7 @@ public class RobotContainer {
   public final CannonClimber m_cannonClimber = new CannonClimber(new CannonCals(), new ClimberCals());
   public final Display m_display = new Display();
   public final Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
-  public final TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
+  public final TransporterCW m_transporterCW = new TransporterCW(new CwTnCals(), this);
   public final Vision m_vision = new Vision(new VisionCals());
 
   
@@ -74,7 +73,7 @@ public class RobotContainer {
     m_input.jogL.whileActiveOnce(new Jog(this, false, true));
     m_input.jogR.whileActiveOnce(new Jog(this, false, false));
     m_input.autoTrench.whileActiveOnce(new AutoTrench(this, Orientation.AUTO));
-    m_input.cwActivate.whileActiveOnce(new CWCombo(this));
+    m_input.cwActivate.whileActiveOnce(new CWCombo());
   }
 
   public Command getAutonomousCommand() {

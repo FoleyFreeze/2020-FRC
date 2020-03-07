@@ -1,15 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.cals.DriverCals;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Inputs;
 import frc.robot.util.Vector;
 import frc.robot.util.DistanceSensors.DistData;
 
 public class AutoTrench extends CommandBase{
 
-    private RobotContainer m_subsystem;
-    private DriverCals m_cals = m_subsystem.m_drivetrain.k;
+    private Drivetrain mDrivetrain;
+    private Inputs mInput;
     private double wallDist;
     public double targetAngle;
     public enum Orientation{
@@ -17,9 +17,10 @@ public class AutoTrench extends CommandBase{
     }
     public Orientation orient;
 
-    public AutoTrench(RobotContainer subsystem, Orientation orient){
-        m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_drivetrain);
+    public AutoTrench(Drivetrain drivetrain, Orientation orient, Inputs input){
+        mDrivetrain = drivetrain;
+        mInput = input;
+        addRequirements(mDrivetrain);
 
         this.orient = orient;
     }
@@ -36,8 +37,8 @@ public class AutoTrench extends CommandBase{
                 wallDist = 8.5;
                 break;
             case AUTO:
-                if(180 - Math.abs(m_subsystem.m_drivetrain.navX.getAngle()) 
-                    < 90 - Math.abs(m_subsystem.m_drivetrain.navX.getAngle())){
+                if(180 - Math.abs(mDrivetrain.navX.getAngle()) 
+                    < 90 - Math.abs(mDrivetrain.navX.getAngle())){
                     targetAngle = 180;
                     wallDist = 6.75;
                     break;
@@ -55,35 +56,35 @@ public class AutoTrench extends CommandBase{
 
         switch(orient){
             case GATHERER:
-                dist = m_subsystem.m_drivetrain.getRearDist();
+                dist = mDrivetrain.getRearDist();
                 break;
             case CLIMBER:
-                dist = m_subsystem.m_drivetrain.getRightDist();
+                dist = mDrivetrain.getRightDist();
                 break;
             case AUTO:
-                if(targetAngle == 90) dist = m_subsystem.m_drivetrain.getRightDist();
-                else dist = m_subsystem.m_drivetrain.getRearDist();
+                if(targetAngle == 90) dist = mDrivetrain.getRightDist();
+                else dist = mDrivetrain.getRearDist();
                 break;
             default: //shouldnt happen
-                dist = m_subsystem.m_drivetrain.getRearDist();
+                dist = mDrivetrain.getRearDist();
         }
 
         double distDiff = (dist.dist - wallDist);
-        double distPower = m_cals.trenchRunDistKp * distDiff;
-        double angDiff = targetAngle - m_subsystem.m_drivetrain.navX.getAngle();
+        double distPower = mDrivetrain.k.trenchRunDistKp * distDiff;
+        double angDiff = targetAngle - mDrivetrain.navX.getAngle();
         if(Math.abs(angDiff) > 180){
             if(angDiff > 0){
                 angDiff -= 360;
             } else angDiff += 360;
         }
-        double angPower = m_cals.trenchRunAngKp * angDiff;
+        double angPower = mDrivetrain.k.trenchRunAngKp * angDiff;
 
-        Vector forward = Vector.fromXY(distPower, m_subsystem.m_input.getY());
-        double maxPwr = m_cals.trenchRunMaxSpd;
-        if(m_subsystem.m_input.shift()){
+        Vector forward = Vector.fromXY(distPower, mInput.getY());
+        double maxPwr = mDrivetrain.k.trenchRunMaxSpd;
+        if(mInput.shift()){
             maxPwr *= 0.2;
         }
-        m_subsystem.m_drivetrain.drive(forward, angPower, 0, 0, true, maxPwr);
+        mDrivetrain.drive(forward, angPower, 0, 0, true, maxPwr);
     }
 
     @Override

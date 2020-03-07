@@ -38,13 +38,13 @@ public class Inputs{
     public double yAxis;
     public double rotXAxis;
 
-    public ElectroKendro cals;
+    public ElectroKendro k;
 
-    public Inputs(ElectroKendro cal){
+    public Inputs(ElectroKendro k){
         SmartDashboard.putString("JoystickName", joy.getName());
         flySky = joy.getName().contains("FlySky");
 
-        cals = cal;
+        this.k = k;
 
         gather = new Trigger(new BooleanSupplier(){
             @Override
@@ -117,11 +117,11 @@ public class Inputs{
         });
 
         if(flySky){
-            angleReset = new JoystickButton(joy, cals.FS_ANGRESET);
-            autoTrench = new JoystickButton(joy, cals.FS_AUTOTRENCH);
+            angleReset = new JoystickButton(joy, k.FS_ANGRESET);
+            autoTrench = new JoystickButton(joy, k.FS_AUTOTRENCH);
         }else{
-            angleReset = new JoystickButton(joy, cals.XB_ANGRESET);
-            autoTrench = new JoystickButton(joy, cals.XB_AUTOTRENCH);
+            angleReset = new JoystickButton(joy, k.XB_ANGRESET);
+            autoTrench = new JoystickButton(joy, k.XB_AUTOTRENCH);
         }
 /*
         enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
@@ -175,35 +175,35 @@ public class Inputs{
 
     public boolean fieldOrient(){
         if(flySky){
-            return joy.getRawButton(cals.FS_FIELDORIENT);
+            return joy.getRawButton(k.FS_FIELDORIENT);
         }else{
-            return joy.getRawButton(cals.XB_FIELDORIENT);
+            return joy.getRawButton(k.XB_FIELDORIENT);
         }
         
     }
 
     public double getX(){
         if(flySky) return expo(threshDeadband(joy.getRawAxis(
-            cals.FS_XAXIS), cals.FS_LOWDEADBND, cals.FS_HIGHDEADBND), 
-            cals.FS_EXPONENT);
-        else return expo(scaleDeadband(joy.getRawAxis(cals.XB_XAXIS), 
-            cals.XB_LOWDEADBND, cals.XB_HIGHDEADBND), cals.XB_EXPONENT);
+            k.FS_XAXIS), k.FS_LOWDEADBND, k.FS_HIGHDEADBND), 
+            k.FS_EXPONENT);
+        else return expo(scaleDeadband(joy.getRawAxis(k.XB_XAXIS), 
+            k.XB_LOWDEADBND, k.XB_HIGHDEADBND), k.XB_EXPONENT);
     }
 
     public double getY(){
         if(flySky) return -expo(threshDeadband(joy.getRawAxis
-            (cals.FS_YAXIS), cals.FS_LOWDEADBND, cals.FS_HIGHDEADBND), 
-            cals.FS_EXPONENT);
-        else return -expo(scaleDeadband(joy.getRawAxis(cals.XB_YAXIS), 
-            cals.XB_LOWDEADBND, cals.XB_HIGHDEADBND), cals.XB_EXPONENT);
+            (k.FS_YAXIS), k.FS_LOWDEADBND, k.FS_HIGHDEADBND), 
+            k.FS_EXPONENT);
+        else return -expo(scaleDeadband(joy.getRawAxis(k.XB_YAXIS), 
+            k.XB_LOWDEADBND, k.XB_HIGHDEADBND), k.XB_EXPONENT);
     }
 
     public double getRot(){
         if(flySky) return expo(threshDeadband(
-            joy.getRawAxis(cals.FS_ROTAXIS), cals.FS_LOWDEADBND, 
-            cals.FS_HIGHDEADBND), cals.FS_EXPONENT);
-        else return expo(scaleDeadband(joy.getRawAxis(cals.XB_ROTAXIS),
-             cals.XB_LOWDEADBND, cals.XB_HIGHDEADBND), cals.XB_EXPONENT);
+            joy.getRawAxis(k.FS_ROTAXIS), k.FS_LOWDEADBND, 
+            k.FS_HIGHDEADBND), k.FS_EXPONENT);
+        else return expo(scaleDeadband(joy.getRawAxis(k.XB_ROTAXIS),
+             k.XB_LOWDEADBND, k.XB_HIGHDEADBND), k.XB_EXPONENT);
     }
 
     public Vector getXY(){
@@ -215,97 +215,97 @@ public class Inputs{
 
     //operator
     public boolean twoVThree(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_TWOVTHREE);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_TWOVTHREE);
     }
 
     public boolean cwRotNotPos(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_CWROTPOS);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_CWROTPOS);
     }
 
     public boolean cwActivate(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_CWACTIVATE);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_CWACTIVATE);
     }
 
     public boolean enableBudClimb(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_ENABLEBUDCLIMB);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_ENABLEBUDCLIMB);
     }
 
     public boolean climbUp(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_CLIMBUP) > 0.5;
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawAxis(k.DS_CLIMBUP) > 0.5;
     }
 
     public boolean climbDn(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_CLIMBDN) < -0.5;
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawAxis(k.DS_CLIMBDN) < -0.5;
     }
 
     public boolean dropFoot(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_DROPFOOT);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_DROPFOOT);
     }
 
     public boolean layup(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_LAYUP) > 0.5;
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawAxis(k.DS_LAYUP) > 0.5;
     }
 
     public boolean trench(){
-        if(!cals.DS_ENABLED) return false;
+        if(!k.DS_ENABLED) return false;
         return (!layup() && !cam());
     }
 
     public boolean cam(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawAxis(cals.DS_CAMMODE) < -0.5;
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawAxis(k.DS_CAMMODE) < -0.5;
     }
 
     public boolean intake(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_MINTAKE);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_MINTAKE);
     }
 
     public boolean revolve(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_REVOLVE);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_REVOLVE);
     }
 
     public boolean shoot(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_MSHOOT);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_MSHOOT);
     }
 
     public boolean shift(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_SHIFT);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_SHIFT);
     }
 
     public boolean pitMode(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getRawButton(cals.DS_PITMODE);
+        if(!k.DS_ENABLED) return false;
+        return ds.getRawButton(k.DS_PITMODE);
     }
 
     public boolean jogUp(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getPOV() == cals.DS_JOGUP;
+        if(!k.DS_ENABLED) return false;
+        return ds.getPOV() == k.DS_JOGUP;
     }
 
     public boolean jogDn(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getPOV() == cals.DS_JOGDN;
+        if(!k.DS_ENABLED) return false;
+        return ds.getPOV() == k.DS_JOGDN;
     }
 
     public boolean jogL(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getPOV() == cals.DS_JOGL;
+        if(!k.DS_ENABLED) return false;
+        return ds.getPOV() == k.DS_JOGL;
     }
 
     public boolean jogR(){
-        if(!cals.DS_ENABLED) return false;
-        return ds.getPOV() == cals.DS_JOGR;
+        if(!k.DS_ENABLED) return false;
+        return ds.getPOV() == k.DS_JOGR;
     }
 }

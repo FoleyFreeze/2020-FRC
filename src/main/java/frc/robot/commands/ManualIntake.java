@@ -19,9 +19,9 @@ public class ManualIntake extends CommandBase{
     @Override
     public void execute(){
         if(m_subsystem.m_input.shift()){
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.backwardPower);
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.backwardPower);
         } else{
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.mCals.forwardPower);
+            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.forwardPower);
         }
 
         m_subsystem.m_intake.dropIntake(true);

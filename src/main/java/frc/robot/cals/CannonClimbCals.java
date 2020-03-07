@@ -2,9 +2,10 @@ package frc.robot.cals;
 
 import frc.robot.cals.MotorCal.MotorType;
 
-public class CannonCals extends CalSet {
+public class CannonClimbCals extends CalSet {
 
-    public boolean disabled = true;
+    //Cannon
+    public boolean shootDisabled = true;
     public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).invert().limit(0.5);
     public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).limit(0.5);
     public int hoodSolValue = 2;
@@ -31,9 +32,15 @@ public class CannonCals extends CalSet {
                               { 60.0, 120.0, 180.0},
                               { 90.0, 150.0, 210.0},
                               {150.0, 250.0, 350.0}};
-    public final double SOL_RESTTIME = 0.1;                                
+    public final double SOL_RESTTIME = 0.1; 
+    
+    //Climber
+    public boolean climbDisabled = true;
+    public int dropFootValue = -1;
+    public static double upPower = 0.3;
+    public static double dnPower = -0.7;
 
-    public CannonCals(){
+    public CannonClimbCals(){
         
         switch(type){
             case COMPETITION:

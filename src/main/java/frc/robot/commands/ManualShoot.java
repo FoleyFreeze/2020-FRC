@@ -2,13 +2,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.CannonClimber;
+import frc.robot.subsystems.Inputs;
 
 public class ManualShoot extends CommandBase{
 
-    private RobotContainer m_subsystem;
+    private CannonClimber mCannon;
+    private Inputs mInput;
 
-    public ManualShoot(RobotContainer subsystem){
-        m_subsystem = subsystem;
+    public ManualShoot(CannonClimber cannon, Inputs input){
+        mCannon = cannon;
+        mInput = input;
     }
 
     @Override
@@ -18,16 +22,16 @@ public class ManualShoot extends CommandBase{
 
     @Override
     public void execute(){
-        if(m_subsystem.m_input.shift()){
-            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.power * -1.0);
+        if(mInput.shift()){
+            mCannon.setpower(mCannon.m_cannonClimber.shootCals.power * -1.0);
         } else{
-            m_subsystem.m_cannonClimber.setpower(m_subsystem.m_cannonClimber.shootCals.power);
+            mCannon.setpower(mCannon.k.power);
         }
     }
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_cannonClimber.setpower(0);
+        mCannon.setpower(0);
     }
 
     @Override

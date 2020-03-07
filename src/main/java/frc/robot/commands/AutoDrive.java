@@ -3,14 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Util;
 import frc.robot.util.Vector;
 
 public class AutoDrive extends CommandBase{
 
-    private RobotContainer m_subsystem;
+    private Drivetrain mDriveTrain;
     private double tgtX;
     private double tgtY;
     private double tgtRot;
@@ -25,10 +25,10 @@ public class AutoDrive extends CommandBase{
     
     private DriverCals mCals;
 
-    public AutoDrive(RobotContainer subsystem, double deltaX, double deltaY, double angle, boolean deltaVsField){
-        m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_drivetrain);
-        mCals = m_subsystem.m_drivetrain.k;
+    public AutoDrive(Drivetrain drivetrain, double deltaX, double deltaY, double angle, boolean deltaVsField){
+        mDriveTrain = drivetrain;
+        addRequirements(mDriveTrain);
+        mCals = mDriveTrain.k;
         this.deltaX = deltaX;
         this.deltaY = deltaY;
         this.tgtRot = angle;
@@ -37,7 +37,7 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public void initialize(){
-        Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        Pose2d pose = mDriveTrain.drivePos;
         startX = pose.getTranslation().getX();
         startY = pose.getTranslation().getY();
         if(deltaVsField){
@@ -53,12 +53,12 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public void execute(){
-        Pose2d pose = m_subsystem.m_drivetrain.drivePos;
+        Pose2d pose = mDriveTrain.drivePos;
         double x = pose.getTranslation().getX();
         double y = pose.getTranslation().getY();
         errorX = (tgtX - x);
         errorY = (tgtY - y);
-        errorRot = tgtRot - m_subsystem.m_drivetrain.robotAng;
+        errorRot = tgtRot - mDriveTrain.robotAng;
         if(errorRot > 180) errorRot-= 360;
         else if(errorRot < -180) errorRot+=360;
 
@@ -74,7 +74,7 @@ public class AutoDrive extends CommandBase{
         double endPwr = ((power - mCals.autoDriveEndPwr)/(mCals.autoDriveEndDist)) * distToTarget + mCals.autoDriveEndPwr;
         power = Util.min(power, startPwr, endPwr);
 
-        m_subsystem.m_drivetrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, power);
+        mDriveTrain.drive(strafe, -errorRot * mCals.autoDriveAngKp, 0, 0, true, power);
 
         SmartDashboard.putNumber("AutoXerr",errorX);
         SmartDashboard.putNumber("AutoYerr",errorY);
@@ -86,7 +86,7 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_drivetrain.drive(new Vector(0, 0), 0, 0, 0, true);
+        mDriveTrain.drive(new Vector(0, 0), 0, 0, 0, true);
     }
 
     @Override

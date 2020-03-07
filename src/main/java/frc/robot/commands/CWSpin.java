@@ -4,22 +4,20 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.cals.CWheelCals;
+import frc.robot.subsystems.Inputs;
 import frc.robot.subsystems.TransporterCW;
 
 public class CWSpin extends CommandBase{
 
-    private RobotContainer m_subsystem;
-    private TransporterCW transCW;
-    private CWheelCals m_cals;
+    private TransporterCW mColorWheel;
+    private Inputs mInput;
     private int wedgeCount;
     private char gameData;
 
-    public CWSpin(RobotContainer subsystem){
-        m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_transporterCW);
-        transCW = m_subsystem.m_transporterCW;
-        m_cals = transCW.cCals;
+    public CWSpin(TransporterCW colorwheel, Inputs input){
+        mColorWheel = colorwheel;
+        mInput = input;
+        addRequirements(mColorWheel);
         wedgeCount = 0;
         gameData = DriverStation.getInstance().getGameSpecificMessage().charAt(0);
     }
@@ -31,9 +29,9 @@ public class CWSpin extends CommandBase{
 
     @Override
     public void execute(){
-        if(m_subsystem.m_input.cwRotNotPos()){
+        if(mInput.cwRotNotPos()){
             //transCW.loadMotor.setSpeed(m_cals.rotSpeed);
-            if(transCW.detectedColor != transCW.lastColor) wedgeCount++;
+            if(mColorWheel.detectedColor != mColorWheel.lastColor) wedgeCount++;
         }else{
             //transCW.loadMotor.setSpeed(m_cals.colSpeed);
         }
@@ -45,21 +43,21 @@ public class CWSpin extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        if(m_subsystem.m_input.cwRotNotPos()){
+        if(mInput.cwRotNotPos()){
             return wedgeCount >= 24;
         }else{
             switch(gameData){       //TODO fix me!!!
                 case 'R':
-                return transCW.detectedColor == transCW.cCals.Red;
+                return mColorWheel.detectedColor == mColorWheel.k.Red;
 
                 case 'G':
-                return transCW.detectedColor == transCW.cCals.Green;
+                return mColorWheel.detectedColor == mColorWheel.k.Green;
 
                 case 'B':
-                return transCW.detectedColor == transCW.cCals.Blue;
+                return mColorWheel.detectedColor == mColorWheel.k.Blue;
 
                 case 'Y':
-                return transCW.detectedColor == transCW.cCals.Yellow;
+                return mColorWheel.detectedColor == mColorWheel.k.Yellow;
 
                 default:
                 return false;

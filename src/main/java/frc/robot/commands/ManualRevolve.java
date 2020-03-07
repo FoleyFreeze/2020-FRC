@@ -1,22 +1,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.TransporterCW;
 
 public class ManualRevolve extends CommandBase{
 
-    private RobotContainer m_subsystem;
+    private TransporterCW mTransporter;
+    private Inputs mInput;
 
-    public ManualRevolve(RobotContainer subsystem){
-        m_subsystem = subsystem;
+    public ManualRevolve(TransporterCW transporter, Inputs input){
+        mTransporter = transporter;
+        mInput = input;
     }
 
     @Override
     public void initialize(){
-        if(m_subsystem.m_input.shift()){
-            m_subsystem.m_transporterCW.index(-1);
+        if(mInput.shift()){
+            mTransporter.index(-1);
         } else{
-            m_subsystem.m_transporterCW.index(1);
+            mTransporter.index(1);
         }
     }
 

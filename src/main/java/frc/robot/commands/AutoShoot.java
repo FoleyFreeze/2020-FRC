@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.cals.CannonCals;
+import frc.robot.cals.CannonClimbCals;
 import frc.robot.subsystems.Vision.VisionData;
 
 public class AutoShoot extends CommandBase{
 
     private RobotContainer m_subsystem;
-    private CannonCals m_cals;
+    private CannonClimbCals m_cals;
     public double rotCam = 0.0;
     public boolean auton;
     public double shootFinTime;
@@ -19,7 +19,7 @@ public class AutoShoot extends CommandBase{
     
     public AutoShoot(RobotContainer subsystem){
         m_subsystem = subsystem;
-        m_cals = m_subsystem.m_cannonClimber.shootCals;
+        m_cals = m_subsystem.m_cannonClimber.k;
 
         addRequirements(m_subsystem.m_drivetrain);
         addRequirements(m_subsystem.m_cannonClimber);
@@ -47,7 +47,7 @@ public class AutoShoot extends CommandBase{
         double dist;
         if(m_subsystem.m_vision.hasTargetImage() && m_subsystem.m_input.cam()){
             VisionData image = m_subsystem.m_vision.targetData.getFirst();
-            rotCam = image.robotangle + image.angle + m_subsystem.m_cannonClimber.shootCals.initJogAng;
+            rotCam = image.robotangle + image.angle + m_subsystem.m_cannonClimber.k.initJogAng;
 
             dist = image.dist;
 
@@ -91,7 +91,7 @@ public class AutoShoot extends CommandBase{
 
         if(m_subsystem.m_cannonClimber.ready() && aligned && m_subsystem.m_transporterCW.ballnumber > 0){
             m_subsystem.m_transporterCW.shootAll();
-            shootFinTime = Timer.getFPGATimestamp() + m_subsystem.m_cannonClimber.shootCals.shootTime;
+            shootFinTime = Timer.getFPGATimestamp() + m_subsystem.m_cannonClimber.k.shootTime;
         } 
         else m_subsystem.m_transporterCW.stoprot();
 

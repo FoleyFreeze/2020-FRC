@@ -9,35 +9,35 @@ public class Intake extends SubsystemBase {
 
     public Motor spinmotor;
     public Solenoid depSol;
-    public IntakeCals mCals;
+    public IntakeCals k;
 
-    public Intake(IntakeCals cals){
-        this.mCals = cals;
-        if(mCals.disabled) return;
-        spinmotor = Motor.initMotor(mCals.spinMotor);
-        depSol = new Solenoid(mCals.depSolValue);
+    public Intake(IntakeCals k){
+        this.k = k;
+        if(k.disabled) return;
+        spinmotor = Motor.initMotor(k.spinMotor);
+        depSol = new Solenoid(k.depSolValue);
     }
 
     public void periodic(){
-        if(mCals.disabled) return;
+        if(k.disabled) return;
         Display.put("InMotorCurr", spinmotor.getCurrent());
     }
     public void setPower(double power){
-        if(mCals.disabled) return;
+        if(k.disabled) return;
         spinmotor.setPower(power);
     }
     public void setSpeed(double speed){
-        if(mCals.disabled) return;
+        if(k.disabled) return;
         spinmotor.setSpeed(speed);
     }
     
     public void dropIntake(boolean activate){
-        if(mCals.disabled) return;
+        if(k.disabled) return;
         depSol.set(activate);
     }
 
     public boolean isOut(){
-        if(mCals.disabled) return false;
+        if(k.disabled) return false;
         return depSol.get();
     }
 }

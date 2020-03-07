@@ -3,15 +3,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.cals.CannonCals;
-import frc.robot.cals.ClimberCals;
+import frc.robot.cals.CannonClimbCals;
 import frc.robot.motors.Motor;
 import frc.robot.util.Util;
 
 public class CannonClimber extends SubsystemBase{
 
-    public CannonCals shootCals;
-    public ClimberCals climbCals;
+    public CannonClimbCals k;
     private Motor motor;
     private Motor motor2;
     public enum HoodPos{
@@ -29,23 +27,22 @@ public class CannonClimber extends SubsystemBase{
     HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
 
-    public CannonClimber(CannonCals sCals, ClimberCals cCals){
-        shootCals = sCals;
-        climbCals = cCals;
-        if(sCals.disabled || cCals.disabled) return;
+    public CannonClimber(CannonClimbCals k){
+        this.k = k;
+        if(k.shootDisabled || k.climbDisabled) return;
 
-        motor = Motor.initMotor(shootCals.ccMotor);
-        motor2 = Motor.initMotor(shootCals.ccMotor2);
+        motor = Motor.initMotor(k.ccMotor);
+        motor2 = Motor.initMotor(k.ccMotor2);
 
-        hoodSol = new Solenoid(sCals.hoodSolValue);
-        stopSol = new Solenoid(sCals.stopSolValue);
-        camLightsSol = new Solenoid(sCals.camLightsSol);
-        shootVsClimb = new Solenoid(sCals.ShootVClimbValue);
-        dropFoot = new Solenoid(cCals.dropFootValue);
+        hoodSol = new Solenoid(k.hoodSolValue);
+        stopSol = new Solenoid(k.stopSolValue);
+        camLightsSol = new Solenoid(k.camLightsSol);
+        shootVsClimb = new Solenoid(k.ShootVClimbValue);
+        dropFoot = new Solenoid(k.dropFootValue);
     }
     
     public void setpower(double power){
-        if(shootCals.disabled) return;
+        if(k.shootDisabled) return;
         motor.setPower(power);
         motor2.setPower(power);
         Display.put("CCMotorCurrent 0", motor.getCurrent());
@@ -55,17 +52,17 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public void setspeed(double speed){
-        if(shootCals.disabled) return;
+        if(k.shootDisabled) return;
         motor.setSpeed(speed);
         motor2.setSpeed(speed);
     }
 
     public void prime(double distToTgt){
-        distToTgt += shootCals.initJogDist;
-        if(shootCals.disabled) return;
-        if(!climbCals.disabled) shootVsClimb.set(false);
+        distToTgt += k.initJogDist;
+        if(k.shootDisabled) return;
+        if(!k.shootDisabled) shootVsClimb.set(false);
 
-        double[] distAxis = shootCals.dist[hTgtPos.ordinal()];
+        double[] distAxis = k.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
                 case LOW:
@@ -106,7 +103,7 @@ public class CannonClimber extends SubsystemBase{
             }
         }
 
-        double speed = Util.interpolate(shootCals.rpm[hTgtPos.ordinal()], shootCals.dist[hTgtPos.ordinal()], distToTgt);
+        double speed = Util.interpolate(k.rpm[hTgtPos.ordinal()], k.dist[hTgtPos.ordinal()], distToTgt);
         setspeed(speed);
     }
 
@@ -115,7 +112,7 @@ public class CannonClimber extends SubsystemBase{
     }
 
     public void periodic(){
-        if(climbCals.disabled || shootCals.disabled) return;
+        if(k.shootDisabled || k.climbDisabled) return;
         if(Timer.getFPGATimestamp()>solRestTime){
             switch(hTgtPos){
                 case LOW:
@@ -123,7 +120,7 @@ public class CannonClimber extends SubsystemBase{
                         hoodSol.set(false);
                         stopSol.set(false);
                         hCurrPos = HoodPos.LOW;
-                        solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
+                        solRestTime = Timer.getFPGATimestamp() + k.SOL_RESTTIME;
                     }
                     break;
 
@@ -133,12 +130,12 @@ public class CannonClimber extends SubsystemBase{
                             hoodSol.set(true);
                             stopSol.set(true);
                             hCurrPos = HoodPos.MID1;
-                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + k.SOL_RESTTIME;
                         }else{
                             hoodSol.set(false);
                             stopSol.set(false);
                             hCurrPos = HoodPos.LOW;
-                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + k.SOL_RESTTIME;
                         }
                     }
                     break;
@@ -149,12 +146,12 @@ public class CannonClimber extends SubsystemBase{
                             hoodSol.set(false);
                             stopSol.set(true);
                             hCurrPos = HoodPos.MID2;
-                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + k.SOL_RESTTIME;
                         }else{
                             hoodSol.set(true);
                             stopSol.set(false);
                             hCurrPos = HoodPos.HIGH;
-                            solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
+                            solRestTime = Timer.getFPGATimestamp() + k.SOL_RESTTIME;
                         }
                     }
                     break;
@@ -164,7 +161,7 @@ public class CannonClimber extends SubsystemBase{
                         hoodSol.set(true);
                         stopSol.set(false);
                         hCurrPos = HoodPos.HIGH;
-                        solRestTime = Timer.getFPGATimestamp() + shootCals.SOL_RESTTIME;
+                        solRestTime = Timer.getFPGATimestamp() + k.SOL_RESTTIME;
                     }
                     break;
             }
@@ -178,27 +175,27 @@ public class CannonClimber extends SubsystemBase{
 
     public void jogUpDn(boolean up){
         if(up){
-            shootCals.initJogDist += shootCals.distJog;
+            k.initJogDist += k.distJog;
         }else{
-            shootCals.initJogDist -= shootCals.distJog;
+            k.initJogDist -= k.distJog;
         }
     }
 
     public void jogLR(boolean left){
         if(left){
-            shootCals.initJogAng -= shootCals.angJog;
+            k.initJogAng -= k.angJog;
         }else{
-            shootCals.initJogAng += shootCals.angJog;
+            k.initJogAng += k.angJog;
         }
     }
 
     //Climber
     public void climbMode(boolean set){
-        if(climbCals.disabled && shootCals.disabled) return;
+        if(k.shootDisabled && k.climbDisabled) return;
         shootVsClimb.set(set);
     }
     public void dropFoot(boolean on){
-        if(climbCals.disabled && shootCals.disabled) return;
+        if(k.shootDisabled && k.climbDisabled) return;
         dropFoot.set(on);
     }
     public void setCamLights(boolean on){
