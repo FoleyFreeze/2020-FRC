@@ -55,8 +55,5 @@ public class Intake extends SubsystemBase {
         depSol.set(activate);
     }
 
-    public boolean isOut(){
-        if(mCals.disabled) return false;
-        return depSol.get();
-    }
+    
 }
