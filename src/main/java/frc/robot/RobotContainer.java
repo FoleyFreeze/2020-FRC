@@ -63,11 +63,8 @@ public class RobotContainer {
     
     m_drivetrain.setDefaultCommand(new JoystickDrive(this));
 
-<<<<<<< HEAD
-=======
     m_Hood.setDefaultCommand(new SetHoodPos(m_Hood));
       
->>>>>>> separate the transporter
     configureButtonBindings();
 
     autonChooser = new SendableChooser<>();

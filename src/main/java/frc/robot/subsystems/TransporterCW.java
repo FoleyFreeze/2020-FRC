@@ -7,7 +7,6 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -102,11 +101,11 @@ public class TransporterCW extends SubsystemBase{
             ballpositions[(x + 4) % 5] = false;
         }
 
-        if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
-            gatePower(tCals.TN_LOADSPEED);
+        /*if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
+            loadMotor.setPower(tCals.TN_LOADSPEED);
         }else if(mSubsystem.m_intake.isOut()) {
-            gatePower(tCals.TN_STOPSPEED);
-        }else if(CWNotTransport.get()){
+            loadMotor.setPower(tCals.TN_STOPSPEED);
+        }else*/ if(CWNotTransport.get()){
             if(mSubsystem.m_input.cwRotNotPos()){
                 gatePower(cCals.rotSpeed);
             } else{
@@ -148,6 +147,10 @@ public class TransporterCW extends SubsystemBase{
     //increment the ball storage
     public void index(double positions){
         targetpos += positions * tCals.countsPerIndex;
+    }
+
+    public void spinGate(double pwr){
+        loadMotor.setPower(pwr);
     }
 
     public boolean isIndexing(){
