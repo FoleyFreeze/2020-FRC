@@ -14,10 +14,12 @@ import frc.robot.cals.CannonCals;
 import frc.robot.cals.ClimberCals;
 import frc.robot.cals.DriverCals;
 import frc.robot.cals.ElectroKendro;
+import frc.robot.cals.HoodCals;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualRevolve;
 import frc.robot.commands.ManualShoot;
+import frc.robot.commands.SetHoodPos;
 import frc.robot.commands.AutoTrench;
 import frc.robot.subsystems.*;
 import frc.robot.cals.IntakeCals;
@@ -51,6 +53,7 @@ public class RobotContainer {
   public final Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
   public final TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
   public final Vision m_vision = new Vision(new VisionCals());
+  public final Hood m_Hood = new Hood(new HoodCals());
 
   public SendableChooser<CommandBase> autonChooser;
   
@@ -60,6 +63,11 @@ public class RobotContainer {
     
     m_drivetrain.setDefaultCommand(new JoystickDrive(this));
 
+<<<<<<< HEAD
+=======
+    m_Hood.setDefaultCommand(new SetHoodPos(m_Hood));
+      
+>>>>>>> separate the transporter
     configureButtonBindings();
 
     autonChooser = new SendableChooser<>();
