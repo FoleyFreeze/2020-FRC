@@ -1,14 +1,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.Intake;
 
 public class ManualIntake extends CommandBase{
 
-    private RobotContainer m_subsystem;
+    private Intake mIntake;
+    private Inputs mInput;
 
-    public ManualIntake(RobotContainer subsystem){
-        m_subsystem = subsystem;
+    public ManualIntake(Intake intake, Inputs input){
+        mIntake = intake;
+        mInput = input;
     }
 
     @Override
@@ -18,20 +21,20 @@ public class ManualIntake extends CommandBase{
 
     @Override
     public void execute(){
-        if(m_subsystem.m_input.shift()){
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.backwardPower);
+        if(mInput.shift()){
+            mIntake.setPower(mIntake.k.backwardPower);
         } else{
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.forwardPower);
+            mIntake.setPower(mIntake.k.forwardPower);
         }
 
-        m_subsystem.m_intake.dropIntake(true);
+        mIntake.dropIntake(true);
     }
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_intake.setPower(0);
+        mIntake.setPower(0);
 
-        m_subsystem.m_intake.dropIntake(false);
+        mIntake.dropIntake(false);
     }
 
     @Override

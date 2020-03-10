@@ -1,14 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
 
 public class ZeroReset extends CommandBase{
 
-    private RobotContainer m_subsystem;
+    private Drivetrain mDrivetrain;
 
-    public ZeroReset(RobotContainer subsystem){
-        m_subsystem = subsystem;
+    public ZeroReset(Drivetrain drivetrain){
+        mDrivetrain = drivetrain;
     }
 
     @Override
@@ -18,7 +18,7 @@ public class ZeroReset extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.m_drivetrain.zeroAll();
+        mDrivetrain.zeroAll();
     }
 
     @Override

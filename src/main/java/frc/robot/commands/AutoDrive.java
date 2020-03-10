@@ -5,12 +5,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.cals.DriverCals;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.RobotState;
 import frc.robot.util.Util;
 import frc.robot.util.Vector;
 
 public class AutoDrive extends CommandBase{
 
     private Drivetrain mDriveTrain;
+    private RobotState mState;
     private double tgtX;
     private double tgtY;
     private double tgtRot;
@@ -25,8 +27,9 @@ public class AutoDrive extends CommandBase{
     
     private DriverCals mCals;
 
-    public AutoDrive(Drivetrain drivetrain, double deltaX, double deltaY, double angle, boolean deltaVsField){
+    public AutoDrive(Drivetrain drivetrain, RobotState state, double deltaX, double deltaY, double angle, boolean deltaVsField){
         mDriveTrain = drivetrain;
+        mState = state;
         addRequirements(mDriveTrain);
         mCals = mDriveTrain.k;
         this.deltaX = deltaX;
@@ -37,7 +40,7 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public void initialize(){
-        Pose2d pose = mDriveTrain.drivePos;
+        Pose2d pose = mState.drivePos;
         startX = pose.getTranslation().getX();
         startY = pose.getTranslation().getY();
         if(deltaVsField){
@@ -53,7 +56,7 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public void execute(){
-        Pose2d pose = mDriveTrain.drivePos;
+        Pose2d pose = mState.drivePos;
         double x = pose.getTranslation().getX();
         double y = pose.getTranslation().getY();
         errorX = (tgtX - x);

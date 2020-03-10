@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
@@ -119,11 +118,13 @@ public class Drivetrain extends SubsystemBase{
     public DriverCals k;
     public AHRS navX;
     private RobotContainer mSubsystem;
+    private RobotState mState;
 
-    public Drivetrain(DriverCals cals, RobotContainer subsystem){
+    public Drivetrain(DriverCals cals, RobotContainer subsystem, RobotState state){
         k = cals;
         if(cals.disabled) return;
         mSubsystem = subsystem;
+        mState = state;
         
         int size = k.driveMotors.length;
         wheels = new Wheel[size];
@@ -163,7 +164,6 @@ public class Drivetrain extends SubsystemBase{
     public Translation2d rLWheelLoc;
     public SwerveDriveKinematics driveKinematics;
     public SwerveDriveOdometry driveOdom;
-    public Pose2d drivePos;
     public DistanceSensors distSens;
 
     public void drive(Vector strafe, double rot, double centX, double centY, boolean fieldOrient){
@@ -310,11 +310,11 @@ public class Drivetrain extends SubsystemBase{
         robotAng = -navX.getAngle();
         Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng));
         
-        drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
+        mState.drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
             wheels[2].getState(), wheels[3].getState());
-
-        double x = drivePos.getTranslation().getX();
-        double y = drivePos.getTranslation().getY();
+        
+        double x = mState.getXPos();
+        double y = mState.getYPos();
         Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
     }
 

@@ -1,21 +1,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.RobotState;
 import frc.robot.subsystems.TransporterCW;
 import frc.robot.util.Vector;
 
 public class CWMove extends CommandBase{
     
     TransporterCW mColorWheel;
+    Drivetrain mDrivetrain;
+    RobotState mState;
     Vector xy;
     double start;
 
-    public CWMove(TransporterCW colorwheel){
+    public CWMove(TransporterCW colorwheel, Drivetrain drivetrain, RobotState state){
         mColorWheel = colorwheel;
+        mState = state;
         addRequirements(mColorWheel);
         xy = Vector.fromXY(0, -1);
-        start = m_subsystem.m_drivetrain.drivePos.getTranslation().getY();
+        start = mState.getYPos();
     }
 
     @Override
@@ -25,7 +29,7 @@ public class CWMove extends CommandBase{
 
     @Override
     public void execute(){
-        m_subsystem.m_drivetrain.drive(xy, 0);
+        mDrivetrain.drive(xy, 0);
     }
 
     @Override
@@ -35,6 +39,6 @@ public class CWMove extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return m_subsystem.m_drivetrain.drivePos.getTranslation().getY() >= start - 3;
+        return mState.getYPos() >= start - 3;
     }
 }

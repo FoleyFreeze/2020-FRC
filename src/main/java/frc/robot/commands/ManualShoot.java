@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.CannonClimber;
 import frc.robot.subsystems.Inputs;
 
@@ -23,7 +22,7 @@ public class ManualShoot extends CommandBase{
     @Override
     public void execute(){
         if(mInput.shift()){
-            mCannon.setpower(mCannon.m_cannonClimber.shootCals.power * -1.0);
+            mCannon.setpower(mCannon.k.power * -1.0);
         } else{
             mCannon.setpower(mCannon.k.power);
         }

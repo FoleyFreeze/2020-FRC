@@ -28,17 +28,18 @@ public class TransporterCW extends SubsystemBase{
     private double targetpos = 0;
     private boolean[] ballpositions = {false, false, false, false, false};
     public boolean isIndexing;
-    public int ballnumber;
     private RobotContainer mSubsystem;
+    private RobotState mState;
     public ColorMatch colorMatch;
     public String colorString;
     public Color detectedColor;
     public Color lastColor;
     public String gameData;
 
-    public TransporterCW(CwTnCals k, RobotContainer subsystem){
+    public TransporterCW(CwTnCals k, RobotContainer subsystem, RobotState state){
         this.k = k;
         mSubsystem = subsystem;
+        mState = state;
         if(k.tnDisabled && k.cwDisabled) return;
 
         rotateMotor = Motor.initMotor(k.rotateMotor);
@@ -62,7 +63,7 @@ public class TransporterCW extends SubsystemBase{
     public void periodic(){
         if(DriverStation.getInstance().isAutonomous() && first){
             first = false;
-            ballnumber = 5;
+            mState.ballnumber = 5;
             ballpositions[0] = true;
             ballpositions[1] = true;
             ballpositions[2] = true;
@@ -95,7 +96,7 @@ public class TransporterCW extends SubsystemBase{
 
         int x = (int) Math.round(rotateMotor.getPosition() / k.countsPerIndex);
         if(ballpositions[(x + 4) % 5] && launcher.get()){
-            ballnumber--;
+            mState.ballnumber--;
             ballpositions[(x + 4) % 5] = false;
         }
 
@@ -124,7 +125,7 @@ public class TransporterCW extends SubsystemBase{
         } else colorString = "N/A";
 
         Display.put("Current Pos", rotateMotor.getPosition() / k.countsPerIndex);
-        Display.put("Ball Number", ballnumber);
+        Display.put("Ball Number", mState.ballnumber);
         Display.put("Ball Position 0", ballpositions[0]);
         Display.put("Ball Position 1", ballpositions[1]);
         Display.put("Ball Position 2", ballpositions[2]);
@@ -160,11 +161,11 @@ public class TransporterCW extends SubsystemBase{
         if(k.tnDisabled) return;
         double error = targetpos - rotateMotor.getPosition();
         double time = Timer.getFPGATimestamp();
-        if(hasBall() && Math.abs(error) < k.countsPerIndex / 2 && ballnumber < 5){ //only spin if not moving & we have an open spot
+        if(hasBall() && Math.abs(error) < k.countsPerIndex / 2 && mState.ballnumber < 5){ //only spin if not moving & we have an open spot
             waitTime += time - prevTime;
             if(waitTime > k.ballSenseDelay){
                 waitTime = 0;
-                ballnumber++;
+                mState.ballnumber++;
                 int x = (int) Math.round(targetpos/k.countsPerIndex);
                 ballpositions[x % 5] = true;
                 index(1);
@@ -189,9 +190,9 @@ public class TransporterCW extends SubsystemBase{
 
     public void shootAll(){
         if(k.tnDisabled) return;
-        enablefire(ballnumber > 0);
+        enablefire(mState.ballnumber > 0);
         double error = targetpos - rotateMotor.getPosition();
-        if(Math.abs(error) < k.countsPerIndex && ballnumber > 0){
+        if(Math.abs(error) < k.countsPerIndex && mState.ballnumber > 0){
             index(1);
         }
     }

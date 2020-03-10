@@ -1,16 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.CannonClimber;
 
 public class Jog extends CommandBase{
 
-    RobotContainer mSubsystem;
+    CannonClimber mCannon;
     boolean jogUpDnvsLR;
     boolean jogPlusMinus;
 
-    public Jog(RobotContainer subsystem, boolean jogUpDnvsLR, boolean jogPlusMinus){
-        mSubsystem = subsystem;
+    public Jog(CannonClimber cannon, boolean jogUpDnvsLR, boolean jogPlusMinus){
+        mCannon = cannon;
         this.jogUpDnvsLR = jogUpDnvsLR;
         this.jogPlusMinus = jogPlusMinus;
     }
@@ -18,9 +18,9 @@ public class Jog extends CommandBase{
     @Override
     public void initialize(){
         if(jogUpDnvsLR){
-            mSubsystem.m_cannonClimber.jogLR(jogPlusMinus);
+            mCannon.jogLR(jogPlusMinus);
         } else {
-            mSubsystem.m_cannonClimber.jogUpDn(jogPlusMinus);
+            mCannon.jogUpDn(jogPlusMinus);
         }
     }
 

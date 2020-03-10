@@ -32,8 +32,6 @@ public class Display extends SubsystemBase{
         ShuffleboardTab tab = Shuffleboard.getTab("Comp");
             addToTab(tab, "Selected Auton", "default", 1, 0);
             addToTab(tab, "Pi Alive", false, 2, 0);
-            String name;
-            NetworkTableEntry nte;
             addToTab(tab, "Last Target", "t, d, theta", 3, 0);
             addToTab(tab, "Last Ball", "t, d, theta", 4, 0);
             addToTab(tab, "DT", 0, 5, 0);

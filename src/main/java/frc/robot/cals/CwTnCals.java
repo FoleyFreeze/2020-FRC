@@ -28,6 +28,12 @@ public class CwTnCals extends CalSet {
     public double allowedIndexError = 0.2 * countsPerIndex;
     public final double TN_LOADSPEED = 0.2;
     public final double TN_STOPSPEED = -0.0;
+    public double jamRestTime;
+    public double ballSenseDelay;
+    public double maxGateCurr;
+    public double gateRestTime;
+    public double hasBallMinV;
+    public double hasBallMaxV;
 
     public CwTnCals(){
 

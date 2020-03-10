@@ -3,38 +3,50 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.cals.CannonClimbCals;
+import frc.robot.subsystems.CannonClimber;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.RobotState;
+import frc.robot.subsystems.TransporterCW;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision.VisionData;
 
 public class AutoShoot extends CommandBase{
 
-    private RobotContainer m_subsystem;
-    private CannonClimbCals m_cals;
+    private Drivetrain mDrivetrain;
+    private CannonClimber mCannon;
+    private TransporterCW mTransporter;
+    private Inputs mInput;
+    private Vision mVision;
+    private RobotState mState;
     public double rotCam = 0.0;
     public boolean auton;
     public double shootFinTime;
     double prevRobotAngle;
     double prevTime;
     
-    public AutoShoot(RobotContainer subsystem){
-        m_subsystem = subsystem;
-        m_cals = m_subsystem.m_cannonClimber.k;
+    public AutoShoot(Drivetrain drivetrain, CannonClimber cannon, TransporterCW transporter, Inputs input, Vision vision, RobotState state){
+        mDrivetrain = drivetrain;
+        mCannon = cannon;
+        mTransporter = transporter;
+        mInput = input;
+        mVision = vision;
+        mState = state;
 
-        addRequirements(m_subsystem.m_drivetrain);
-        addRequirements(m_subsystem.m_cannonClimber);
-        addRequirements(m_subsystem.m_transporterCW);
+        addRequirements(mDrivetrain);
+        addRequirements(mCannon);
+        addRequirements(mTransporter);
     }
 
     @Override
     public void initialize(){
-        if(m_subsystem.m_input.cam()){
-            m_subsystem.m_cannonClimber.setCamLights(true);
-            m_subsystem.m_vision.NTEnablePiTgt(true);
+        if(mInput.cam()){
+            mCannon.setCamLights(true);
+            mVision.NTEnablePiTgt(true);
         }
         
         auton = DriverStation.getInstance().isAutonomous();
-        prevRobotAngle = m_subsystem.m_drivetrain.robotAng;
+        prevRobotAngle = mDrivetrain.robotAng;
         prevTime = 0;
     }
 
@@ -45,20 +57,20 @@ public class AutoShoot extends CommandBase{
         double error;
         boolean aligned = false;
         double dist;
-        if(m_subsystem.m_vision.hasTargetImage() && m_subsystem.m_input.cam()){
-            VisionData image = m_subsystem.m_vision.targetData.getFirst();
-            rotCam = image.robotangle + image.angle + m_subsystem.m_cannonClimber.k.initJogAng;
+        if(mVision.hasTargetImage() && mInput.cam()){
+            VisionData image = mVision.targetData.getFirst();
+            rotCam = image.robotangle + image.angle + mCannon.k.initJogAng;
 
             dist = image.dist;
 
-            if(m_subsystem.m_input.twoVThree()){
+            if(mInput.twoVThree()){
                 double angOfTgt = 180 - rotCam;
                 dist = Math.sqrt(dist*dist + 29.25*29.25 - 2 * dist * 29.25 * Math.cos(angOfTgt));
 
                 rotCam = Math.asin(29.25/dist * Math.sin(angOfTgt));
             }
 
-            double robotAngle = m_subsystem.m_drivetrain.robotAng;
+            double robotAngle = mDrivetrain.robotAng;
             error = rotCam - robotAngle;
             error %= 360;
             if(error > 180) error -=360;
@@ -70,45 +82,45 @@ public class AutoShoot extends CommandBase{
             else if(deltaAngle < -180) deltaAngle +=360;
 
             double d = (deltaAngle)/(time - prevTime);
-            rot = error * m_cals.kPDrive - d * m_cals.kDDrive;
+            rot = error * mCannon.k.kPDrive - d * mCannon.k.kDDrive;
 
-            if(rot > m_cals.maxRot) rot = m_cals.maxRot;
-            else if(rot < -m_cals.maxRot) rot = -m_cals.maxRot;
+            if(rot > mCannon.k.maxRot) rot = mCannon.k.maxRot;
+            else if(rot < -mCannon.k.maxRot) rot = -mCannon.k.maxRot;
 
         }else {
-            rot = m_subsystem.m_input.getRot();
+            rot = mInput.getRot();
             error = 0;
-            if(m_subsystem.m_input.layup()){
-                dist = m_cals.layupDist;
-            } else dist = m_cals.trenchDist;
+            if(mInput.layup()){
+                dist = mCannon.k.layupDist;
+            } else dist = mCannon.k.trenchDist;
         }
-        if(Math.abs(error) <= m_cals.tolerance) aligned = true;//make dependent on dist
+        if(Math.abs(error) <= mCannon.k.tolerance) aligned = true;//make dependent on dist
         
-        m_subsystem.m_drivetrain.drive(m_subsystem.m_input.getXY(), rot, 0, 0, 
-            m_subsystem.m_input.fieldOrient());
+        mDrivetrain.drive(mInput.getXY(), rot, 0, 0, 
+            mInput.fieldOrient());
         
-        m_subsystem.m_cannonClimber.prime(dist);
+        mCannon.prime(dist);
 
-        if(m_subsystem.m_cannonClimber.ready() && aligned && m_subsystem.m_transporterCW.ballnumber > 0){
-            m_subsystem.m_transporterCW.shootAll();
-            shootFinTime = Timer.getFPGATimestamp() + m_subsystem.m_cannonClimber.k.shootTime;
+        if(mCannon.ready() && aligned && mState.ballnumber > 0){
+            mTransporter.shootAll();
+            shootFinTime = Timer.getFPGATimestamp() + mCannon.k.shootTime;
         } 
-        else m_subsystem.m_transporterCW.stoprot();
+        else mTransporter.stoprot();
 
-        prevRobotAngle = m_subsystem.m_drivetrain.robotAng;
+        prevRobotAngle = mDrivetrain.robotAng;
         prevTime = time;
     }
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_cannonClimber.setpower(0);
-        m_subsystem.m_cannonClimber.setCamLights(false);
-        m_subsystem.m_vision.NTEnablePiTgt(false);
+        mCannon.setpower(0);
+        mCannon.setCamLights(false);
+        mVision.NTEnablePiTgt(false);
     }
 
     @Override
     public boolean isFinished(){
-        if(auton) return Timer.getFPGATimestamp() >= shootFinTime && m_subsystem.m_transporterCW.ballnumber == 0;
+        if(auton) return Timer.getFPGATimestamp() >= shootFinTime && mState.ballnumber == 0;
         return false;
     }
 }
