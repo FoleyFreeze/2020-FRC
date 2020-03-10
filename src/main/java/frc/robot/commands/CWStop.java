@@ -2,14 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TransporterCW;
+import frc.robot.subsystems.GateCW;
 
 public class CWStop extends CommandBase{
 
-    TransporterCW mColorWheel;
+    GateCW mColorWheel;
     double stopTime;
 
-    public CWStop(TransporterCW colorwheel){
+    public CWStop(GateCW colorwheel){
         mColorWheel = colorwheel;
         addRequirements(mColorWheel);
     }

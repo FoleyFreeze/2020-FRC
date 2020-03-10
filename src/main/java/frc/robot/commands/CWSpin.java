@@ -2,17 +2,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.GateCW;
 import frc.robot.subsystems.Inputs;
-import frc.robot.subsystems.TransporterCW;
 
 public class CWSpin extends CommandBase{
 
-    private TransporterCW mColorWheel;
+    private GateCW mColorWheel;
     private Inputs mInput;
     private int wedgeCount;
     private char gameData;
 
-    public CWSpin(TransporterCW colorwheel, Inputs input){
+    public CWSpin(GateCW colorwheel, Inputs input){
         mColorWheel = colorwheel;
         mInput = input;
         addRequirements(mColorWheel);

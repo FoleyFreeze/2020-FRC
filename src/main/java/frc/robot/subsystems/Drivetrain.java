@@ -14,6 +14,7 @@ import frc.robot.RobotContainer;
 import frc.robot.cals.DriverCals;
 import frc.robot.motors.Motor;
 import frc.robot.util.DistanceSensors;
+import frc.robot.util.Util;
 import frc.robot.util.Vector;
 import frc.robot.util.DistanceSensors.DistData;
 
@@ -62,13 +63,14 @@ public class Drivetrain extends SubsystemBase{
             //SmartDashboard.putNumber("RawEnc" + idx, encVoltage);
             double currentAngle = ((encVoltage - angleOffset) 
                 *2*Math.PI/5);
-            double angleDiff = wheelVec.theta - currentAngle;
+            double angleDiff = Util.angleDiffRad(wheelVec.theta, currentAngle);
             //SmartDashboard.putNumber("AngleRaw" + idx, 
             //    Math.toDegrees(angleDiff));
 
             //angle diff is now between -PI and PI
-            angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
+            //angleDiff = ((angleDiff+Math.PI*2) % (2*Math.PI)) - Math.PI;
             //angleDiff = Math.IEEEremainder(angleDiff, 2*Math.PI) - Math.PI;
+            angleDiff = Util.angleDiffRad(angleDiff, Math.PI);
 
             //SmartDashboard.putNumber("AngleDiff" + idx, Math.toDegrees(angleDiff));
 
@@ -82,14 +84,14 @@ public class Drivetrain extends SubsystemBase{
                     wheelVec.theta -= Math.PI;
                 }
             }
-            //SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
+            SmartDashboard.putNumber("CurrAngle" + idx, Math.toDegrees(currentAngle));
             //SmartDashboard.putNumber("AngleCorr" + idx, Math.toDegrees(angleDiff));
-            //SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
+            SmartDashboard.putString("WheelCmd" + idx, wheelVec.toString());
             
 
             double deltaTicks = angleDiff / (2*Math.PI) * k.turnTicksPerRev;
             double targetTicks = turnMotor.getPosition();
-            if((wheelVec.r != 0 || parkMode) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
+            if((Math.abs(wheelVec.r) > 0.05 /*|| parkMode*/) && Math.abs(deltaTicks) > k.DRV_TURNDEADBND){ //don't turn unless we actually want to move
                 targetTicks += deltaTicks;
             } 
             //SmartDashboard.putNumber("TargetTicks" + idx, targetTicks);
@@ -152,6 +154,7 @@ public class Drivetrain extends SubsystemBase{
 
     public double parkTime = 9000.0;
     public boolean parkMode = false;
+    boolean motorsGood = true;
     double currentTime = 0.0;
     public double prevRot;
     public boolean driveStraight = false;
@@ -183,13 +186,14 @@ public class Drivetrain extends SubsystemBase{
         //SmartDashboard.putNumber("prevAngle", prevAng);
         //SmartDashboard.putNumber("RobotAngle", navX.getAngle());
         if(fieldOrient){
-            strafe.theta -= Math.toRadians(-navX.getAngle()) /*- Math.PI/2*/;
-            while(strafe.theta > 180) strafe.theta -= 360;
-            while(strafe.theta < -180) strafe.theta += 360;
+            strafe.theta -= Math.toRadians(-navX.getAngle() % 360) /*- Math.PI/2*/;
+            //while(strafe.theta > 180) strafe.theta -= 360;
+            //while(strafe.theta < -180) strafe.theta += 360;
         }
         
         //SmartDashboard.putBoolean("Driving Straigth", driveStraight);
         
+        /*
         if(0 == rot && 0 == strafe.r){
             if(parkTime <= currentTime){
                 parkMode = true;
@@ -199,12 +203,15 @@ public class Drivetrain extends SubsystemBase{
             parkTime = currentTime + k.parkOffset;
             parkMode = false;
         }
+        */
+        parkMode = false;
 
+        /*
         driveStraight = (rot == 0 && !parkMode);
 
         if(driveStraight){
             rot = outRot(k.driveStraightKp, goalAng);
-        }
+        }*/
 
         if(!driveStraight) goalAng = prevAng;
         //SmartDashboard.putNumber("Goal Angle", goalAng);
@@ -271,7 +278,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public double outRot(double pCorrection, double targetAng){
-        double error = targetAng - navX.getAngle();
+        double error = Util.angleDiff(targetAng, -navX.getAngle());
         double kP = pCorrection;
         //SmartDashboard.putNumber("Straight Error", error);
         double output = kP * error;
@@ -298,17 +305,21 @@ public class Drivetrain extends SubsystemBase{
         if(k.disabled) return;
         Display.put("NavX Ang", navX.getAngle());
         for(Wheel w: wheels){
+            if(w.idx == 0) motorsGood = true;
             Display.put("DMotorCurrent " + w.idx, wheels[w.idx].driveMotor.getCurrent());
             Display.put("TMotorCurrent " + w.idx, wheels[w.idx].turnMotor.getCurrent());
             Display.put("DMotorTemp " + w.idx, wheels[w.idx].driveMotor.getTemp());
             Display.put("TMotorTemp " + w.idx, wheels[w.idx].turnMotor.getTemp());
+            if(wheels[w.idx].driveMotor.getTemp() >= 70) motorsGood = false;
+            SmartDashboard.putNumber("Turn Pwr "+w.idx, wheels[w.idx].turnMotor.getSpeed());
+            SmartDashboard.putNumber("Turn Curr "+w.idx, wheels[w.idx].turnMotor.getCurrent());
         }
 
         Display.put("DistSenseInfo Re", distSens.getRear().toString());
         Display.put("DistSenseInfo Ri", distSens.getRight().toString());
 
         robotAng = -navX.getAngle();
-        Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng));
+        Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng)/* - Math.PI/2*/);
         
         mState.drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
             wheels[2].getState(), wheels[3].getState());
@@ -316,10 +327,11 @@ public class Drivetrain extends SubsystemBase{
         double x = mState.getXPos();
         double y = mState.getYPos();
         Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
+        Display.put("Motors Good", motorsGood);
     }
 
     public void zeroAll(){
         navX.zeroYaw();
-        driveOdom.resetPosition(new Pose2d(), new Rotation2d());
+        driveOdom.resetPosition(new Pose2d(), new Rotation2d(/*-Math.PI/2*/));
     }
 }

@@ -14,9 +14,17 @@ public class MotorCal {
     public double rampRate;
     public boolean brake;
     public boolean invert = false;
+    public boolean follow = false;
+    public int followID;
+    public double currentLimit = 50;
+    public int overCurrentCountLimit = 50;
+    public double overCurrentRestTime = 5;
+    public double tempLimit = 60;
+    public double overTempRestTime = 30;
+    public int overCurrentCountDown = 1;
 
     public enum MotorType{
-        PWM_TALON, SPARK_MAX, TALON_SRX
+        PWM_TALON, SPARK_MAX, TALON_SRX, NULL
     }
 
     public static MotorCal spark(int id){
@@ -51,6 +59,30 @@ public class MotorCal {
         kI = i;
         kD = d;
         kF = f;
+        return this;
+    }
+
+    public MotorCal follow(int id){
+        follow = true;
+        followID = id;
+        return this;
+    }
+
+    public MotorCal currLim(double lim){
+        currentLimit = lim;
+        return this;
+    }
+    public MotorCal currLimCount(int time){
+        overCurrentCountLimit = time;
+        return this;
+    }
+    public MotorCal currLimCntDn(int down){
+        overCurrentCountDown = down;
+        return this;
+    }
+
+    public MotorCal currLimTime(double time){
+        overCurrentRestTime = time;
         return this;
     }
 

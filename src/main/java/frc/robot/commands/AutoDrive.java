@@ -61,9 +61,7 @@ public class AutoDrive extends CommandBase{
         double y = pose.getTranslation().getY();
         errorX = (tgtX - x);
         errorY = (tgtY - y);
-        errorRot = tgtRot - mDriveTrain.robotAng;
-        if(errorRot > 180) errorRot-= 360;
-        else if(errorRot < -180) errorRot+=360;
+        errorRot = Util.angleDiff(tgtRot, mDriveTrain.robotAng);
 
         Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
 
@@ -94,9 +92,8 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        if(Math.abs(errorX) < mCals.autoDriveStrafeRange && Math.abs(errorY) < 
-        mCals.autoDriveStrafeRange && Math.abs(errorRot) < mCals.autoDriveAngRange){
-            return true;
-        } else return false;
+        return Math.abs(errorX) < mCals.autoDriveStrafeRange 
+            && Math.abs(errorY) < mCals.autoDriveStrafeRange 
+            && Math.abs(errorRot) < mCals.autoDriveAngRange;
     }
 }

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,8 +25,9 @@ public class CannonClimber extends SubsystemBase{
     private Solenoid dropFoot;
 
     HoodPos hCurrPos = HoodPos.LOW;
-    HoodPos hTgtPos = HoodPos.LOW;
+    public HoodPos hTgtPos = HoodPos.LOW;
     double solRestTime = 0;
+    double targetSpeed = 0;
 
     public CannonClimber(CannonClimbCals k){
         this.k = k;
@@ -44,11 +46,13 @@ public class CannonClimber extends SubsystemBase{
     public void setpower(double power){
         if(k.shootDisabled) return;
         motor.setPower(power);
-        motor2.setPower(power);
+        //motor2.setPower(power);
         Display.put("CCMotorCurrent 0", motor.getCurrent());
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
         Display.put("CC Motor Temp 1", motor2.getTemp());
+        
+        targetSpeed = 0;
     }
 
     public void setspeed(double speed){
@@ -57,11 +61,26 @@ public class CannonClimber extends SubsystemBase{
         motor2.setSpeed(speed);
     }
 
-    public void prime(double distToTgt){
+    /*public void prime(double distToTgt){
         distToTgt += k.initJogDist;
         if(k.shootDisabled) return;
         if(!k.shootDisabled) shootVsClimb.set(false);
 
+        double[] distAxis = k.dist[hTgtPos.ordinal()];
+
+
+        if(k.shootDisabled) return;
+        //motor.setSpeed(speed);
+        //motor2.setSpeed(speed);
+        motor.setPower(speed / k.falconRpmPerPower);
+        targetSpeed = speed;
+    }*/
+
+    public void prime(double distToTgt){
+        distToTgt += k.initJogDist;
+        if(k.shootDisabled) return;
+        if(!k.shootDisabled) shootVsClimb.set(false);
+        
         double[] distAxis = k.dist[hTgtPos.ordinal()];
         if(distAxis[0] > distToTgt){
             switch(hTgtPos){
@@ -102,16 +121,29 @@ public class CannonClimber extends SubsystemBase{
                     break;
             }
         }
+    
 
         double speed = Util.interpolate(k.rpm[hTgtPos.ordinal()], k.dist[hTgtPos.ordinal()], distToTgt);
         setspeed(speed);
     }
 
-    public boolean ready(){
-        return false;
-    }
+    /*public boolean ready(){
+        if(subsystem.m_transporterCW.launcher.get()){
+            return Math.abs(motor.getSpeed() - targetSpeed) < k.allowedRpmHyst;
+        } else {
+            return Math.abs(motor.getSpeed() - targetSpeed) < k.allowedRpmError;
+        }
+    }*/
 
     public void periodic(){
+        if(DriverStation.getInstance().isDisabled()){
+            hTgtPos = HoodPos.LOW;
+        }
+
+        if(DriverStation.getInstance().isAutonomous()){
+            hTgtPos = HoodPos.HIGH;
+        }
+
         if(k.shootDisabled || k.climbDisabled) return;
         if(Timer.getFPGATimestamp()>solRestTime){
             switch(hTgtPos){
@@ -171,6 +203,8 @@ public class CannonClimber extends SubsystemBase{
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
         Display.put("CC Motor Temp 1", motor2.getTemp());
+        Display.put("RPM", motor.getSpeed());
+        Display.put("Hood Pos", hCurrPos.toString());
     }
 
     public void jogUpDn(boolean up){
@@ -179,6 +213,7 @@ public class CannonClimber extends SubsystemBase{
         }else{
             k.initJogDist -= k.distJog;
         }
+        Display.put("JogUpDn", k.initJogDist);
     }
 
     public void jogLR(boolean left){
@@ -187,6 +222,7 @@ public class CannonClimber extends SubsystemBase{
         }else{
             k.initJogAng += k.angJog;
         }
+        Display.put("JogLR", k.initJogAng);
     }
 
     //Climber

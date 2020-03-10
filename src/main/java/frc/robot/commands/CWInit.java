@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TransporterCW;
+import frc.robot.subsystems.GateCW;
 
 public class CWInit extends CommandBase{
     
-    TransporterCW mColorWheel;
+    GateCW mColorWheel;
 
-    public CWInit(TransporterCW colorwheel){
+    public CWInit(GateCW colorwheel){
         mColorWheel = colorwheel;
         addRequirements(colorwheel);
     }

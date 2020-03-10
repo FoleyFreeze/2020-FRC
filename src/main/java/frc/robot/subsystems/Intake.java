@@ -18,6 +18,8 @@ public class Intake extends SubsystemBase {
         depSol = new Solenoid(k.depSolValue);
     }
 
+    double jamTime;
+    boolean prevJammed = false;
     public void periodic(){
         if(k.disabled) return;
         Display.put("InMotorCurr", spinmotor.getCurrent());

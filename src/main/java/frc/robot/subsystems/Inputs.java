@@ -23,6 +23,7 @@ public class Inputs{
 
     public Trigger climbUp;
     public Trigger climbDn;
+    public JoystickButton shift;
     public JoystickButton dropFoot;
     public JoystickButton manualIntake;
     public JoystickButton revolve;
@@ -123,15 +124,13 @@ public class Inputs{
             angleReset = new JoystickButton(joy, k.XB_ANGRESET);
             autoTrench = new JoystickButton(joy, k.XB_AUTOTRENCH);
         }
-/*
-        enableBudClimb = new JoystickButton(ds, cals.DS_ENABLEBUDCLIMB);
-        dropFoot = new JoystickButton(ds, cals.DS_DROPFOOT);
-        manualIntake = new JoystickButton(ds, cals.DS_MINTAKE);
-        revolve = new JoystickButton(ds, cals.DS_REVOLVE);
-        
-        shift = new JoystickButton(ds, cals.DS_SHIFT);
-        cwActivate = new JoystickButton(ds, cals.DS_CWACTIVATE);
-        */
+
+        dropFoot = new JoystickButton(ds, k.DS_DROPFOOT);
+        manualIntake = new JoystickButton(ds, k.DS_MINTAKE);
+        manualShoot = new JoystickButton(ds, k.DS_MSHOOT);
+        revolve = new JoystickButton(ds, k.DS_REVOLVE);        
+        cwActivate = new JoystickButton(ds, k.DS_CWACTIVATE);
+        shift = new JoystickButton(ds, k.DS_SHIFT);
     }
 
     private double threshDeadband(double raw, double limitLow, double limitHigh){
@@ -158,19 +157,19 @@ public class Inputs{
 
     //driver
     public boolean autoShoot(){
-        return false;
+        return joy.getRawAxis(k.FS_AUTOSHOOT) > 0.5;
     }
 
     public boolean autoGather(){
-        return false;
+        return joy.getRawAxis(k.FS_AUTOGATHER) > 0.5;
     }
 
     public boolean autoTrench(){
-        return false;
+        return joy.getRawButton(k.FS_AUTOTRENCH);
     }
 
     public boolean enableBallCam(){
-        return false;
+        return joy.getRawButton(k.FS_EnblBallCam);
     }
 
     public boolean fieldOrient(){
@@ -183,27 +182,39 @@ public class Inputs{
     }
 
     public double getX(){
-        if(flySky) return expo(threshDeadband(joy.getRawAxis(
+        double val;
+        if(flySky) val = expo(threshDeadband(joy.getRawAxis(
             k.FS_XAXIS), k.FS_LOWDEADBND, k.FS_HIGHDEADBND), 
             k.FS_EXPONENT);
-        else return expo(scaleDeadband(joy.getRawAxis(k.XB_XAXIS), 
+        else val = expo(scaleDeadband(joy.getRawAxis(k.XB_XAXIS), 
             k.XB_LOWDEADBND, k.XB_HIGHDEADBND), k.XB_EXPONENT);
+
+        SmartDashboard.putNumber("X", val);
+        return val;
     }
 
     public double getY(){
-        if(flySky) return -expo(threshDeadband(joy.getRawAxis
+        double val;
+        if(flySky) val = -expo(threshDeadband(joy.getRawAxis
             (k.FS_YAXIS), k.FS_LOWDEADBND, k.FS_HIGHDEADBND), 
             k.FS_EXPONENT);
-        else return -expo(scaleDeadband(joy.getRawAxis(k.XB_YAXIS), 
+        else val = -expo(scaleDeadband(joy.getRawAxis(k.XB_YAXIS), 
             k.XB_LOWDEADBND, k.XB_HIGHDEADBND), k.XB_EXPONENT);
+
+        SmartDashboard.putNumber("Y", val);
+        return val;
     }
 
     public double getRot(){
-        if(flySky) return expo(threshDeadband(
+        double val;
+        if(flySky) val = expo(threshDeadband(
             joy.getRawAxis(k.FS_ROTAXIS), k.FS_LOWDEADBND, 
             k.FS_HIGHDEADBND), k.FS_EXPONENT);
-        else return expo(scaleDeadband(joy.getRawAxis(k.XB_ROTAXIS),
+        else val = expo(scaleDeadband(joy.getRawAxis(k.XB_ROTAXIS),
              k.XB_LOWDEADBND, k.XB_HIGHDEADBND), k.XB_EXPONENT);
+
+        SmartDashboard.putNumber("R", val);
+        return val;
     }
 
     public Vector getXY(){

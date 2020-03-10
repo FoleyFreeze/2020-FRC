@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.cals.PneumaticsCals;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Pneumatics extends SubsystemBase{
     
@@ -36,7 +37,7 @@ public class Pneumatics extends SubsystemBase{
             paused = false;
         }
 
-        pressure = pressureSensor.getVoltage() * 50 - 25;
+        pressure = .5 * (pressureSensor.getAverageVoltage() - 0.35) * 115 / (1.82-0.35);
 
         if(paused && pressure > k.minPressure){
             mCompressor.stop();
@@ -47,6 +48,7 @@ public class Pneumatics extends SubsystemBase{
         }
 
         Display.put("Pressure", pressure);
-        Display.put("CompressorRun", mCompressor.getCompressorCurrent() > 0);
+        Display.put("CompressorRun", mCompressor.getCompressorCurrent() > 4);
+        SmartDashboard.putNumber("CompCurr",mCompressor.getCompressorCurrent());
     }
 }

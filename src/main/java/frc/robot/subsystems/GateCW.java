@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 import frc.robot.cals.CwTnCals;
 import frc.robot.motors.Motor;
 
-public class TransporterCW extends SubsystemBase{
+public class GateCW extends SubsystemBase{
 
     public Motor rotateMotor;
     public Motor loadMotor;
@@ -36,7 +36,7 @@ public class TransporterCW extends SubsystemBase{
     public Color lastColor;
     public String gameData;
 
-    public TransporterCW(CwTnCals k, RobotContainer subsystem, RobotState state){
+    public GateCW(CwTnCals k, RobotContainer subsystem, RobotState state){
         this.k = k;
         mSubsystem = subsystem;
         mState = state;
@@ -100,11 +100,11 @@ public class TransporterCW extends SubsystemBase{
             ballpositions[(x + 4) % 5] = false;
         }
 
-        if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
+        /*if(mSubsystem.m_intake.isOut() && !ballpositions[x%5]){
             gatePower(k.TN_LOADSPEED);
         }else if(mSubsystem.m_intake.isOut()) {
             gatePower(k.TN_STOPSPEED);
-        }else if(CWNotTransport.get()){
+        }else*/ if(CWNotTransport.get()){
             if(mSubsystem.m_input.cwRotNotPos()){
                 gatePower(k.rotSpeed);
             } else{
@@ -146,6 +146,10 @@ public class TransporterCW extends SubsystemBase{
     //increment the ball storage
     public void index(double positions){
         targetpos += positions * k.countsPerIndex;
+    }
+
+    public void spinGate(double pwr){
+        loadMotor.setPower(pwr);
     }
 
     public boolean isIndexing(){

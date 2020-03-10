@@ -15,17 +15,33 @@ public class Display extends SubsystemBase{
     public Display(){
     }
 
+    //TODO: figure out how to add the same data to multiple tabs
     public static void addToTab(ShuffleboardTab tab, String name, double init, int x, int y){
-        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-        map.put(name,nte);
+        if(map.containsKey(name)){
+            NetworkTableEntry nte = map.get(name);
+            //tab.add(name, nte.getValue());
+        } else {
+            NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+            map.put(name,nte);
+        }
     }
     public static void addToTab(ShuffleboardTab tab, String name, String init, int x, int y){
-        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-        map.put(name,nte);
+        if(map.containsKey(name)){
+            NetworkTableEntry nte = map.get(name);
+            //tab.add(name, nte.getValue());
+        } else {
+            NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+            map.put(name,nte);
+        }
     }
     public static void addToTab(ShuffleboardTab tab, String name, boolean init, int x, int y){
-        NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-        map.put(name,nte);
+        if(map.containsKey(name)){
+            NetworkTableEntry nte = map.get(name);
+            //tab.add(name, nte.getValue());
+        } else {
+            NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
+            map.put(name,nte);
+        }
     }
 
     public static void init(){
@@ -46,6 +62,10 @@ public class Display extends SubsystemBase{
             addToTab(tab, "Pit Mode", false, 4, 3);
             addToTab(tab, "Last Error", "N/A", 6, 1);
             addToTab(tab, "RobotType", "Imaginary", 7,1);
+            addToTab(tab, "JogUpDn", 0, 8,1);
+            addToTab(tab, "JogLR", 0, 8,2);
+            addToTab(tab, "RPM", 0, 8, 0);
+            addToTab(tab, "Counter", 0, 9,0);
         
         tab = Shuffleboard.getTab("DriveTrain");
             addToTab(tab, "DMotorCurrent 0", 0, 0, 0);

@@ -16,7 +16,7 @@ public class ManualIntake extends CommandBase{
 
     @Override
     public void initialize(){
-
+        mIntake.dropIntake(true);
     }
 
     @Override
@@ -26,8 +26,6 @@ public class ManualIntake extends CommandBase{
         } else{
             mIntake.setPower(mIntake.k.forwardPower);
         }
-
-        mIntake.dropIntake(true);
     }
 
     @Override

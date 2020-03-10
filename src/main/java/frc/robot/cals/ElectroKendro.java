@@ -6,10 +6,13 @@ public class ElectroKendro extends CalSet{
     public final int FS_FIELDORIENT = 5;
     public final int FS_ANGRESET = 10;
     public final int FS_AUTOTRENCH = 4;
+    public final int FS_EnblBallCam = 1;
 
     public final int FS_XAXIS = 0;
     public final int FS_YAXIS = 1;
     public final int FS_ROTAXIS = 4;
+    public final int FS_AUTOSHOOT = 3;
+    public final int FS_AUTOGATHER = 2;
 
     public final double FS_LOWDEADBND = 0.05;
     public final double FS_HIGHDEADBND = 1.0;
@@ -35,7 +38,7 @@ public class ElectroKendro extends CalSet{
 
 
     //driver station buttons and switches
-    public final boolean DS_ENABLED = false;
+    public final boolean DS_ENABLED = true;
     public final int DS_CLIMBUP = 2;
     public final int DS_CLIMBDN = 2;
     public final int DS_ENABLEBUDCLIMB = 9;

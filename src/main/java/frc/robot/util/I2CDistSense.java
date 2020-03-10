@@ -33,14 +33,9 @@ import java.util.List;
 
 import com.revrobotics.jni.VL53L0XJNI;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 
 /**
  * Rev2mDistanceSensor class.
@@ -48,7 +43,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
  * The Distance sensor class is intended to be used with the RevRobotics
  * 2M Distance Sensor.
  */
-public class I2CDistSense extends SendableBase implements PIDSource {
+public class I2CDistSense {
     public enum Port { kOnboard, kMXP }
     public enum RangeProfile { kDefault, kHighAccuracy, kLongRange, kHighSpeed }
     public enum Unit { kInches, kMillimeters }
@@ -63,7 +58,7 @@ public class I2CDistSense extends SendableBase implements PIDSource {
     // task doing the round-robin automatic sensing
     private static Thread m_task;
     private Unit m_units;
-    protected PIDSourceType m_pidSource = PIDSourceType.kDisplacement;
+    //protected PIDSourceType m_pidSource = PIDSourceType.kDisplacement;
 
     private RangeProfile m_profile = RangeProfile.kDefault;
     private RangeProfile m_newProfile = RangeProfile.kDefault;
@@ -443,6 +438,7 @@ public class I2CDistSense extends SendableBase implements PIDSource {
         }
     }
 
+    /*
     @Override
     public void setPIDSourceType(PIDSourceType pidSource) {
         if (!pidSource.equals(PIDSourceType.kDisplacement)) {
@@ -455,12 +451,13 @@ public class I2CDistSense extends SendableBase implements PIDSource {
     public PIDSourceType getPIDSourceType() {
         return m_pidSource;
     }
+    */
 
     /**
      * Get the range in the current DistanceUnit for the PIDSource base object.
      *
      * @return The range in DistanceUnit
-     */
+     *
     @Override
     public double pidGet() {
         switch (m_units) {
@@ -471,7 +468,7 @@ public class I2CDistSense extends SendableBase implements PIDSource {
         default:
             return 0.0;
         }
-    }
+    }*/
 
     private boolean setProfileLongRange() {
         //System.out.println("Setting profile to long range");
@@ -601,9 +598,11 @@ public class I2CDistSense extends SendableBase implements PIDSource {
         return status;
     }
 
+    /*
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Distance");
         builder.addDoubleProperty("Value", this::getRange, null);
     }
+    */
 }

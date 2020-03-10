@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.cals.MotorCal;
 
 
@@ -50,22 +51,65 @@ public class MotorSparkMax extends Motor{
 
         if(power > 0) power *= cals.maxPower;
         else if(power < 0) power *= -cals.minPower;
-        //System.out.println(power);
-        motor.set(power);
+
+        checkJammed();
+        if(isJammed()){
+            motor.set(0);
+        } else {
+            motor.set(power);
+        }
     }
 
     public void setPosition(double position){
-        motor.getPIDController().setReference(position, 
-            ControlType.kPosition);
+        checkJammed();
+        if(isJammed()){
+            motor.set(0);
+        } else {
+            motor.getPIDController().setReference(position, 
+            ControlType.kPosition);    
+        }
+    }
+
+    double currentTimer = 0;
+    int overCurrentCount = 0;
+    public void checkJammed(){
+        if(getCurrent() > cals.currentLimit){
+            overCurrentCount++;
+        } else {
+            if(overCurrentCount > 0) overCurrentCount -= cals.overCurrentCountDown;
+        }
+
+        if(overCurrentCount > cals.overCurrentCountLimit){
+            currentTimer = Timer.getFPGATimestamp() + cals.overCurrentRestTime;
+        }
+
+        if(getTemp() > cals.tempLimit){
+            currentTimer = Timer.getFPGATimestamp() + cals.overTempRestTime;
+        }
+
+        //return Timer.getFPGATimestamp() < currentTimer;
+    }
+
+    public boolean isJammed(){
+        return Timer.getFPGATimestamp() < currentTimer;
     }
 
     public double getPosition(){
         return motor.getEncoder().getPosition();
     }
-    
+
     public void setSpeed(double speed){
-        motor.getPIDController().setReference(speed, 
+        checkJammed();
+        if(isJammed()){
+            motor.set(0);
+        } else {
+            motor.getPIDController().setReference(speed, 
             ControlType.kVelocity);
+        }
+    }
+
+    public double getSpeed(){
+        return motor.getEncoder().getVelocity();
     }
 
     public double getCurrent(){

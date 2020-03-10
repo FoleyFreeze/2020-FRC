@@ -5,17 +5,18 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CannonClimber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.GateCW;
 import frc.robot.subsystems.Inputs;
 import frc.robot.subsystems.RobotState;
-import frc.robot.subsystems.TransporterCW;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision.VisionData;
+import frc.robot.util.Util;
 
 public class AutoShoot extends CommandBase{
 
     private Drivetrain mDrivetrain;
     private CannonClimber mCannon;
-    private TransporterCW mTransporter;
+    private GateCW mTransporter;
     private Inputs mInput;
     private Vision mVision;
     private RobotState mState;
@@ -25,7 +26,7 @@ public class AutoShoot extends CommandBase{
     double prevRobotAngle;
     double prevTime;
     
-    public AutoShoot(Drivetrain drivetrain, CannonClimber cannon, TransporterCW transporter, Inputs input, Vision vision, RobotState state){
+    public AutoShoot(Drivetrain drivetrain, CannonClimber cannon, GateCW transporter, Inputs input, Vision vision, RobotState state){
         mDrivetrain = drivetrain;
         mCannon = cannon;
         mTransporter = transporter;
@@ -61,13 +62,21 @@ public class AutoShoot extends CommandBase{
             VisionData image = mVision.targetData.getFirst();
             rotCam = image.robotangle + image.angle + mCannon.k.initJogAng;
 
+            double camAng = image.angle + mCannon.k.initJogAng;
+            double camAngError = Util.angleDiff(mDrivetrain.robotAng, camAng);
+            double angDelta = Util.angleDiff(image.robotangle, mDrivetrain.robotAng);
+            rotCam = Util.angleDiff(camAngError, angDelta);
+            error = rotCam;
             dist = image.dist;
 
+            //if we are doing 3 pointers
             if(mInput.twoVThree()){
-                double angOfTgt = 180 - rotCam;
-                dist = Math.sqrt(dist*dist + 29.25*29.25 - 2 * dist * 29.25 * Math.cos(angOfTgt));
+                double angTgt = rotCam - mDrivetrain.robotAng;
+                double hypSin = dist * Math.sin(angTgt);
+                double hypCos = dist * Math.cos(angTgt) + 29.25;
 
-                rotCam = Math.asin(29.25/dist * Math.sin(angOfTgt));
+                dist = Math.sqrt(hypSin*hypSin + hypCos*hypCos);
+                error = Math.atan(hypSin/hypCos);
             }
 
             double robotAngle = mDrivetrain.robotAng;
@@ -76,10 +85,7 @@ public class AutoShoot extends CommandBase{
             if(error > 180) error -=360;
             else if(error < -180) error +=360;
             
-            double deltaAngle = robotAngle - prevRobotAngle;
-            deltaAngle %= 360;
-            if(deltaAngle > 180) deltaAngle -=360;
-            else if(deltaAngle < -180) deltaAngle +=360;
+            double deltaAngle = Util.angleDiff(robotAngle, prevRobotAngle);
 
             double d = (deltaAngle)/(time - prevTime);
             rot = error * mCannon.k.kPDrive - d * mCannon.k.kDDrive;
@@ -87,6 +93,10 @@ public class AutoShoot extends CommandBase{
             if(rot > mCannon.k.maxRot) rot = mCannon.k.maxRot;
             else if(rot < -mCannon.k.maxRot) rot = -mCannon.k.maxRot;
 
+        } else if(DriverStation.getInstance().isAutonomous()){
+            rot = 0;
+            error = 0;
+            dist = mCannon.k.autonDist;
         }else {
             rot = mInput.getRot();
             error = 0;
@@ -101,7 +111,7 @@ public class AutoShoot extends CommandBase{
         
         mCannon.prime(dist);
 
-        if(mCannon.ready() && aligned && mState.ballnumber > 0){
+        if(/*mCannon.ready() &&*/ aligned && mState.ballnumber > 0){
             mTransporter.shootAll();
             shootFinTime = Timer.getFPGATimestamp() + mCannon.k.shootTime;
         } 

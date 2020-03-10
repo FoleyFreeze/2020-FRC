@@ -5,35 +5,41 @@ import frc.robot.cals.MotorCal.MotorType;
 public class CannonClimbCals extends CalSet {
 
     //Cannon
-    public boolean shootDisabled = true;
-    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).invert().limit(0.5);
-    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).limit(0.5);
-    public int hoodSolValue = 2;
+    public boolean shootDisabled = false;
+    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(1);
+    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().follow(2);
+    public double falconRpmPerPower = 5400;
+    public int hoodSolValue = 1;
     public int stopSolValue = 0;
-    public int camLightsSol;
-    public int ShootVClimbValue;
-    public double layupDist = 24.0;
+    public int camLightsSol = 3; //3 4 or 5
+    public int ShootVClimbValue = 6;
+    public double layupDist = 0.0;
     public double trenchDist = 208.75;
-    public double power = 0.5;
+    public double autonDist = 83;
+    public double manualPower = 0.5;
     public double kPDrive = 0.05;
     public double kDDrive = 0.05;
     public double maxRot = 0.2;
     public double tolerance = 3.0;
     public double initJogDist = 0.0;
     public double initJogAng = 0.0;
-    public double distJog = 3.0;
+    public double distJog = 0.5;
     public double angJog = 1.0;
-    public double shootTime = .25;
-    public double[][] rpm = {{1000.0, 2000.0, 5400.0},
-                             {1000.0, 2000.0, 5400.0},
-                             {1000.0, 2000.0, 5400.0}, 
-                             {1000.0, 2000.0, 5400.0}};
-    public double[][] dist = {{  5.0,  40.0,  80.0},
-                              { 60.0, 120.0, 180.0},
-                              { 90.0, 150.0, 210.0},
-                              {150.0, 250.0, 350.0}};
-    public final double SOL_RESTTIME = 0.1; 
-    
+    public double shootTime = 1.5;
+    public double shootCentX = 0.0;
+    public double shootCentY = 0.0;
+    public double[][] rpm = {{2700.0, 2775.0, 3000.0},
+                             {2700.0, 2900.0, 3000.0},
+                             {2700.0, 3000.0, 4000.0}, 
+                             {2700.0, 3350.0, 5400.0}};
+    public double[][] dist = {{  -1.0,  -1.0,  -0.1},
+                              { -0.5, 0.0, 35.0},
+                              { 30.0, 60.0, 70.0},
+                              {60.0, 83.0, 500.0}};
+    public double allowedRpmError = 150;
+    public double allowedRpmHyst = 5000;
+    public final double SOL_RESTTIME = 0.2;
+
     //Climber
     public boolean climbDisabled = true;
     public int dropFootValue = -1;
@@ -48,6 +54,7 @@ public class CannonClimbCals extends CalSet {
             break;
 
             case PRACTICE:
+                /*
                 ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(-0.55, 0.55);
                 ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().limit(-0.55, 0.55);
 
@@ -55,6 +62,7 @@ public class CannonClimbCals extends CalSet {
                 stopSolValue = 0;
                 camLightsSol = -1;
                 ShootVClimbValue = -1;
+                */
             break;
 
             case LASTYEAR:
