@@ -1,15 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.GateCW;
+import frc.robot.subsystems.Intake;
 
-public class GateWheelSpin extends CommandBase{
+public class IntakeSpin extends CommandBase{
     
-    GateCW m_TCW;
+    private Intake mIntake;
     
-    public GateWheelSpin(GateCW TCW){
-        m_TCW = TCW;
-        if(TCW.tCals.disabled) return;
+    public IntakeSpin(Intake intake){
+        mIntake = intake;
+        addRequirements(mIntake);
     }
 
     @Override
@@ -19,12 +19,12 @@ public class GateWheelSpin extends CommandBase{
 
     @Override
     public void execute(){
-        m_TCW.spinGate(m_TCW.tCals.TN_LOADSPEED);
+        mIntake.setPower(mIntake.k.forwardPower);
     }
 
     @Override
     public void end(boolean interrupted){
-        m_TCW.spinGate(m_TCW.tCals.TN_STOPSPEED);
+
     }
 
     @Override

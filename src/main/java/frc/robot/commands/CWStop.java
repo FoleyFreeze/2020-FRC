@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.CWheelCals;
-import frc.robot.subsystems.TransporterCW;
+import frc.robot.subsystems.GateCW;
 
 public class CWStop extends CommandBase{
 
     RobotContainer m_subsystem;
-    TransporterCW transCW;
+    GateCW transCW;
     CWheelCals m_cals;
     double stopTime;
 

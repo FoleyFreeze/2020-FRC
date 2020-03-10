@@ -12,29 +12,52 @@ public class Revolver extends SubsystemBase{
     public int currPos = 0;
     double tgtInTicks = 0;
     double currInTicks = 0;
+    public boolean unjamming = false;
+    public boolean jammed = false;
+    int currCount = 0;
     
     public Revolver(TransporterCals cals){
         k = cals;
         if(k.disabled) return;
         revMot = Motor.initMotor(k.rotateMotor);
     }
+    
+    @Override
+    public void periodic() {
+        if(revMot.getCurrent() >= 30){
+            currCount++;
+        }else currCount--;
+        jammed = currCount > 5;
+    }
 
     public void index(int count){
-        tgtPos += count;
-        tgtInTicks += k.countsPerIndex*count;
+        if(!unjamming){
+            tgtPos += count;
+            tgtInTicks += k.countsPerIndex*count;
+        } else {
+            unjamming = false;
+        }
+        revMot.setPosition(tgtPos);
     }
     
     public boolean indexing(){
-        return !(tgtPos == currPos);
+        return !(tgtPos == currPos) && !unjamming;
     }
 
     public int currPos(){
         return 0;
     }
 
-    public void gatherIndex(){
-        double error = tgtPos - currPos;
-        double pwr = error * 0.01;
+    public void setPower(double pwr){
         revMot.setPower(pwr);
+    }
+
+    public void unjam(){
+        unjamming = true;
+        setPower(k.unjamPwr);
+    }
+
+    public boolean isJamming(){
+        return jammed;
     }
 }

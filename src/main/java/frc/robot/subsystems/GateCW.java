@@ -16,7 +16,7 @@ import frc.robot.cals.CWheelCals;
 import frc.robot.cals.TransporterCals;
 import frc.robot.motors.Motor;
 
-public class TransporterCW extends SubsystemBase{
+public class GateCW extends SubsystemBase{
 
     public Motor rotateMotor;
     public Motor loadMotor;
@@ -37,7 +37,7 @@ public class TransporterCW extends SubsystemBase{
     public Color lastColor;
     public String gameData;
 
-    public TransporterCW(TransporterCals tCals, CWheelCals cCals, RobotContainer subsystem){
+    public GateCW(TransporterCals tCals, CWheelCals cCals, RobotContainer subsystem){
         this.tCals = tCals;
         this.cCals = cCals;
         mSubsystem = subsystem;

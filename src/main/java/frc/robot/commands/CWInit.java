@@ -3,12 +3,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.cals.CWheelCals;
-import frc.robot.subsystems.TransporterCW;
+import frc.robot.subsystems.GateCW;
 
 public class CWInit extends CommandBase{
     
     RobotContainer m_subsystem;
-    TransporterCW transCW;
+    GateCW transCW;
     CWheelCals m_cals;
 
     public CWInit(RobotContainer subsystem){

@@ -51,9 +51,10 @@ public class RobotContainer {
   public final CannonClimber m_cannonClimber = new CannonClimber(this, new CannonCals(), new ClimberCals());
   public final Display m_display = new Display();
   public final Pneumatics m_pneumatics = new Pneumatics(new PneumaticsCals());
-  public final TransporterCW m_transporterCW = new TransporterCW(new TransporterCals(), new CWheelCals(), this);
+  public final GateCW m_transporterCW = new GateCW(new TransporterCals(), new CWheelCals(), this);
   public final Vision m_vision = new Vision(new VisionCals());
   public final Hood m_Hood = new Hood(new HoodCals());
+  public final Revolver m_Revolver = new Revolver(new TransporterCals());
 
   public SendableChooser<CommandBase> autonChooser;
   
@@ -94,9 +95,8 @@ public class RobotContainer {
     m_input.jogL.whileActiveOnce(new Jog(this, false, true));
     m_input.jogR.whileActiveOnce(new Jog(this, false, false));
     m_input.autoTrench.whileActiveOnce(new AutoTrench(this, Orientation.AUTO));
-    m_input.gather.whileActiveOnce(new AutoGather(this));
-    //m_input.cwActivate.whileActiveOnce(new CWCombo(this));
-    //TODO: enable when the CW works
+    m_input.cwActivate.whileActiveOnce(new CWCombo(this));
+    m_input.gather.whileActiveOnce(new AutoGather(m_intake, m_Revolver, m_transporterCW));
   }
 
   public Command getAutonomousCommand() {

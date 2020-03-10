@@ -18,6 +18,7 @@ public class TransporterCals extends CalSet {
     public double maxGateCurr = 29; //MrC 7.5;
     public double ballSenseDelay = 0.1;//.4
     public double jamRestTime = 2;
+    public double unjamPwr = -0.2;
 
     public TransporterCals(){
 
