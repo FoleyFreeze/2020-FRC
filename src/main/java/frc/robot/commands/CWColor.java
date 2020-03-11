@@ -1,16 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TransporterCW;
+import frc.robot.subsystems.GateCW;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class CWColor extends CommandBase{
 
-    TransporterCW mCW;
+    GateCW mCW;
     char tgtColor = mCW.gameData.charAt(0);
     Color detectedColor = mCW.detectedColor;
 
-    public CWColor(TransporterCW cw){
+    public CWColor(GateCW cw){
         mCW = cw;
     }
 

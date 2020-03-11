@@ -9,7 +9,7 @@ public class GateWheelSpin extends CommandBase{
     
     public GateWheelSpin(GateCW TCW){
         m_TCW = TCW;
-        if(TCW.tCals.disabled) return;
+        if(TCW.k.tnDisabled) return;
     }
 
     @Override
@@ -19,12 +19,12 @@ public class GateWheelSpin extends CommandBase{
 
     @Override
     public void execute(){
-        m_TCW.spinGate(m_TCW.tCals.TN_LOADSPEED);
+        m_TCW.spinGate(m_TCW.k.TN_LOADSPEED);
     }
 
     @Override
     public void end(boolean interrupted){
-        m_TCW.spinGate(m_TCW.tCals.TN_STOPSPEED);
+        m_TCW.spinGate(m_TCW.k.TN_STOPSPEED);
     }
 
     @Override

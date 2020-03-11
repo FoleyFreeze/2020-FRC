@@ -2,67 +2,82 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.GateCW;
+import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.RobotState;
+import frc.robot.subsystems.Vision;
 import frc.robot.util.Vector;
 
 public class AutoGatherOLD extends CommandBase {
 
-    private RobotContainer m_subsystem;
+    private Intake mIntake;
+    private Drivetrain mDrivetrain;
+    private Vision mVision;
+    private GateCW mTransporter;
+    private Inputs mInput;
+    private RobotState mState;
     private boolean auton;
 
-    public AutoGatherOLD(RobotContainer subsystem){
-        m_subsystem = subsystem;
-        addRequirements(m_subsystem.m_intake);
-        addRequirements(m_subsystem.m_drivetrain);
+    public AutoGatherOLD(Intake intake, Drivetrain drivetrain, Vision vision, GateCW transporter, Inputs input, RobotState state){
+        mIntake = intake;
+        mDrivetrain = drivetrain;
+        mVision = vision;
+        mTransporter = transporter;
+        mInput = input;
+        mState = state;
+        addRequirements(mIntake);
+        addRequirements(mDrivetrain);
     }
 
     @Override
     public void initialize(){
         auton = DriverStation.getInstance().isAutonomous();
-        m_subsystem.m_vision.NTEnablePiBall(true);
-        m_subsystem.m_intake.dropIntake(true);
+        mVision.NTEnablePiBall(true);
+        mIntake.dropIntake(true);
     }
 
     @Override
     public void execute(){
-        if(m_subsystem.m_input.enableBallCam() && m_subsystem.m_vision.hasBallImage()){//robot has control
+        if(mInput.enableBallCam() && mVision.hasBallImage()){//robot has control
 
-            Vector strafe = Vector.fromXY(0, m_subsystem.m_vision.ballData.element().dist * 
-                m_subsystem.m_drivetrain.k.trenchRunDistKp);
+            Vector strafe = Vector.fromXY(0, mVision.ballData.element().dist * 
+                mDrivetrain.k.trenchRunDistKp);
 
-            double rot = m_subsystem.m_vision.ballData.element().angle -
-                 m_subsystem.m_drivetrain.navX.getAngle() * m_subsystem.m_drivetrain.k.trenchRunAngKp;
+            double rot = mVision.ballData.element().angle -
+                 mDrivetrain.navX.getAngle() * mDrivetrain.k.trenchRunAngKp;
 
-            m_subsystem.m_drivetrain.drive(strafe, rot, 0, 0, m_subsystem.m_input.fieldOrient());
+            mDrivetrain.drive(strafe, rot, 0, 0, mInput.fieldOrient());
         }else{//driver has control
-            Vector strafe = Vector.fromXY(m_subsystem.m_input.getX(), m_subsystem.m_input.getY());
+            Vector strafe = Vector.fromXY(mInput.getX(), mInput.getY());
 
-            double rot = m_subsystem.m_input.getRot();
+            double rot = mInput.getRot();
 
-            m_subsystem.m_drivetrain.drive(strafe, rot, 0, 0, m_subsystem.m_input.fieldOrient());
+            mDrivetrain.drive(strafe, rot, 0, 0, mInput.fieldOrient());
         }
         
-        if(m_subsystem.m_transporterCW.ballnumber >= 5 && !m_subsystem.m_input.shift()){
-            m_subsystem.m_intake.dropIntake(false);
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.backwardPower);
-        } else if(m_subsystem.m_transporterCW.isIndexing()){
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.idxPower);
+        if(mState.ballnumber >= 5 && !mInput.shift()){
+            mIntake.dropIntake(false);
+            mIntake.setPower(mIntake.k.backwardPower);
+        } else if(mTransporter.isIndexing()){
+            mIntake.setPower(mIntake.k.idxPower);
         } else {
-            m_subsystem.m_intake.setPower(m_subsystem.m_intake.k.forwardPower);
+            mIntake.setPower(mIntake.k.forwardPower);
         }
     }
 
     @Override
     public void end(boolean interrupted){
-        m_subsystem.m_intake.dropIntake(false);
-        m_subsystem.m_intake.setPower(0);
-        m_subsystem.m_vision.NTEnablePiBall(false);
+        mIntake.dropIntake(false);
+        mIntake.setPower(0);
+        mVision.NTEnablePiBall(false);
     }
     
     @Override
     public boolean isFinished(){
         if(auton){
-            return m_subsystem.m_transporterCW.ballnumber >= 5;
+            return mState.ballnumber >= 5;
         }
         return false;
     }

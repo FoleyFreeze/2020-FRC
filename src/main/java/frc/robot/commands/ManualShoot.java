@@ -5,6 +5,7 @@ import frc.robot.subsystems.CannonClimber;
 import frc.robot.subsystems.GateCW;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.Hood.HoodPos;
 
 public class ManualShoot extends CommandBase{
 
@@ -39,13 +40,13 @@ public class ManualShoot extends CommandBase{
             mGate.enablefire(true);
             int jogAng = (int) mCannon.k.initJogAng;
             if(jogAng == 0){
-                mCannon.hTgtPos = mHood;
+                mHood.tgtPos = HoodPos.LOW;
             } else if(jogAng == 1){
-                mCannon.hTgtPos = HoodPos.MID1;
+                mHood.tgtPos = HoodPos.MID1;
             } else if(jogAng == 2){
-                mCannon.hTgtPos = HoodPos.MID2;
+                mHood.tgtPos = HoodPos.MID2;
             } else if(jogAng == 3){
-                mCannon.hTgtPos = HoodPos.HIGH;
+                mHood.tgtPos = HoodPos.HIGH;
             }
         }
     }
@@ -54,7 +55,7 @@ public class ManualShoot extends CommandBase{
     public void end(boolean interrupted){
         mCannon.setpower(0);
         mGate.enablefire(false);
-        mCannon.hTgtPos = HoodPos.LOW;
+        mHood.tgtPos = HoodPos.LOW;
     }
 
     @Override
