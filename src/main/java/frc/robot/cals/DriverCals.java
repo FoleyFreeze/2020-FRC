@@ -52,6 +52,9 @@ public class DriverCals extends CalSet {
 
     public double gathererDist = 6.75;
     public double climberDist = 8.5;
+    public double climberAngle = 22.5;//real value
+    public double climberAllowableErr = 5.0;//guesstimated value
+    public double climberRotSpeed = 0.25;
 
     public final double DRV_TURNDEADBND = 0.6;
 

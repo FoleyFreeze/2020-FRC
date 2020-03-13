@@ -14,7 +14,7 @@ public class CWInit extends CommandBase{
 
     @Override
     public void initialize(){
-        mColorWheel.launcher.set(true);
+        mColorWheel.CWNotTransport.set(true);
     }
 
     @Override

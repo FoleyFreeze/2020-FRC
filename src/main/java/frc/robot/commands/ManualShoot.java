@@ -2,21 +2,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CannonClimber;
-import frc.robot.subsystems.GateCW;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Hood.HoodPos;
 
 public class ManualShoot extends CommandBase{
 
     private CannonClimber mCannon;
-    private GateCW mGate;
+    private Revolver mRevolver;
     private Hood mHood;
     private Inputs mInput;
 
-    public ManualShoot(CannonClimber cannon, GateCW gate, Hood hood, Inputs input){
+    public ManualShoot(CannonClimber cannon, Revolver revolver, Hood hood, Inputs input){
         mCannon = cannon;
-        mGate = gate;
+        mRevolver = revolver;
         mHood = hood;
         mInput = input;
     }
@@ -37,7 +37,7 @@ public class ManualShoot extends CommandBase{
                 m_subsystem.m_transporterCW.enablefire(true);
             }*/
             mCannon.setspeed(mCannon.k.initJogDist * 100);
-            mGate.enablefire(true);
+            mRevolver.enablefire(true);
             int jogAng = (int) mCannon.k.initJogAng;
             if(jogAng == 0){
                 mHood.tgtPos = HoodPos.LOW;
@@ -54,7 +54,7 @@ public class ManualShoot extends CommandBase{
     @Override
     public void end(boolean interrupted){
         mCannon.setpower(0);
-        mGate.enablefire(false);
+        mRevolver.enablefire(false);
         mHood.tgtPos = HoodPos.LOW;
     }
 

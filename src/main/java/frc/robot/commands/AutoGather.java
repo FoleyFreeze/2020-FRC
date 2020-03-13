@@ -28,16 +28,17 @@ public class AutoGather extends CommandBase{
             new StartEndCommand(() -> mIntake.dropIntake(true), 
                                 () -> mIntake.dropIntake(false)), 
             new LoopCommand(
-                new IntakeSpin(mIntake),
+                new InstantCommand(() -> {transCW.spinGate(transCW.k.TN_LOADSPEED);
+                                          new IntakeSpin(mIntake);}),
                 new WaitCommand(0.5),
-                new ParallelRaceGroup(
-                    new LoopCommand(
-                        new InstantCommand(() -> mRevolve.index(1)),
-                        new WaitCommand(0.5).withInterrupt(() -> mRevolve.isJamming()),
-                        new InstantCommand(() -> mRevolve.unjam()),
-                        new WaitCommand(0.5)
-                    ).withInterrupt(() -> !mRevolve.indexing())
-                )
+                new InstantCommand(() -> {mIntake.setPower(mIntake.k.idxPower);
+                                          transCW.spinGate(transCW.k.TN_STOPSPEED);}),
+                new LoopCommand(
+                    new TransIndex(mRevolve, 1),
+                    new WaitCommand(0.5).withInterrupt(() -> mRevolve.isJamming()),
+                    new InstantCommand(() -> mRevolve.unjam()),
+                    new WaitCommand(0.5)
+                ).withInterrupt(() -> !mRevolve.indexing())
             )).withInterrupt(() -> mState.ballnumber >= 5);
     }
 

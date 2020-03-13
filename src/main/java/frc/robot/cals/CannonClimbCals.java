@@ -4,15 +4,18 @@ import frc.robot.cals.MotorCal.MotorType;
 
 public class CannonClimbCals extends CalSet {
 
+    //sol = solenoid(all values because actual motors/solenoids established in the cannon climber susystem)
+
     //Cannon
     public boolean shootDisabled = false;
-    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(1);
-    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().follow(2);
-    public double falconRpmPerPower = 5400;
-    public int hoodSolValue = 1;
-    public int stopSolValue = 0;
-    public int camLightsSol = 3; //3 4 or 5
-    public int ShootVClimbValue = 6;
+    public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(1);            //shooter motor
+    public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().follow(2); //shooter motor 2
+    public double falconRpmPerPower = 5400;//max rot for shooter
+    public int hoodSolValue = 1;//make the hood go up
+    public int stopSolValue = 0;//the pancakes(stop the other solenoid)
+    public int camLightsSol = 3; //camera lights solenoid
+    public int ShootVClimbValue = 6;//solenoid switch from cannon to climber
+    public int climbBrake = 4;
     public double layupDist = 0.0;
     public double trenchDist = 208.75;
     public double autonDist = 83;
@@ -42,7 +45,7 @@ public class CannonClimbCals extends CalSet {
 
     //Climber
     public boolean climbDisabled = true;
-    public int dropFootValue = -1;
+    //public int dropFootValue = -1;
     public double upPower = 0.3;
     public double dnPower = -0.7;
 

@@ -22,7 +22,11 @@ public class CannonClimber extends SubsystemBase{
 
     private Solenoid shootVsClimb;
 
-    private Solenoid dropFoot;
+    private Solenoid climbBrake;
+
+    public boolean climbLatchOn = false;
+
+    //private Solenoid dropFoot;
 
     HoodPos hCurrPos = HoodPos.LOW;
     public HoodPos hTgtPos = HoodPos.LOW;
@@ -40,7 +44,8 @@ public class CannonClimber extends SubsystemBase{
         stopSol = new Solenoid(k.stopSolValue);
         camLightsSol = new Solenoid(k.camLightsSol);
         shootVsClimb = new Solenoid(k.ShootVClimbValue);
-        dropFoot = new Solenoid(k.dropFootValue);
+        //dropFoot = new Solenoid(k.dropFootValue);
+        climbBrake = new Solenoid(k.climbBrake);
     }
     
     public void setpower(double power){
@@ -198,7 +203,7 @@ public class CannonClimber extends SubsystemBase{
                     break;
             }
         }
-        Display.put("Foot Dropped", dropFoot.get());
+        //Display.put("Foot Dropped", dropFoot.get());
         Display.put("CCMotorCurrent 0", motor.getCurrent());
         Display.put("CCMotorCurrent 1", motor2.getCurrent());
         Display.put("CC Motor Temp 0", motor.getTemp());
@@ -230,11 +235,15 @@ public class CannonClimber extends SubsystemBase{
         if(k.shootDisabled && k.climbDisabled) return;
         shootVsClimb.set(set);
     }
-    public void dropFoot(boolean on){
+    /*public void dropFoot(boolean on){
         if(k.shootDisabled && k.climbDisabled) return;
         dropFoot.set(on);
-    }
+    }*/
     public void setCamLights(boolean on){
         camLightsSol.set(on);
+    }
+
+    public void climbBrake(boolean on){
+        climbBrake.set(on);
     }
 }

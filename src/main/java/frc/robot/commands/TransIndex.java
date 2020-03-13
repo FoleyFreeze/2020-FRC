@@ -1,10 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Revolver;
 
 public class TransIndex extends CommandBase{
-    public TransIndex(){
 
+    private Revolver mRevolver;
+    private int idxCount;
+
+    public TransIndex(Revolver revolver, int idxcount){
+        mRevolver = revolver;
+        idxCount = idxcount;
     }
 
     @Override
@@ -14,7 +20,7 @@ public class TransIndex extends CommandBase{
 
     @Override
     public void execute(){
-
+        mRevolver.index(idxCount);
     }
 
     @Override
@@ -24,6 +30,6 @@ public class TransIndex extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return false;
+        return Math.abs(mRevolver.tgtInTicks - mRevolver.currPos) < mRevolver.k.errorRange;
     }
 }

@@ -6,9 +6,12 @@ public class TransporterCals extends CalSet {
     public MotorCal rotateMotor = MotorCal.spark(12).pid(0.2, 0, 0.2, 0).invert().limit(0.6).ramp(0.3).currLim(30).currLimCount(25).currLimTime(1);
     public MotorCal loadMotor = MotorCal.srx(13).invert(); //this is the gate wheels and the CW motor
     public int CWNotTransport = 5;//3 4 or 5
-    public int sensorValue = 5;
+    public int ballSensorValue = 5;
+    public int ballShotValue = -1;
     public double hasBallMaxV = 2.25;
     public double hasBallMinV = 1.5;
+    public double ballShotMaxV = -1;
+    public double ballShotMinV = -1;
     public int launcherValue = 2;
     public double countsPerIndex = 24/40.0 * 52/36.0 * 64/20.0 * 64/13.0;
     public double allowedIndexError = 0.2 * countsPerIndex;
@@ -19,6 +22,8 @@ public class TransporterCals extends CalSet {
     public double ballSenseDelay = 0.1;//.4
     public double jamRestTime = 2;
     public double unjamPwr = -0.2;
+    public double errorRange = -1;
+    public final double tooLongHasPassed = 1.5;
 
     public TransporterCals(){
 

@@ -1,15 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.GateCW;
 import frc.robot.subsystems.Inputs;
+import frc.robot.subsystems.Revolver;
 
 public class ManualRevolve extends CommandBase{
 
-    private GateCW mTransporter;
+    private Revolver mTransporter;
     private Inputs mInput;
 
-    public ManualRevolve(GateCW transporter, Inputs input){
+    public ManualRevolve(Revolver transporter, Inputs input){
         mTransporter = transporter;
         mInput = input;
     }
