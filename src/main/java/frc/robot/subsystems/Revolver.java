@@ -158,7 +158,7 @@ public class Revolver extends SubsystemBase{
         return !(volts > k.ballShotMinV && volts < k.ballShotMaxV);
     }
 
-    public boolean toBeNamed(){//TODO Name Me!!!
+    public boolean launchTime(){//TODO Name Me!!!
         if((ballShot() && !prevBallShot) || !ballShot()){
             shootTime = Timer.getFPGATimestamp() + k.tooLongHasPassed;   
         }

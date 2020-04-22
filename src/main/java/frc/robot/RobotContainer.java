@@ -70,7 +70,7 @@ public class RobotContainer {
     autonChooser = new SendableChooser<>();
     autonChooser.addOption("DriveOnly", new AutoDrive(m_drivetrain, m_state, 0, -48, 0, true));
     //autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new AutoDrive(this,0,-48,90,true)));
-    autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(m_drivetrain, m_cannonClimber, m_Revolver, m_input, m_vision, m_state),new DriveTime(3, this, 0, -0.4, 0)));
+    autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(m_cannonClimber, m_Revolver, m_vision),new DriveTime(3, this, 0, -0.4, 0)));
     
     autonChooser.addOption("AutoSquare", new AutonSquare(m_drivetrain, m_state));
     SmartDashboard.putData(autonChooser);
@@ -78,8 +78,8 @@ public class RobotContainer {
 
   
   private void configureButtonBindings() {
-    m_input.shoot.and(m_input.layupTrigger.negate()).whileActiveOnce(new AutoShoot(m_drivetrain, m_cannonClimber, m_Revolver, m_input, m_vision, m_state));
-    m_input.shoot.and(m_input.layupTrigger).whileActiveOnce(new SequentialCommandGroup(new AutoDrive(m_drivetrain, m_state, 0, -24, 0, true), new AutoShoot(m_drivetrain, m_cannonClimber, m_Revolver, m_input, m_vision, m_state)));
+    m_input.shoot.and(m_input.layupTrigger.negate()).whileActiveOnce(new AutoShoot(m_cannonClimber, m_Revolver, m_vision));
+    m_input.shoot.and(m_input.layupTrigger).whileActiveOnce(new SequentialCommandGroup(new AutoDrive(m_drivetrain, m_state, 0, -24, 0, true), new AutoShoot(m_cannonClimber, m_Revolver, m_vision)));
     m_input.angleReset.whileActiveOnce(new ZeroReset(m_drivetrain));
     m_input.climbUp.whileActiveOnce(new Climb(m_cannonClimber, m_cannonClimber.k.upPower, m_drivetrain, m_state));
     m_input.climbDn.whileActiveOnce(new Climb(m_cannonClimber, m_cannonClimber.k.dnPower, m_drivetrain, m_state));

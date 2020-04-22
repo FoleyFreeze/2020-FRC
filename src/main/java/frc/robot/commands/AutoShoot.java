@@ -29,6 +29,6 @@ public class AutoShoot extends CommandBase{
                 new InstantCommand(() -> mRevolver.unjam()),
                 new WaitCommand(0.5)
             )
-        ).withInterrupt(() -> mRevolver.toBeNamed());
+        ).withInterrupt(() -> mRevolver.launchTime());
     }
 }
