@@ -41,6 +41,7 @@ public class DriverCals extends CalSet {
     public double autoDriveAngKp = 0.02; //50deg is full power
     public double autoDriveStrafeRange = 3;
     public double autoDriveAngRange = 5;
+    public double autoDriveStrafeRangeCont = 24;//still have more points to go
     public double autoDriveMaxPwr = 0.25;
     public double autoDriveStartPwr = 0.25;
     public double autoDriveEndPwr = 0.25;

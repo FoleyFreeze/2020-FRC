@@ -16,26 +16,34 @@ public class AutoDrive extends CommandBase{
     private double tgtX;
     private double tgtY;
     private double tgtRot;
-    private double deltaX;
-    private double deltaY;
+    //private double deltaX;
+    //private double deltaY;
     private double errorX;
     private double errorY;
     private double startX;
     private double startY;
     private double errorRot;
     private boolean deltaVsField;
+    private double[] xPoints;
+    private double[] yPoints;
+    private double[] rotAngs;
+    private int i;//indexer
     
     private DriverCals mCals;
 
-    public AutoDrive(Drivetrain drivetrain, RobotState state, double deltaX, double deltaY, double angle, boolean deltaVsField){
-        mDriveTrain = drivetrain;
-        mState = state;
-        addRequirements(mDriveTrain);
-        mCals = mDriveTrain.k;
-        this.deltaX = deltaX;
-        this.deltaY = deltaY;
-        this.tgtRot = angle;
-        this.deltaVsField = deltaVsField;
+    public AutoDrive(Drivetrain drivetrain, RobotState state, //double deltaX, double deltaY, double angle, 
+        boolean deltaVsField, double[] xPoints, double[] yPoints, double[] rotAngs){
+            mDriveTrain = drivetrain;
+            mState = state;
+            addRequirements(mDriveTrain);
+            mCals = mDriveTrain.k;
+            //this.deltaX = deltaX;
+            //this.deltaY = deltaY;
+            //this.tgtRot = angle;
+            this.deltaVsField = deltaVsField;
+            this.xPoints = xPoints;
+            this.yPoints = yPoints;
+            this.rotAngs = rotAngs;
     }
 
     @Override
@@ -44,14 +52,21 @@ public class AutoDrive extends CommandBase{
         startX = pose.getTranslation().getX();
         startY = pose.getTranslation().getY();
         if(deltaVsField){
-            tgtX = startX + deltaX;
-            tgtY = startY + deltaY;
+            tgtX = xPoints[0] + startX;
+            tgtY = yPoints[0] + startY;
+            tgtRot = rotAngs[0];
+            //tgtX = startX + deltaX;
+            //tgtY = startY + deltaY;
         } else {
-            tgtX = deltaX;
-            tgtY = deltaY;
+            tgtX = xPoints[0];
+            tgtY = yPoints[0];
+            tgtRot = rotAngs[0];
+            //tgtX = deltaX;
+            //tgtY = deltaY;
         }
-        SmartDashboard.putNumber("AutoXtgt",tgtX);
-        SmartDashboard.putNumber("AutoYtgt",tgtY);
+        //SmartDashboard.putNumber("AutoXtgt",tgtX);
+        //SmartDashboard.putNumber("AutoYtgt",tgtY);
+        i = 0;
     }
 
     @Override
@@ -92,8 +107,26 @@ public class AutoDrive extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return Math.abs(errorX) < mCals.autoDriveStrafeRange 
+        if(i < xPoints.length-1){
+            if(Math.abs(errorX) < mCals.autoDriveStrafeRange 
             && Math.abs(errorY) < mCals.autoDriveStrafeRange 
-            && Math.abs(errorRot) < mCals.autoDriveAngRange;
+            /*&& Math.abs(errorRot) < mCals.autoDriveAngRange*/){//don't care about angles if we aren't done
+                i++;
+                if(deltaVsField){
+                    tgtX = xPoints[i] + startX;
+                    tgtY = yPoints[i] + startY;
+                    tgtRot = rotAngs[i];
+                }else{
+                    tgtX = xPoints[i];
+                    tgtY = yPoints[i];
+                    tgtRot = rotAngs[i];
+                }
+            }
+            return false;
+        }else{
+            return Math.abs(errorX) < mCals.autoDriveStrafeRange 
+                && Math.abs(errorY) < mCals.autoDriveStrafeRange 
+                && Math.abs(errorRot) < mCals.autoDriveAngRange;
+        }
     }
 }

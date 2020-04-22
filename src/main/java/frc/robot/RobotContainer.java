@@ -36,7 +36,7 @@ import frc.robot.commands.AutoGather;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutonSquare;
 import frc.robot.commands.CWCombo;
-import frc.robot.commands.Climb;
+import frc.robot.commands.ClimbOLD;
 import frc.robot.commands.DriveTime;
 import frc.robot.commands.Jog;
 
@@ -68,7 +68,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     autonChooser = new SendableChooser<>();
-    autonChooser.addOption("DriveOnly", new AutoDrive(m_drivetrain, m_state, 0, -48, 0, true));
+    autonChooser.addOption("DriveOnly", new AutoDrive(m_drivetrain, m_state, true, new double[] {0}, new double[] {48}, new double[] {0}));
     //autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new AutoDrive(this,0,-48,90,true)));
     autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(m_cannonClimber, m_Revolver, m_vision),new DriveTime(3, this, 0, -0.4, 0)));
     
@@ -79,10 +79,10 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
     m_input.shoot.and(m_input.layupTrigger.negate()).whileActiveOnce(new AutoShoot(m_cannonClimber, m_Revolver, m_vision));
-    m_input.shoot.and(m_input.layupTrigger).whileActiveOnce(new SequentialCommandGroup(new AutoDrive(m_drivetrain, m_state, 0, -24, 0, true), new AutoShoot(m_cannonClimber, m_Revolver, m_vision)));
+    m_input.shoot.and(m_input.layupTrigger).whileActiveOnce(new SequentialCommandGroup(new AutoDrive(m_drivetrain, m_state, true, new double[] {0}, new double[] {-24}, new double[] {0}), new AutoShoot(m_cannonClimber, m_Revolver, m_vision)));
     m_input.angleReset.whileActiveOnce(new ZeroReset(m_drivetrain));
-    m_input.climbUp.whileActiveOnce(new Climb(m_cannonClimber, m_cannonClimber.k.upPower, m_drivetrain, m_state));
-    m_input.climbDn.whileActiveOnce(new Climb(m_cannonClimber, m_cannonClimber.k.dnPower, m_drivetrain, m_state));
+    m_input.climbUp.whileActiveOnce(new ClimbOLD(m_cannonClimber, m_cannonClimber.k.upPower, m_drivetrain, m_state));
+    m_input.climbDn.whileActiveOnce(new ClimbOLD(m_cannonClimber, m_cannonClimber.k.dnPower, m_drivetrain, m_state));
     m_input.manualIntake.whileActiveOnce(new ManualIntake(m_intake, m_input));
     m_input.manualShoot.whileActiveOnce(new ManualShoot(m_cannonClimber, m_Revolver, m_Hood, m_input));
     m_input.revolve.whileActiveOnce(new ManualRevolve(m_Revolver, m_input));

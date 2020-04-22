@@ -14,10 +14,11 @@ public class AutonSquare extends SequentialCommandGroup{
         mState = state;
 
         addCommands(
-            new AutoDrive(mDrivetrain, mState, 120, 0, -90, false),
-            new AutoDrive(mDrivetrain, mState, 120, 120, 180, false),
+            new AutoDrive(mDrivetrain, mState, /*120, 0, -90, */false, new double[] {120, 120, 0, 0}, 
+                new double[] {0, 120, 120, 0}, new double[] {-90, 180, 90, 0})
+            /*new AutoDrive(mDrivetrain, mState, 120, 120, 180, false),
             new AutoDrive(mDrivetrain, mState, 0, 120, 90, false),
-            new AutoDrive(mDrivetrain, mState, 0, 0, 0, false)
+            new AutoDrive(mDrivetrain, mState, 0, 0, 0, false)*/
         );
     }
 }

@@ -10,7 +10,7 @@ import frc.robot.subsystems.Vision;
 
 public class DriveAndShoot extends SequentialCommandGroup{//TODO Test me!!!
     public DriveAndShoot(Drivetrain drivetrain, RobotState state, CannonClimber cannon, Inputs input, Vision vision, Revolver revolver){
-        addCommands(new AutoDrive(drivetrain, state, 0, -24, 0, false));
+        addCommands(new AutoDrive(drivetrain, state, false, new double[] {0}, new double[] {-24}, new double[] {0}));
         addCommands(new AutoShootOLD(drivetrain, cannon, revolver, input, vision, state));
     }
 }

@@ -6,10 +6,6 @@ import frc.robot.subsystems.RobotState;
 
 public class DriveOnly extends SequentialCommandGroup{//back up and spin in a circle
     public DriveOnly(Drivetrain drivetrain, RobotState state){
-        addCommands(new AutoDrive(drivetrain, state, 0, -24, 0, true));//TODO test me!!!
-        addCommands(new AutoDrive(drivetrain, state, 0, 0, 90, true));
-        addCommands(new AutoDrive(drivetrain, state, 0, 0, 180, true));
-        addCommands(new AutoDrive(drivetrain, state, 0, 0, 270, true));
-        addCommands(new AutoDrive(drivetrain, state, 0, 0, 0, true));
+        addCommands(new AutoDrive(drivetrain, state, true, new double[] {0}, new double[] {-24}, new double[] {0}));//TODO test me!!!
     }
 }
