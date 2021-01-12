@@ -29,7 +29,7 @@ public class ManualShoot extends CommandBase{
             if(m_subsystem.m_cannonClimber.ready()){
                 m_subsystem.m_transporterCW.enablefire(true);
             }*/
-            m_subsystem.m_cannonClimber.setspeed(m_subsystem.m_cannonClimber.shootCals.initJogDist * 100);
+            m_subsystem.m_cannonClimber.setspeed(m_subsystem.m_cannonClimber.shootCals.initJogDist * 100 + 2700);
             m_subsystem.m_transporterCW.enablefire(true);
             int jogAng = (int) m_subsystem.m_cannonClimber.shootCals.initJogAng;
             if(jogAng == 0){

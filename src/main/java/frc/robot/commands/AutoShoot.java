@@ -101,6 +101,7 @@ public class AutoShoot extends CommandBase{
 
         if(m_subsystem.m_cannonClimber.ready() && aligned && m_subsystem.m_transporterCW.ballnumber > 0){
             m_subsystem.m_transporterCW.shootAll();
+            m_subsystem.m_transporterCW.enablefire(true);
             shootFinTime = Timer.getFPGATimestamp() + m_subsystem.m_cannonClimber.shootCals.shootTime;
         } 
         else m_subsystem.m_transporterCW.stoprot();

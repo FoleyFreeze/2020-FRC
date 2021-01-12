@@ -71,6 +71,8 @@ public class TransporterCW extends SubsystemBase{
             ballpositions[2] = true;
             ballpositions[3] = true;
             ballpositions[4] = true;
+        } else {
+            first = true;
         }
 
         if(tCals.disabled && cCals.disabled) return;
@@ -192,7 +194,7 @@ public class TransporterCW extends SubsystemBase{
 
     public void shootAll(){
         if(tCals.disabled) return;
-        enablefire(ballnumber > 0);
+        //enablefire(ballnumber > 0);
         double error = targetpos - rotateMotor.getPosition();
         if(Math.abs(error) < tCals.countsPerIndex && ballnumber > 0){
             index(1);

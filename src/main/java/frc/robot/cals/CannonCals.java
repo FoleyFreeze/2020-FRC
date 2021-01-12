@@ -4,7 +4,7 @@ import frc.robot.cals.MotorCal.MotorType;
 
 public class CannonCals extends CalSet {
 
-    public boolean disabled = false;
+    public boolean disabled = true;
     public MotorCal ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(1);
     public MotorCal ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().follow(2);
     public double falconRpmPerPower = 5400;
