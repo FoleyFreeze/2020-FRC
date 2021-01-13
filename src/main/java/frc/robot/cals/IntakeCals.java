@@ -4,7 +4,7 @@ import frc.robot.cals.MotorCal.MotorType;
 
 public class IntakeCals extends CalSet {
 
-    public boolean disabled = true;
+    public boolean disabled = false;
     public MotorCal spinMotor = new MotorCal(MotorType.SPARK_MAX, 6).currLim(40).currLimCount(20).currLimTime(0.1).currLimCntDn(5);
     //public MotorCal spinMotor = new MotorCal(MotorType.SPARK_MAX, 6).pid(0.0004, 0, 0, 0.0003).ramp(10).limit(0, 1);
     public int depSolValue = 7;

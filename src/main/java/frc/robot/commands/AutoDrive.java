@@ -60,7 +60,7 @@ public class AutoDrive extends CommandBase{
         errorY = (tgtY - y);
         errorRot = Util.angleDiff(tgtRot, m_subsystem.m_drivetrain.robotAng);
 
-        Vector strafe = Vector.fromXY(errorY* mCals.autoDriveStrafeKp, -errorX * mCals.autoDriveStrafeKp);
+        Vector strafe = Vector.fromXY(errorX* mCals.autoDriveStrafeKp, errorY * mCals.autoDriveStrafeKp);
 
         double power = mCals.autoDriveMaxPwr;
         double dfsX = x - startX;

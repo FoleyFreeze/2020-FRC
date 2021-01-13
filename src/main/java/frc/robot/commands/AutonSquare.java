@@ -7,9 +7,9 @@ public class AutonSquare extends SequentialCommandGroup{
 
     public AutonSquare(RobotContainer subsystem){
         addCommands(
-            new AutoDrive(subsystem, 120, 0, -90, false),
-            new AutoDrive(subsystem, 120, 120, 180, false),
-            new AutoDrive(subsystem, 0, 120, 90, false),
+            new AutoDrive(subsystem, 24, 0, 0, false),
+            new AutoDrive(subsystem, 24, 24, 0, false),
+            new AutoDrive(subsystem, 0, 24, 0, false),
             new AutoDrive(subsystem, 0, 0, 0, false)
         );
     }
