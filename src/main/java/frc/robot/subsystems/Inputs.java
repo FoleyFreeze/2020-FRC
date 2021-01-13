@@ -297,7 +297,7 @@ public class Inputs{
 
     public boolean pitMode(){
         if(!cals.DS_ENABLED) return false;
-        return false;//return !ds.getRawButton(cals.DS_PITMODE);
+        return !ds.getRawButton(cals.DS_PITMODE);
     }
 
     public boolean jogUp(){
