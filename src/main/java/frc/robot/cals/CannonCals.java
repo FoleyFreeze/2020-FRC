@@ -47,6 +47,7 @@ public class CannonCals extends CalSet {
             break;
 
             case PRACTICE:
+                disabled = true;
                 /*
                 ccMotor = new MotorCal(MotorType.TALON_SRX, 2).limit(-0.55, 0.55);
                 ccMotor2 = new MotorCal(MotorType.TALON_SRX, 3).invert().limit(-0.55, 0.55);

@@ -66,7 +66,7 @@ public class DriverCals extends CalSet {
             break;
 
             case PRACTICE:
-                angleOffset = new double[]{0.583,3.773,2.978,4.647};
+                angleOffset = new double[]{3.083,1.273,0.478,2.147};
             break;
 
             case LASTYEAR:
