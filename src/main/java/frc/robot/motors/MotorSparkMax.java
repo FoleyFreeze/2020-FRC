@@ -119,4 +119,18 @@ public class MotorSparkMax extends Motor{
     public double getTemp(){
         return motor.getMotorTemperature();
     }
+
+    boolean brakeOn;
+    public boolean getBrake(){
+        return brakeOn;
+    }
+
+    public void setBrake(boolean on){
+        if(on){
+            motor.setIdleMode(IdleMode.kBrake);
+        } else {
+            motor.setIdleMode(IdleMode.kCoast);
+        }
+        brakeOn = on;
+    }
 }

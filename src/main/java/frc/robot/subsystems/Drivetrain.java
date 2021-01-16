@@ -330,8 +330,23 @@ public class Drivetrain extends SubsystemBase{
         Display.put("Motors Good", motorsGood);
     }
 
+    public void setStartPosition(double x, double y){
+        Rotation2d angle = new Rotation2d();
+        driveOdom.resetPosition(new Pose2d(x,y,angle), angle);
+    }
+
     public void zeroAll(){
         navX.zeroYaw();
         driveOdom.resetPosition(new Pose2d(), new Rotation2d(/*-Math.PI/2*/));
+    }
+
+    public boolean getBrake(){
+        return wheels[0].driveMotor.getBrake();
+    }
+
+    public void setBrake(boolean brake){
+        for(Wheel w: wheels){
+            w.driveMotor.setBrake(brake);
+        }
     }
 }

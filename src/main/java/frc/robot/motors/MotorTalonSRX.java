@@ -93,4 +93,20 @@ public class MotorTalonSRX extends Motor{
     public boolean isJammed(){
         return false;
     }
+
+    boolean brakeOn;
+    @Override
+    public boolean getBrake(){
+        return brakeOn;
+    }
+
+    @Override
+    public void setBrake(boolean brake){
+        if(brake){
+            motor.setNeutralMode(NeutralMode.Brake);
+        } else {
+            motor.setNeutralMode(NeutralMode.Coast);
+        }
+        brakeOn = brake;
+    }
 }

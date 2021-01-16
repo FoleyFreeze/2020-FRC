@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.AutoGather;
+import frc.robot.commands.AutoSC_Test;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutonSquare;
 import frc.robot.commands.CWCombo;
@@ -68,6 +69,7 @@ public class RobotContainer {
     autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new DriveTime(3, this, 0, -0.4, 0)));
     
     autonChooser.addOption("AutoSquare", new AutonSquare(this));
+    autonChooser.addOption("AutoSC_Test", new AutoSC_Test(this));
     SmartDashboard.putData(autonChooser);
   }
 

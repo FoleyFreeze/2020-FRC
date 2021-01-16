@@ -49,5 +49,19 @@ public class MotorNull extends Motor{
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public boolean getBrake() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setBrake(boolean brake) {
+        // TODO Auto-generated method stub
+
+    }
+
+    
     
 }
