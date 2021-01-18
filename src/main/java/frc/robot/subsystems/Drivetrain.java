@@ -106,7 +106,7 @@ public class Drivetrain extends SubsystemBase{
             double time = Timer.getFPGATimestamp();
             double pos = -driveMotor.getPosition();
             
-            double velocity = (pos - prevPos)/(time - prevTime) / k.driveTicksPerIn;
+            double velocity = (pos - prevPos)/(time - prevTime) / k.driveTicksPerIn / k.wheelDiam[idx];
             Rotation2d wheelAng = new Rotation2d((enc.getVoltage() - angleOffset) * 2*Math.PI / 5);
             prevTime = time;
             prevPos = pos;
@@ -288,7 +288,7 @@ public class Drivetrain extends SubsystemBase{
     public double[] getDist(){
         double[] dists = new double[4];
         for(int i = 0 ; i < wheels.length ; i++){
-            dists[i] = wheels[i].driveMotor.getPosition() / k.driveTicksPerIn;
+            dists[i] = wheels[i].driveMotor.getPosition() / k.driveTicksPerIn / k.wheelDiam[i];
         }
         return dists;
     }

@@ -28,4 +28,9 @@ public class AutoSC_Test extends SequentialCommandGroup{
         subsystem.m_drivetrain.setStartPosition(86, 42);
         super.initialize();
     }
+
+    @Override
+    public void end(boolean interrupted){
+        subsystem.m_drivetrain.setBrake(true);
+    }
 }

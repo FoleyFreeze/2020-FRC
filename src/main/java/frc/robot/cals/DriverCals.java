@@ -21,7 +21,8 @@ public class DriverCals extends CalSet {
 
     public double turnTicksPerRev = 60.0;
 
-    public double driveTicksPerIn = 64.0/18.0 * 18.0/32.0 * 45.0/15.0 / (4.0*Math.PI);
+    public double driveTicksPerIn = 64.0/18.0 * 18.0/32.0 * 45.0/15.0 / (/*4.0*/Math.PI);
+    public double[] wheelDiam = {4, 4, 4, 4};
 
     public double pausePwrPne = 0.9;//driving over this power will pause compressor
 
