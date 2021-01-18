@@ -20,6 +20,7 @@ import frc.robot.commands.ManualRevolve;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.AutoTrench;
 import frc.robot.subsystems.*;
+import frc.robot.util.Waypoint;
 import frc.robot.cals.IntakeCals;
 import frc.robot.cals.PneumaticsCals;
 import frc.robot.cals.TransporterCals;
@@ -32,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.AutoGather;
+import frc.robot.commands.AutoPath;
 import frc.robot.commands.AutoSC_Test;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutonSquare;
@@ -69,7 +71,7 @@ public class RobotContainer {
     autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new DriveTime(3, this, 0, -0.4, 0)));
     
     autonChooser.addOption("AutoSquare", new AutonSquare(this));
-    autonChooser.addOption("AutoSC_Test", new AutoSC_Test(this));
+    autonChooser.addOption("AutoPath", new AutoPath(this, Waypoint.fromFile("path1.txt"), 36));
     SmartDashboard.putData(autonChooser);
   }
 

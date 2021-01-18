@@ -18,6 +18,10 @@ public class Waypoint{
         this.theta = theta;
     }
 
+    public String toString(){
+        return String.format("%.0fin  %.0fin  %.0fdeg",x,y,theta);
+    }
+
     public static Waypoint[] fromFile(String filename){
         try{
 
@@ -33,7 +37,11 @@ public class Waypoint{
 
             in.close();
 
-            return (Waypoint[]) list.toArray();
+            Waypoint[] points = new Waypoint[list.size()];
+            for(int i=0;i<list.size();i++){
+                points[i] = list.get(i);
+            }
+            return points;
 
         } catch (Exception e){
             e.printStackTrace();

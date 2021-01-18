@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.cals.CalSet;
+import frc.robot.commands.AutoPath;
 import frc.robot.subsystems.Display;
+import frc.robot.util.Waypoint;
 
 
 public class Robot extends TimedRobot {
@@ -83,5 +85,57 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+
   }
+
+  @Override
+  public void simulationInit(){
+
+    //testing for the auto path spline follower 
+    /*Waypoint[] path = Waypoint.fromFile("path1.txt");
+    AutoPath pathTest = new AutoPath(m_robotContainer, path, 36);
+    pathTest.useFake = true;
+    
+    pathTest.fakeX = path[0].x;
+    pathTest.fakeY = path[0].y;
+    pathTest.fakeTheta = path[0].theta;
+    pathTest.initialize();
+
+    pathTest.execute();
+    System.out.println(pathTest.tgtPt);
+
+    pathTest.fakeX = 94;
+    pathTest.fakeY = 139;
+    pathTest.fakeTheta = path[0].theta;
+    pathTest.execute();
+    System.out.println(pathTest.tgtPt);
+
+    pathTest.fakeX = 94;
+    pathTest.fakeY = 141;
+    pathTest.fakeTheta = path[0].theta;
+    pathTest.execute();
+    System.out.println(pathTest.tgtPt);
+
+    pathTest.fakeX = 100;
+    pathTest.fakeY = 165;
+    pathTest.fakeTheta = path[0].theta;
+    pathTest.execute();
+    System.out.println(pathTest.tgtPt);
+
+    pathTest.fakeX = 125;
+    pathTest.fakeY = 170;
+    pathTest.fakeTheta = path[0].theta;
+    pathTest.execute();
+    System.out.println(pathTest.tgtPt);
+
+    pathTest.fakeX = 140;
+    pathTest.fakeY = 168;
+    pathTest.fakeTheta = path[0].theta;
+    pathTest.execute();
+    System.out.println(pathTest.tgtPt);
+
+    System.exit(0);
+    */
+  }
+
 }

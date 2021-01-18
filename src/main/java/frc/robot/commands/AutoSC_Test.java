@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
 
 public class AutoSC_Test extends SequentialCommandGroup{
@@ -11,8 +10,8 @@ public class AutoSC_Test extends SequentialCommandGroup{
     public AutoSC_Test(RobotContainer subsystem){
         this.subsystem = subsystem;
         addCommands(
-            new AutoDrive(subsystem, 180-32, 176, 0, false),
             new AutoDrive(subsystem, 180-86, 176, 0, false),
+            new AutoDrive(subsystem, 180-32, 176, 0, false),
             new AutoDrive(subsystem, 180-32, 120, 0, false),
             new AutoDrive(subsystem, 180-120, 220, 0, false),
             new AutoDrive(subsystem, 180-150, 180, 0, false),
@@ -25,7 +24,7 @@ public class AutoSC_Test extends SequentialCommandGroup{
 
     @Override
     public void initialize(){
-        subsystem.m_drivetrain.setStartPosition(86, 42);
+        subsystem.m_drivetrain.setStartPosition(180-86, 42);
         super.initialize();
     }
 
