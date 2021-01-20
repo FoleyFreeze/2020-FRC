@@ -44,14 +44,16 @@ public class AutoPath extends CommandBase{
     public void initialize(){
         if(path == null) return;
 
+        m_subsystem.m_drivetrain.setStartPosition(path[0].x, path[0].y);
+
         pathIdx = 1;
         Pose2d pose = m_subsystem.m_drivetrain.drivePos;
         if(useFake){
             startX = fakeX;
             startY = fakeY;
         } else {
-            startX = pose.getTranslation().getX() + path[0].x;
-            startY = pose.getTranslation().getY() + path[0].y;
+            startX = pose.getTranslation().getX();// + path[0].x;
+            startY = pose.getTranslation().getY();// + path[0].y;
         }
         
 
@@ -111,6 +113,10 @@ public class AutoPath extends CommandBase{
 
     @Override
     public boolean isFinished(){
+        //dont allow it to return early
+        if(pathIdx+1 < path.length) return false;
+        System.out.println("PathIdx: " + pathIdx);
+
         return Math.abs(errorX) < mCals.autoDriveStrafeRange 
             && Math.abs(errorY) < mCals.autoDriveStrafeRange 
             && Math.abs(errorRot) < mCals.autoDriveAngRange;
@@ -140,6 +146,8 @@ public class AutoPath extends CommandBase{
             }
             sumDist += dist;
         }
+
+        System.out.println(tgt.toString());
         return tgt;
     }
 
