@@ -71,7 +71,7 @@ public class RobotContainer {
     autonChooser.setDefaultOption("DriveAndShoot", new SequentialCommandGroup(new AutoShoot(this),new DriveTime(3, this, 0, -0.4, 0)));
     
     autonChooser.addOption("AutoSquare", new AutonSquare(this));
-    autonChooser.addOption("AutoPath", new AutoPath(this, Waypoint.fromFile("halfPath.txt"), 18));//changed to accomodate smaller testing area
+    autonChooser.addOption("AutoPath", new AutoPath(this, Waypoint.fromFile("halfPath.txt"), 36));//changed to accomodate smaller testing area
     SmartDashboard.putData(autonChooser);
   }
 

@@ -124,6 +124,7 @@ public class AutoPath extends CommandBase{
     }
 
     private Waypoint calcTgt(double botX, double botY){
+        System.out.format("Bot Pos: %.1f %.1f\n", botX, botY);
         //use to track how far we have looked ahead(use to determine if we've looked ahead enough)
         double sumDist = calcDist(tgtPt, botX, botY);
         int idx = pathIdx;
@@ -133,15 +134,19 @@ public class AutoPath extends CommandBase{
             idx++;
             double dist = calcDist(tgt, path[idx]);
             System.out.println("Dist: " + dist);
+            System.out.println("SumDist: " + sumDist);
             if(sumDist + dist >= lookAhead){
+                pathIdx = idx-1;
                 double ratio = (lookAhead - sumDist)/dist;
+                System.out.println("Ratio: " + ratio);
                 tgt = new Waypoint(
-                    (path[idx].x - path[idx-1].x)*ratio + path[idx-1].x,
-                    (path[idx].y - path[idx-1].y)*ratio + path[idx-1].y,
-                    Util.angleDiff(path[idx].theta, path[idx-1].theta)*ratio + path[idx-1].theta
+                    (path[idx].x - tgt.x)*ratio + tgt.x,
+                    (path[idx].y - tgt.y)*ratio + tgt.y,
+                    Util.angleDiff(path[idx].theta, tgt.theta)*ratio + tgt.theta
                 );
             } else{
                 tgt = path[idx];
+                System.out.println("SumDist: " + sumDist);
             }
             sumDist += dist;
         }
