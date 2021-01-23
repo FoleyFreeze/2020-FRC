@@ -28,29 +28,6 @@ public class Display extends SubsystemBase{
     static NetworkTableEntry error;
 
     public Display(){
-        Thread t = new Thread(new Runnable(){
-            public void run(){
-                while(true){
-                    for(Entry<String,TableEntry<Boolean>> e : boolMap.entrySet()){
-                        e.getValue().nt.setBoolean(e.getValue().value);
-                    }
-                    for(Entry<String,TableEntry<Double>> e : doubleMap.entrySet()){
-                        e.getValue().nt.setDouble(e.getValue().value);
-                    }
-                    for(Entry<String,TableEntry<String>> e : stringMap.entrySet()){
-                        e.getValue().nt.setString(e.getValue().value);
-                    }
-
-                    try{
-                        Thread.sleep(20);
-                    } catch(Exception e){
-
-                    }
-                }
-            }
-        });
-
-        t.start();
     }
 
     //TODO: figure out how to add the same data to multiple tabs
@@ -83,6 +60,34 @@ public class Display extends SubsystemBase{
     }
 
     public static void init(){
+        boolMap = new HashMap<>();
+        doubleMap = new HashMap<>();
+        stringMap = new HashMap<>();
+
+        Thread t = new Thread(new Runnable(){
+            public void run(){
+                while(true){
+                    for(Entry<String,TableEntry<Boolean>> e : boolMap.entrySet()){
+                        e.getValue().nt.setBoolean(e.getValue().value);
+                    }
+                    for(Entry<String,TableEntry<Double>> e : doubleMap.entrySet()){
+                        e.getValue().nt.setDouble(e.getValue().value);
+                    }
+                    for(Entry<String,TableEntry<String>> e : stringMap.entrySet()){
+                        e.getValue().nt.setString(e.getValue().value);
+                    }
+
+                    try{
+                        Thread.sleep(20);
+                    } catch(Exception e){
+
+                    }
+                }
+            }
+        });
+
+        t.start();
+
         ShuffleboardTab tab = Shuffleboard.getTab("Comp");
             addToTab(tab, "Selected Auton", "default", 1, 0);
             addToTab(tab, "Pi Alive", false, 2, 0);

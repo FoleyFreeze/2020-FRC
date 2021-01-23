@@ -207,7 +207,7 @@ public class Drivetrain extends SubsystemBase{
         parkMode = false;
 
         
-        driveStraight = (rot == 0 && strafe.r != 0) /*&& some button*/;
+        driveStraight = (rot == 0 && strafe.r != 0 && mSubsystem.m_input.driveStraight());
         if(rot != 0) goalAng = prevAng;
 
         if(driveStraight){
