@@ -38,11 +38,11 @@ public class DriverCals extends CalSet {
     public double autoBallAngKp = 0;
     public double autoBallDistKp = 0;
 
-    public double autoDriveStrafeKp = 0.1; //full power in 10in
+    public double autoDriveStrafeKp = 0.15; //full power in 10in
     public double autoDriveAngKp = 0.02; //50deg is full power
-    public double autoDriveStrafeRange = 3;
+    public double autoDriveStrafeRange = 5;
     public double autoDriveAngRange = 5;
-    public double autoDriveMaxPwr = 0.15;
+    public double autoDriveMaxPwr = 0.75;
     public double autoDriveStartPwr = 0.15;
     public double autoDriveEndPwr = 0.15;
     public double autoDriveStartDist = 36;

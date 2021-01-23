@@ -37,7 +37,6 @@ public class AutoPath extends CommandBase{
         mCals = m_subsystem.m_drivetrain.k;
         this.path = path;
         this.lookAhead = lookAhead;
-        ratios = new double[path.length - 1];
     }
 
     @Override
@@ -60,6 +59,9 @@ public class AutoPath extends CommandBase{
 
         //SmartDashboard.putNumber("AutoXtgt",tgtX);
         //SmartDashboard.putNumber("AutoYtgt",tgtY);
+
+        SmartDashboard.putNumber("Lookahead",lookAhead);
+        System.out.println("lookahead: " + lookAhead);
     }
 
     @Override
@@ -110,12 +112,13 @@ public class AutoPath extends CommandBase{
     @Override
     public void end(boolean interrupted){
         m_subsystem.m_drivetrain.drive(new Vector(0, 0), 0, 0, 0, true);
+        m_subsystem.m_drivetrain.setBrake(true);
     }
 
     @Override
     public boolean isFinished(){
         //dont allow it to return early
-        if(pathIdx+1 < path.length) return false;
+        if(tgtPt != path[path.length-1]) return false;
         System.out.println("PathIdx: " + pathIdx);
 
         return Math.abs(errorX) < mCals.autoDriveStrafeRange 

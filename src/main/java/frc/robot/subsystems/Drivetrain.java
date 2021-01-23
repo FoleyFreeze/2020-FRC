@@ -249,7 +249,7 @@ public class Drivetrain extends SubsystemBase{
         
         //double maxPower = 1;
         if(mSubsystem.m_input.pitMode()){
-            maxPower = 0.2;
+            maxPower = Math.min(0.2, maxPower);
         }
 
         if(Math.abs(maxOut.wheelVec.r) > maxPower){
@@ -306,30 +306,32 @@ public class Drivetrain extends SubsystemBase{
         if(k.disabled) return;
         
         for(Wheel w: wheels){
-            if(w.idx == 0) motorsGood = true;
-            Display.put("DMotorCurrent " + w.idx, wheels[w.idx].driveMotor.getCurrent());
-            Display.put("TMotorCurrent " + w.idx, wheels[w.idx].turnMotor.getCurrent());
-            Display.put("DMotorTemp " + w.idx, wheels[w.idx].driveMotor.getTemp());
-            Display.put("TMotorTemp " + w.idx, wheels[w.idx].turnMotor.getTemp());
-            if(wheels[w.idx].driveMotor.getTemp() >= 70) motorsGood = false;
-            SmartDashboard.putNumber("Turn Pwr "+w.idx, wheels[w.idx].turnMotor.getSpeed());
-            SmartDashboard.putNumber("Turn Curr "+w.idx, wheels[w.idx].turnMotor.getCurrent());
+            //if(w.idx == 0) motorsGood = true;
+            //Display.put("DMotorCurrent " + w.idx, wheels[w.idx].driveMotor.getCurrent());
+            //Display.put("TMotorCurrent " + w.idx, wheels[w.idx].turnMotor.getCurrent());
+            //Display.put("DMotorTemp " + w.idx, wheels[w.idx].driveMotor.getTemp());
+            //Display.put("TMotorTemp " + w.idx, wheels[w.idx].turnMotor.getTemp());
+            //if(wheels[w.idx].driveMotor.getTemp() >= 70) motorsGood = false;
+            //SmartDashboard.putNumber("Turn Pwr "+w.idx, wheels[w.idx].turnMotor.getSpeed());
+            //SmartDashboard.putNumber("Turn Curr "+w.idx, wheels[w.idx].turnMotor.getCurrent());
         }
 
-        Display.put("DistSenseInfo Re", distSens.getRear().toString());
-        Display.put("DistSenseInfo Ri", distSens.getRight().toString());
+        //Display.put("DistSenseInfo Re", distSens.getRear().toString());
+        //Display.put("DistSenseInfo Ri", distSens.getRight().toString());
 
         robotAng = -navX.getAngle();
         Rotation2d robotRot2d = new Rotation2d(Math.toRadians(robotAng)/* - Math.PI/2*/);
-        Display.put("NavX Ang", robotAng);
+        //Display.put("NavX Ang", robotAng);
 
         drivePos = driveOdom.update(robotRot2d, wheels[0].getState(), wheels[1].getState(), 
             wheels[2].getState(), wheels[3].getState());
 
         double x = drivePos.getTranslation().getX();
         double y = drivePos.getTranslation().getY();
-        Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
-        Display.put("Motors Good", motorsGood);
+        //Display.put("Robo Pos", String.format("%.0f, %.0f",x,y));
+        //Display.put("Motors Good", motorsGood);
+
+        //Display.put("Pit Mode", mSubsystem.m_input.pitMode());
     }
 
     public void setStartPosition(double x, double y){

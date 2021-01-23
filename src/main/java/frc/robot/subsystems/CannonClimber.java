@@ -141,6 +141,7 @@ public class CannonClimber extends SubsystemBase{
         }
 
         if(climbCals.disabled || shootCals.disabled) return;
+        
         if(Timer.getFPGATimestamp()>solRestTime){
             switch(hTgtPos){
                 case LOW:
