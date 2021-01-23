@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -9,38 +10,75 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Display extends SubsystemBase{
 
-    public static HashMap<String, NetworkTableEntry> map = new HashMap<>();
+    public static class TableEntry<T> {
+        public NetworkTableEntry nt;
+        public T value;
+
+        public TableEntry(NetworkTableEntry e, T v){
+            nt = e;
+            value = v;
+        }
+    }
+
+    public static HashMap<String, TableEntry<Boolean>> boolMap;
+    public static HashMap<String, TableEntry<Double>> doubleMap;
+    public static HashMap<String, TableEntry<String>> stringMap;
+
+    //public static HashMap<String, NetworkTableEntry> map = new HashMap<>();
     static NetworkTableEntry error;
 
     public Display(){
+        Thread t = new Thread(new Runnable(){
+            public void run(){
+                while(true){
+                    for(Entry<String,TableEntry<Boolean>> e : boolMap.entrySet()){
+                        e.getValue().nt.setBoolean(e.getValue().value);
+                    }
+                    for(Entry<String,TableEntry<Double>> e : doubleMap.entrySet()){
+                        e.getValue().nt.setDouble(e.getValue().value);
+                    }
+                    for(Entry<String,TableEntry<String>> e : stringMap.entrySet()){
+                        e.getValue().nt.setString(e.getValue().value);
+                    }
+
+                    try{
+                        Thread.sleep(20);
+                    } catch(Exception e){
+
+                    }
+                }
+            }
+        });
+
+        t.start();
     }
 
     //TODO: figure out how to add the same data to multiple tabs
     public static void addToTab(ShuffleboardTab tab, String name, double init, int x, int y){
-        if(map.containsKey(name)){
-            NetworkTableEntry nte = map.get(name);
+        if(doubleMap.containsKey(name)){
+            //NetworkTableEntry nte = doubleMap.get(name).nt;
             //tab.add(name, nte.getValue());
         } else {
             NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-            map.put(name,nte);
+            doubleMap.put(name,new Display.TableEntry<Double>(nte, init));
         }
     }
     public static void addToTab(ShuffleboardTab tab, String name, String init, int x, int y){
-        if(map.containsKey(name)){
-            NetworkTableEntry nte = map.get(name);
+        if(stringMap.containsKey(name)){
+            //NetworkTableEntry nte = stringMap.get(name).nt;
             //tab.add(name, nte.getValue());
         } else {
             NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-            map.put(name,nte);
+            stringMap.put(name,new Display.TableEntry<String>(nte, init));
         }
     }
     public static void addToTab(ShuffleboardTab tab, String name, boolean init, int x, int y){
-        if(map.containsKey(name)){
-            NetworkTableEntry nte = map.get(name);
+        if(boolMap.containsKey(name)){
+            //NetworkTableEntry nte = boolMap.get(name).nt;
             //tab.add(name, nte.getValue());
         } else {
             NetworkTableEntry nte = tab.add(name, init).withPosition(x, y).getEntry();
-            map.put(name,nte);
+            boolMap.put(name,new Display.TableEntry<Boolean>(nte, init));
         }
     }
 
@@ -139,24 +177,24 @@ public class Display extends SubsystemBase{
     }
 
     public static void put(String name, double data){
-        if(map.containsKey(name)){
-            map.get(name).setDouble(data);
+        if(doubleMap.containsKey(name)){
+            doubleMap.get(name).value = data;
         } else {
             error.setString(name);
         }
     }
 
     public static void put(String name, boolean data){
-        if(map.containsKey(name)){
-            map.get(name).setBoolean(data);
+        if(boolMap.containsKey(name)){
+            boolMap.get(name).value = data;
         } else {
             error.setString(name);
         }
     }
 
     public static void put(String name, String data){
-        if(map.containsKey(name)){
-            map.get(name).setString(data);
+        if(stringMap.containsKey(name)){
+            stringMap.get(name).value = data;
         } else {
             error.setString(name);
         }
