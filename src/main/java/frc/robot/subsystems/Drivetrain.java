@@ -206,14 +206,17 @@ public class Drivetrain extends SubsystemBase{
         */
         parkMode = false;
 
-        /*
-        driveStraight = (rot == 0 && !parkMode);
+        
+        driveStraight = (rot == 0 && strafe.r != 0) /*&& some button*/;
+        if(rot != 0) goalAng = prevAng;
 
         if(driveStraight){
-            rot = outRot(k.driveStraightKp, goalAng);
-        }*/
+            double error = Util.angleDiff(goalAng, -navX.getAngle());
+            //SmartDashboard.putNumber("Straight Error", error);
+            rot = k.driveStraightKp * error;
+        }
 
-        if(!driveStraight) goalAng = prevAng;
+        
         //SmartDashboard.putNumber("Goal Angle", goalAng);
 
         //SmartDashboard.putNumber("Rot", rot);
@@ -274,16 +277,7 @@ public class Drivetrain extends SubsystemBase{
             //SmartDashboard.putNumber("Turn Pwr" + w.idx, w.rotVec.r);
         }
 
-        //re add if drive straight ever gets enabled again
-        //prevAng = -navX.getAngle();
-    }
-
-    public double outRot(double pCorrection, double targetAng){
-        double error = Util.angleDiff(targetAng, -navX.getAngle());
-        double kP = pCorrection;
-        //SmartDashboard.putNumber("Straight Error", error);
-        double output = kP * error;
-        return output;
+        prevAng = -navX.getAngle();
     }
 
     public double[] getDist(){
